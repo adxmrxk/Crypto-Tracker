@@ -11,6 +11,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import { Link } from 'react-router-dom';
+
 
 export default function LabelBottomNavigation() {
   const [value, setValue] = React.useState('recents');
@@ -23,6 +25,8 @@ export default function LabelBottomNavigation() {
     <div className='fixed bottom-0 left-0 w-full z-50'>
         <BottomNavigation sx={{ backgroundColor: '#424242'}} value={value} onChange={handleChange}>
           <BottomNavigationAction
+            component={Link}
+            to="/HomePage"
             label="Home"
             value="Home"
             icon={<HomeIcon />}
@@ -33,6 +37,8 @@ export default function LabelBottomNavigation() {
                 },
             }}/>
           <BottomNavigationAction
+            component={Link}
+            to="/NewsPage"
             label="News"
             value="News"
             icon={<FeedIcon />}
@@ -44,6 +50,8 @@ export default function LabelBottomNavigation() {
             }}/>
         
           <BottomNavigationAction
+            component={Link}
+            to="/PortfolioPage"
             label="Portfolio"
             value="Portfolio"
             icon={<PieChartIcon />}
@@ -55,6 +63,8 @@ export default function LabelBottomNavigation() {
             }}/>
 
           <BottomNavigationAction
+           component={Link}
+            to="/MarketsPage"
             label="Markets"
             value="Markets"
             icon={<BarChartIcon />}
@@ -65,7 +75,10 @@ export default function LabelBottomNavigation() {
               },
             }}/>
 
+          
             <BottomNavigationAction
+              component={Link}
+              to="/SettingsPage"
               label="Settings"
               value="Settings"
               icon={<SettingsIcon />}

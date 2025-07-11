@@ -2,7 +2,9 @@ import React from 'react'
 
 const SettingsPage = () => {
   return (
-    <div>SettingsPage</div>
+    <div>
+      <h1 className='text-red-400'>Settings Page</h1>
+    </div>
   )
 }
 
