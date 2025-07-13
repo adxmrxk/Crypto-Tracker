@@ -12,7 +12,18 @@ const router = createBrowserRouter([
     element: <Skeleton></Skeleton>,
     children: [
         { index: true, element: <HomePage /> },
-        { path: "/SettingsPage", element: <SettingsPage></SettingsPage> },
+        
+        { 
+          path: "/SettingsPage", element: <SettingsPage></SettingsPage>, 
+          children: [
+            {},
+            {},
+            {},
+            {},
+            {}
+          ]
+        }, 
+        
         { path: "/MarketsPage", element: <MarketsPage></MarketsPage>},
         { path: '/PortfolioPage', element: <PortfolioPage></PortfolioPage>},
         { path: '/NewsPage', element: <NewsPage></NewsPage>},
