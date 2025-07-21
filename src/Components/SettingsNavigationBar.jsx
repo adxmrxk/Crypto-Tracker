@@ -13,10 +13,14 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import { Link } from 'react-router-dom';
 
-<img src={CryptoScopeIcon} alt="CryptoScope logo" />
 const pages = ['Account', 'Display', 'Mock Investing Controls', 'Notifications', 'Privacy'];
-const settings = ['Profile', 'Account', 'Dashboard', 'CryptoScopeut'];
+const settingsPages = ["/SettingsPage/AccountSettings", "/SettingsPage/Display",
+                        "/SettingsPage/MockInvestingControls", "/SettingsPage/Notifications", 
+                        "/SettingsPage/Privacy"
+                        ];
+//const settings = ['Profile', 'Account', 'Dashboard', 'CryptoScopeut'];                 
 
 function SettingsNavigationBar() {
 
@@ -89,8 +93,9 @@ function SettingsNavigationBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, index) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu} component={Link}
+                to={settingsPages[index]}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -115,8 +120,11 @@ function SettingsNavigationBar() {
             CryptoScope
           </Typography>
           <Box sx={{display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            
+            {pages.map((page, index) => (
               <Button
+                component={Link}
+                to={settingsPages[index]}
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}

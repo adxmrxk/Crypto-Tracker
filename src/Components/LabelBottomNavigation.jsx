@@ -78,7 +78,7 @@ export default function LabelBottomNavigation() {
           
             <BottomNavigationAction
               component={Link}
-              to="/SettingsPage"
+              to="/SettingsPage/AccountSettings"
               label="Settings"
               value="Settings"
               icon={<SettingsIcon />}

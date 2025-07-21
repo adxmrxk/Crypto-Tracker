@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import SettingsNavigationBar from '../Components/SettingsNavigationBar';
 
 
@@ -8,6 +8,7 @@ const SettingsPage = () => {
 
     <div>
       <SettingsNavigationBar></SettingsNavigationBar>
+      <Outlet />
     </div>
     
   )
