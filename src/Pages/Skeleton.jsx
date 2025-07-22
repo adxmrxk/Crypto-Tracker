@@ -10,6 +10,7 @@ const Skeleton = () => {
     <div>
         <LabelBottomNavigation></LabelBottomNavigation>
         <Outlet /> {/* This is crucial. Don't forget this for next time.*/}
+        
 
     </div>
   )

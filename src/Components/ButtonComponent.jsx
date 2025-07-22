@@ -15,19 +15,14 @@ export default function ButtonComponent({text, onClick, sx = {}, className = '',
   return (
     <Stack spacing={2} direction="row">
       <div className='pl-9'>
-        <Button
-          variant="contained"
-          className={className}
-          sx={{
+        <Button variant="contained" className={className} onClick={onClick} sx={{
             backgroundColor: backGroundColor_,
             color: textColor_,
             fontSize: fontSize_,
             padding: padding_,
             minWidth: minWidth_,
             ...sx,
-          }}
-          onClick={onClick}
-        >
+          }}>
           {text}
         </Button>
       </div>
