@@ -86,7 +86,7 @@ export default function LabelBottomNavigation() {
                   color: 'gray',
                   '&.Mui-selected': {
                   color: 'white',
-                  },
+                  }, 
             }}/>
 
         </BottomNavigation>
