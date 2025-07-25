@@ -9,7 +9,7 @@ export default function ClickableChips( { text, varientType, sx} ) {
 
   return (
     <Stack direction="row" spacing={1}>
-      <Chip label={text} variant={ varientType } onClick={handleClick} sx = { { border: '1px solid #000000', fontSize: '1.1rem', padding: 0.5, width: 'fit-content'} }/>
+      <Chip label={text} variant={ varientType } onClick={handleClick} sx = { { border: '1px solid #000000', fontSize: '1.0rem', padding: 0.5, width: 'fit-content'} }/>
     </Stack>
   );
 }

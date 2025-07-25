@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 
-const pages = ['Account', 'Display', 'Mock Investing Controls', 'Notifications', 'Privacy'];
+const pages = ['Account', 'Display', 'Notifications', 'Privacy'];
 const settingsPages = ["/SettingsPage/AccountSettings", "/SettingsPage/Display",
                         "/SettingsPage/MockInvestingControls", "/SettingsPage/Notifications", 
                         "/SettingsPage/Privacy"
@@ -56,8 +56,8 @@ function SettingsNavigationBar() {
             }}
             >
         <AppBar position="static">
-          <Container maxWidth="xl">
-            <Toolbar disableGutters className='flex justify-center'>
+          <Container maxWidth="xl" className='flex justify-center'>
+            <Toolbar disableGutters className=''>
               <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
               <Typography
                 variant="h6"

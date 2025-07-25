@@ -62,18 +62,7 @@ export default function LabelBottomNavigation() {
               },
             }}/>
 
-          <BottomNavigationAction
-           component={Link}
-            to="/MarketsPage"
-            label="Markets"
-            value="Markets"
-            icon={<BarChartIcon />}
-            sx={{
-              color: 'gray',
-              '&.Mui-selected': {
-                color: 'white',
-              },
-            }}/>
+          
 
           
             <BottomNavigationAction
