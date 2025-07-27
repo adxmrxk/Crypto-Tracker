@@ -11,25 +11,64 @@ const DisplayAndThemePage = () => {
 
     <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
       <div className='rounded-md w-[100%] h-auto relative top-4 p-3'>
-          <h1 className='font-roboto font-bold text-xl my-5 pl-9'>Language </h1>
+          <h1 className='font-roboto font-bold text-xl my-5 pl-9'>Region</h1>
           <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
 
-          {/* Display Language */}
+          {/* Country */}
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
-            <h2 className='font-roboto font-normal w-fit ml-25'>Display Language</h2>
+            <h2 className='font-roboto font-normal w-fit ml-25'>Country</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>English (US)</p>
+              <p className='font-normal'>Canada</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
           </div>
 
-          {/* Content Language */}
-          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
-            <h2 className='font-roboto font-normal w-fit ml-25'>Content Language</h2>
+          {/* Currency */}
+          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
+            <h2 className='font-roboto font-normal w-fit ml-25'>Currency</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>English (US)</p>
+              <p className='font-normal'>CAD</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
+          </div>
+
+          {/* Year Format */}
+          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
+            <h2 className='font-roboto font-normal w-fit ml-25'>Date Format</h2>
+            <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+              <p className='font-normal'>YYYY-MM-DD</p>
+              <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
+            </div>
+          </div>
+
+
+          <h1 className='font-roboto font-bold text-xl my-5 pl-9'>Language</h1>
+          <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
+
+          {/* Display Language */}
+          <div>
+            <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
+              <h2 className='font-roboto font-normal w-fit ml-25'>Display Language</h2>
+              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+                <p className='font-normal'>English (CA)</p>
+                <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
+              </div>
+            </div>
+            <p className='font-roboto text-sm w-fit ml-30 -mt-9'>Defines the language used on CryptoScope's interface.</p>
+
+          </div>
+
+          {/* Content Language */}
+          <div>
+            <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
+              <h2 className='font-roboto font-normal w-fit ml-25'>Content Language</h2>
+              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+                <p className='font-normal'>English (CA)</p>
+                <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
+              </div>
+            </div>
+            <p className='font-roboto text-sm w-fit ml-30 -mt-9'>Controls the langauge of outside content such as articles.</p>
+
           </div>
 
 
@@ -37,12 +76,16 @@ const DisplayAndThemePage = () => {
           <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
 
           {/* Font Size */}
-          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
-            <h2 className='font-roboto font-normal w-fit ml-25'>Font Size</h2>
-            <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>Default</p>
-              <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
+          <div>
+            <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
+              <h2 className='font-roboto font-normal w-fit ml-25'>Font Size</h2>
+              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+                <p className='font-normal'>Default</p>
+                <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
+              </div>
             </div>
+            <p className='font-roboto text-sm w-fit ml-30 -mt-9'>Controls the size of the font across pages.</p>
+
           </div>
 
 

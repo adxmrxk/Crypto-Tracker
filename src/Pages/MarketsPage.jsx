@@ -5,8 +5,7 @@ const MarketsPage = () => {
   return (
     
     <div className='flex justify-center'>
-        {test ? <h1>Yes</h1> : <h1>No</h1>}
-        <h1 className='text-red-400'>Markets Page</h1>
+        {test ? <h1>Yes</h1> : null}
     </div>
   )
 }

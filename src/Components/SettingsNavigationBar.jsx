@@ -17,9 +17,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 
-const pages = ['Account', 'Display', 'Notifications', 'Privacy'];
+const pages = ['Account', 'Display', 'Security', 'Privacy'];
 const settingsPages = ["/SettingsPage/AccountSettings", "/SettingsPage/Display",
-                        "/SettingsPage/MockInvestingControls", "/SettingsPage/Notifications", 
+                         "/SettingsPage/Notifications", 
                         "/SettingsPage/Privacy"
                         ];
 //const settings = ['Profile', 'Account', 'Dashboard', 'CryptoScopeut'];                 

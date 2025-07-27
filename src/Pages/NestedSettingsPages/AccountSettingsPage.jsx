@@ -44,16 +44,7 @@ function AccountSettingsPage() {
             </div>
           </div>
 
-          {/* Currency */}
-          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Birthday Changed')}>
-            <h2 className='font-roboto font-normal w-[60px] pl-25'>Currency</h2>
-            <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>CAD</p>
-              <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
-            </div>
-          </div>
-
-          
+      
 
         
           <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Account Authorization</h1>
@@ -81,18 +72,7 @@ function AccountSettingsPage() {
               <p className='font-roboto text-sm w-fit ml-30 -mt-5'>Connect to log in to CryptoScope with your Apple account</p>
             </div>
 
-          {/* Two-factor Authentication */}          
-            <div className='mb-10'>
-              <div className='flex justify-between items-center m-5 mt-8'>
-                <h2 className='font-roboto font-normal w-[380px]'>Two-factor authentication</h2>
-                <div className='pr-24'>
-                  <ControlledSwitches></ControlledSwitches>
-                </div>
-              </div>
-              <p className='font-roboto text-sm w-fit ml-30 -mt-6'>Secure your CryptoScope account with two-factor authentication</p>
-
-            </div>
-
+          
 
 
           <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Advanced</h1>
