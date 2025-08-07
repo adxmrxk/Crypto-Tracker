@@ -23,7 +23,7 @@ export default function LabelBottomNavigation() {
 
   return (
     <div className='fixed bottom-0 left-0 w-full z-50'>
-        <BottomNavigation sx={{ backgroundColor: '#424242'}} value={value} onChange={handleChange}>
+        <BottomNavigation sx={{ background: 'linear-gradient(to right, #2b2a2a, #636060)'}} value={value} onChange={handleChange}> 
           <BottomNavigationAction
             component={Link}
             to="/HomePage"

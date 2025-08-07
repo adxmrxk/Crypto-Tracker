@@ -47,7 +47,7 @@ function SettingsNavigationBar() {
   
 
   return (
-    <div className='pt-6'>
+    <div className='pt-8'>
       <motion.div initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -56,8 +56,8 @@ function SettingsNavigationBar() {
             }}
             >
         <AppBar position="static">
-          <Container maxWidth="xl" className='flex justify-center'>
-            <Toolbar disableGutters className=''>
+          <Container maxWidth="xl" className='flex justify-center' sx = {{  background: 'radial-gradient(circle at top left, #072f70, #415d8a)' }}>
+            <Toolbar disableGutters>
               <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
               <Typography
                 variant="h6"

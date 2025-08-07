@@ -32,19 +32,6 @@ const DisplayAndThemePage = () => {
             </div>
           </div>
 
-          {/* Year Format */}
-          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
-            <h2 className='font-roboto font-normal w-fit ml-25'>Date Format</h2>
-            <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>YYYY-MM-DD</p>
-              <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
-            </div>
-          </div>
-
-
-          <h1 className='font-roboto font-bold text-xl my-5 pl-9'>Language</h1>
-          <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
-
           {/* Display Language */}
           <div>
             <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
