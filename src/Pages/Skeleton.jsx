@@ -10,9 +10,6 @@ const Skeleton = () => {
   return (
     <div>
         <LabelBottomNavigation></LabelBottomNavigation>
-        <div className='absolute top-4 right-10 flex p-2'>
-          <ButtonComponent text = 'Log Out' sx = {{ background: 'linear-gradient(to right, #2590fa, #9dc8f2)' }}></ButtonComponent>
-        </div>
         <Outlet /> {/* This is crucial. Don't forget this for next time.*/}
         
 

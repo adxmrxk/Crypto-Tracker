@@ -21,23 +21,27 @@ const NewsPage = () => {
   return (
     
     <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
-      <div className='grid grid-cols-3 grid-rows-2 place-items-center mb-10 gap-5 mt-10'>
+      <div className='grid grid-cols-3 grid-rows-2 place-items-center mb-10 gap-10 mt-10'>
           {data?.pages?.map((page, pageIndex) => (
             <React.Fragment key={pageIndex}>
               {page.Data?.map((article, index) => (
                   <Link to = {article.URL}>
-                    <div key = {index} className='mb-22 mt-5 w-[275px] h-[275px] shadow-2xl shadow-gray-400 transform scale duration-300 ease-in-out hover:scale-105'>
-                      <img src = {article.IMAGE_URL} className='rounded-sm '></img>
-                      <h1 className='w-[270px] mt-3 text-sm'>{article.TITLE}</h1>
-                      <div className='flex flex-row'>
-                        <p className='text-left mt-3 ml-3 text-xs border-2 w-fit'>{article.KEYWORDS.split('|')[0]}</p>
-                        {article.KEYWORDS.split('|')[1] ? <p className='text-left mt-3 ml-3 text-xs border-2 w-fit'>{article.KEYWORDS.split('|')[1]}</p> : null}
-                      </div>
+                    <div key = {index} className='mb-5 mt-5 w-[375px] h-[400px] shadow-2xl shadow-zinc-400 transform scale duration-300 ease-in-out hover:scale-105 rounded-md'>
+                        <div className='w-[55%] h-full mx-5 pt-5'>
+                          <img src = {article.IMAGE_URL} className='rounded-sm ring-1 ring-slate-600/50'></img>
+                          <div className='mt-3'>
+                            <h1 className='text-sm font-semibold'>{article.TITLE}</h1>
+                            <h1 className='text-sm font-semibold'>{article.SENTIMENT}</h1>
+                          </div>
+                        </div>
                     </div>
                   </Link>
               ))}
             </React.Fragment>
           ))}
+      </div>
+      <div className='flex justify-start border-2'>
+        <h1 className='mt-10 mb-10 ml-10 border-2'>Test</h1>
       </div>
     </motion.div>
   );
