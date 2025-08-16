@@ -26,20 +26,20 @@ function AccountSettingsPage() {
             </div>
           </div>
 
+          {/* Username*/}
+          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
+            <h2 className='font-roboto font-normal w-[60px] pl-25'>Username</h2>
+            <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+              <p className='font-normal'>AadmRak239</p>
+              <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
+            </div>
+          </div>
+
           {/* Gender */}
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
             <h2 className='font-roboto font-normal w-[60px] pl-25'>Gender</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
               <p className='font-normal'>Male</p>
-              <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
-            </div>
-          </div>
-
-          {/* Birthday */}
-          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Birthday Changed')}>
-            <h2 className='font-roboto font-normal w-[60px] pl-25'>Birthday</h2>
-            <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>2003-10-01</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
           </div>

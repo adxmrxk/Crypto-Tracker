@@ -1,0 +1,42 @@
+const CONTENT_LANGUAGES = Object.freeze({
+    
+    CANADA: "English",
+    AMERICA: "English",
+    MEXICO: "Spanish",
+    BRAZIL: "Portuguese",
+    ARGENTINA: "Spanish",
+    COLOMBIA: "Spanish",
+    CHILE: "Spanish",
+    UK: "English",
+    GERMANY: "German",
+    FRANCE: "French",
+    ITALY: "Italian",
+    SPAIN: "Spanish",
+    SWITZERLAND: "German",
+    PORTUGAL: "Portuguese",
+    NETHERLANDS: "Dutch",
+    ESTONIA: "Estonian",
+    MALTA: "Maltese",
+    INDIA: "Hindi",
+    JAPAN: "Japanese",
+    SOUTH_KOREA: "Korean",
+    SINGAPORE: "English",
+    HONG_KONG: "Chinese",
+    INDONESIA: "Indonesian",
+    PHILIPPINES: "Filipino",
+    THAILAND: "Thai",
+    UAE: "Arabic",
+    SAUDI_ARABIA: "Arabic",
+    ISRAEL: "Hebrew",
+    BAHRAIN: "Arabic",
+    SOUTH_AFRICA: "Zulu",
+    NIGERIA: "English",
+    KENYA: "Swahili",
+    GHANA: "English",
+    CENTRAL_AFRICAN_REPUBLIC: "French",
+    AUSTRALIA: "English",
+    NEW_ZEALAND: "English"
+
+})
+
+module.exports = CONTENT_LANGUAGES;
