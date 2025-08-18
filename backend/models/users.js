@@ -37,6 +37,13 @@ const User = mongoose.model('User', new mongoose.Schema({
         immutable: true
 
 
+    },
+
+    password: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 32,
     }
 
 

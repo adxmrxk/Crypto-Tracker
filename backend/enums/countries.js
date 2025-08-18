@@ -1,0 +1,43 @@
+const COUNTRIES = Object.freeze({
+    CANADA: "Canada",
+    AMERICA: ["America", "USA", "United States of America"],
+    MEXICO: "Mexico",
+    BRAZIL: "Brazil",
+    ARGENTINA: "Argentina",
+    COLOMBIA: "Colombia",
+    CHILE: "Chile",
+    UK: "United Kingdom",
+    GERMANY: "Germany",
+    FRANCE: "France",
+    ITALY: "Italy",
+    SPAIN: "Spain",
+    SWITZERLAND: "Switzerland",
+    PORTUGAL: "Portugal",
+    NETHERLANDS: "Netherlands",
+    ESTONIA: "Estonia",
+    MALTA: "Malta",
+    INDIA: "India",
+    JAPAN: "Japan",
+    SOUTH_KOREA: "South Korea",
+    SINGAPORE: "Singapore",
+    HONG_KONG: "Hong Kong",
+    INDONESIA: "Indonesia",
+    PHILIPPINES: "Philippines",
+    THAILAND: "Thailand",
+    UAE: "United Arab Emirates",
+    SAUDI_ARABIA: "Saudi Arabia",
+    ISRAEL: "Israel",
+    BAHRAIN: "Bahrain",
+    SOUTH_AFRICA: "South Africa",
+    NIGERIA: "Nigeria",
+    KENYA: "Kenya",
+    GHANA: "Ghana",
+    CENTRAL_AFRICAN_REPUBLIC: "Central African Republic",
+    AUSTRALIA: "Australia",
+    NEW_ZEALAND: "New Zealand",
+
+})
+
+module.exports = COUNTRIES;
+
+export default COUNTRIES;

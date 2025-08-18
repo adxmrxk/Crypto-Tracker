@@ -5,12 +5,6 @@ const DISPLAY_LANGUAGES = require('./enums/displayLanguages.js');
 const CONTENT_LANGUAGES = require('./enums/contentLanguages.js');
 const FONT_SIZES = require('../enums/fontSizes.js');
 
-
-
-
-
-
-
 const userSettings = new mongoose.Schema({
      connectedWithGoogle: {
             type: Boolean,
@@ -70,7 +64,6 @@ const userSettings = new mongoose.Schema({
 
         recoveryEmail: {
             type: String,
-            required: true,
             minlength: 5,
             maxlength: 254,
             unique: true
