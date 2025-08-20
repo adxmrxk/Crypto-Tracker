@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
 import Email from '../assets/mail.png';
+import { stringify } from 'postcss';
+import axios from 'axios';
 
 
 const Countries = [
@@ -49,12 +51,11 @@ const AuthForm = () => {
   const [userEmail, setUserEmail] = useState("");
   const [username, setUsername] = useState("");
   const [userCountry, setUserCountry] = useState("");
-
-
   const [userPassword, setUserPassword] = useState("");
+  const [iscreatedUser, setCreatedUser] = useState({});
 
   
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const userObject = {
       email: userEmail,
@@ -66,28 +67,25 @@ const AuthForm = () => {
       password: userPassword
     };
 
-    console.log('Submited The Form');
-    console.log(userObject);
+    const response = await axios.post('http://localhost:5000/api/users', userObject);
+    const createdUser = response.data;
+    setCreatedUser(createdUser);
   }
 
   const handleEmail = (event) => {
     setUserEmail(event.target.value);
-    console.log(userEmail);
   }
   
   const handleUsername = (event) => {
     setUsername(event.target.value);
-    console.log(username);
   }
 
   const handleCountry = (event) => {
     setUserCountry(event.target.value);
-    console.log(event.target.value);
   }
 
   const handlePassword = (event) => {
     setUserPassword(event.target.value);
-    console.log(userPassword);
   }
   
 
@@ -107,6 +105,7 @@ const AuthForm = () => {
 
         {!isLoginMode && ( <input type="text" placeholder="Name" required className="w-full p-3 border-b-2 border-gray-300 outline-none focus:border-cyan-500 placeholder-gray-400"/>)}
 
+        <h1 className='text-blue-700'>{iscreatedUser.gender}</h1>
         <input type="email" placeholder="Email Address" required className="w-full p-3 border-b-2 border-gray-300 outline-none focus:border-cyan-500 placeholder-gray-600" onChange={handleEmail}/>
         <input type="text" placeholder="Username" required className="w-full p-3 border-b-2 border-gray-300 outline-none focus:border-cyan-500 placeholder-gray-600" onChange={handleUsername}/>
         <div className="w-full flex flex-row p-3 gap-2 border-b-2 border-gray-300 outline-none focus:border-cyan-500">

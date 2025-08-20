@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const COUNTRIES = require('./enums/countries.js');
-const CURRENCIES = require('./enums/currencies.js');
-const DISPLAY_LANGUAGES = require('./enums/displayLanguages.js');
-const CONTENT_LANGUAGES = require('./enums/contentLanguages.js');
+const COUNTRIES = require('../enums/countries.js');
+const CURRENCIES = require('../enums/currencies.js');
+const DISPLAY_LANGUAGES = require('../enums/displayLanguages.js');
+const CONTENT_LANGUAGES = require('../enums/contentLanguages.js');
 const FONT_SIZES = require('../enums/fontSizes.js');
 
 const userSettings = new mongoose.Schema({
@@ -66,7 +66,7 @@ const userSettings = new mongoose.Schema({
             type: String,
             minlength: 5,
             maxlength: 254,
-            unique: true
+            unique: false
         }
 });
 

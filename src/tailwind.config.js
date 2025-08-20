@@ -19,5 +19,5 @@ module.exports = {
       }
     },
   },
-  plugins: [require("tailwind-gradient-mask-image")],
+  plugins: [require("tailwind-gradient-mask-image"), require('react-glow/tailwind')]
 };

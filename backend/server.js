@@ -1,13 +1,21 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose'); //Assigns the mongoose function to the mongoose variable.
-
+const cors = require('cors');   // <--- import cors
 const port = 5000;
+
+// Allow requests from your frontend
+app.use(cors());
+
+
 app.use(express.json()); //Allows parsing JSON in request body. This tells Express to parse incoming JSON data and fill req.body with it.
 
-const AccountSettingsRoute = require('./routes/AccountSettings');
 
-app.use('/AccountSettings', AccountSettingsRoute);
+
+
+const usersRoutes = require('./routes/usersRoutes');
+
+app.use('/', usersRoutes);
 
 app.get('/', (req, res) => {
     res.send("Hello from the backend");

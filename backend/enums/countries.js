@@ -1,6 +1,6 @@
 const COUNTRIES = Object.freeze({
     CANADA: "Canada",
-    AMERICA: ["America", "USA", "United States of America"],
+    AMERICA: "America",
     MEXICO: "Mexico",
     BRAZIL: "Brazil",
     ARGENTINA: "Argentina",
@@ -40,4 +40,3 @@ const COUNTRIES = Object.freeze({
 
 module.exports = COUNTRIES;
 
-export default COUNTRIES;

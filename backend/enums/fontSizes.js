@@ -1,6 +1,6 @@
 const FONT_SIZES = Object.freeze({
 
-     XS: "0.75rem",  
+    XS: "0.75rem",  
     SM: "0.875rem", 
     MD: "1rem",     
     LG: "1.125rem", 
