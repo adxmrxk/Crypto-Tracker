@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import Typography from '@mui/material/Typography';
 import CryptoCurrency from '../assets/CryptoCurrency2.jpg';
 import DigitalCurrency from '../assets/DigitalCurrency.png';
@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import SignInButton from './../Components/SignInButton';
 import CryptoCard from '../Components/CryptoCard';
 import AuthForm from '../Components/AuthForm';
+import { useState } from 'react';
 
 
 
@@ -16,6 +17,46 @@ const HomePage = () => {
   const handleClick = () => {
     console.log('Sign in to cryptoscope');
   }
+
+    const [isLoginMode, setIsLoginMode] = useState(true);
+    const [userEmail, setUserEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [userCountry, setUserCountry] = useState("");
+    const [userPassword, setUserPassword] = useState("");
+  
+    
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const userObject = {
+        email: userEmail,
+        username: username,
+        gender: "Male",
+        settings: {
+          country: userCountry
+        },
+        password: userPassword
+      };
+  
+      const response = await axios.post('http://localhost:5000/api/users', userObject);
+      const createdUser = response.data;
+    }
+  
+    const handleEmail_ = (event) => {
+      setUserEmail(event.target.value);
+    }
+    
+    const handleUsername = (event) => {
+      setUsername(event.target.value);
+    }
+  
+    const handleCountry = (event) => {
+      setUserCountry(event.target.value);
+    }
+  
+    const handlePassword = (event) => {
+      setUserPassword(event.target.value);
+    }
+
   return (
     <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
       

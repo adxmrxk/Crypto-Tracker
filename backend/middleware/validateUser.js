@@ -1,10 +1,10 @@
 const express = require('express');
 
-function validateUsers(req, res, next) {
+function validateUser(req, res, next) {
 
 
     next();
 }           
 
 
-module.exports = validateUsers;
+module.exports = validateUser;

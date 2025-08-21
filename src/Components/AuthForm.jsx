@@ -45,48 +45,10 @@ const Countries = [
 
 ]
 
-const AuthForm = () => {
+const AuthForm = (handleEmail, handleUsername, handleCountry, handlePassword, handleSubmit) => {
 
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const [userEmail, setUserEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [userCountry, setUserCountry] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [iscreatedUser, setCreatedUser] = useState({});
 
-  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const userObject = {
-      email: userEmail,
-      username: username,
-      gender: "Male",
-      settings: {
-        country: userCountry
-      },
-      password: userPassword
-    };
-
-    const response = await axios.post('http://localhost:5000/api/users', userObject);
-    const createdUser = response.data;
-    setCreatedUser(createdUser);
-  }
-
-  const handleEmail = (event) => {
-    setUserEmail(event.target.value);
-  }
-  
-  const handleUsername = (event) => {
-    setUsername(event.target.value);
-  }
-
-  const handleCountry = (event) => {
-    setUserCountry(event.target.value);
-  }
-
-  const handlePassword = (event) => {
-    setUserPassword(event.target.value);
-  }
   
 
   return (
@@ -105,7 +67,6 @@ const AuthForm = () => {
 
         {!isLoginMode && ( <input type="text" placeholder="Name" required className="w-full p-3 border-b-2 border-gray-300 outline-none focus:border-cyan-500 placeholder-gray-400"/>)}
 
-        <h1 className='text-blue-700'>{iscreatedUser.gender}</h1>
         <input type="email" placeholder="Email Address" required className="w-full p-3 border-b-2 border-gray-300 outline-none focus:border-cyan-500 placeholder-gray-600" onChange={handleEmail}/>
         <input type="text" placeholder="Username" required className="w-full p-3 border-b-2 border-gray-300 outline-none focus:border-cyan-500 placeholder-gray-600" onChange={handleUsername}/>
         <div className="w-full flex flex-row p-3 gap-2 border-b-2 border-gray-300 outline-none focus:border-cyan-500">
