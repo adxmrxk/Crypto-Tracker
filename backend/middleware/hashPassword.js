@@ -1,6 +1,6 @@
 const express = require('express');
 
-function validateUser(req, res, next) {
+function hashPassword(req, res, next) {
 
 
     next();

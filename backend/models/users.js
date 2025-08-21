@@ -10,7 +10,6 @@ const User = mongoose.model('User', new mongoose.Schema({
         required: true,
         minlength: 5,
         maxlength: 254,
-        unique: true
     },
 
     username: {
@@ -37,6 +36,11 @@ const User = mongoose.model('User', new mongoose.Schema({
         immutable: true
 
 
+    },
+
+    watchList: {
+        type: [String],
+        default: []
     },
 
     password: {

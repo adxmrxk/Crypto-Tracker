@@ -10,13 +10,14 @@ import DisplayAndThemePage from "./Pages/NestedSettingsPages/DisplayAndThemePage
 import MockInvestingControlsPage from "./Pages/NestedSettingsPages/MockInvestingControlsPage";
 import NotificationsPage from "./Pages/NestedSettingsPages/NotificationsPage";
 import PrivacyAndDataPage from "./Pages/NestedSettingsPages/PrivacyAndDataPage";
+import LandingPage from "./Pages/LandingPage";
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Skeleton></Skeleton>,
     children: [
-        { index: true, element: <HomePage /> },
+        { index: true, element: <LandingPage /> },
         
         { 
           path: "/SettingsPage", element: <SettingsPage></SettingsPage>, 

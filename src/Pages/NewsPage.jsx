@@ -3,10 +3,16 @@ import useArticles from '../hooks/useArticles';
 import { Link } from 'react-router-dom';
 import ButtonComponent from '../Components/ButtonComponent';
 import { motion } from 'framer-motion';
+import { useState, createContext, useContext } from 'react';
+import { createRoot } from 'react-dom/client';
+import { UserContext } from './Skeleton';
+
 
 
 
 const NewsPage = () => {
+  const { user, setUser } = useContext(UserContext);
+
   var date = new Date();
   date.setDate(date.getDate() - 1);
   console.log(date);
@@ -16,6 +22,8 @@ const NewsPage = () => {
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading articles.</p>;
+
+  
   
 
   return (

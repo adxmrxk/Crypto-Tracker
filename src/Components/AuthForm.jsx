@@ -45,7 +45,7 @@ const Countries = [
 
 ]
 
-const AuthForm = (handleEmail, handleUsername, handleCountry, handlePassword, handleSubmit) => {
+const AuthForm = ( {handleEmail, handleUsername, handleCountry, handlePassword, handleSubmit } ) => {
 
   const [isLoginMode, setIsLoginMode] = useState(true);
 

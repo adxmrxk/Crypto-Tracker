@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useState, useContext, createContext } from 'react';
+import { UserContext } from '../Skeleton';
 import React from 'react'
 import ButtonComponent from '../../Components/ButtonComponent'
 import { motion } from 'framer-motion';
 import ClickableChips from '../../Components/ClickableChips';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ControlledSwitches from '../../Components/ControlledSwitches';
+import { createRoot } from 'react-dom/client';
+
 
 
 
 
 function AccountSettingsPage() {
+
+  const { user, setUser } = useContext(UserContext);
 
   return (
     <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
@@ -21,7 +26,7 @@ function AccountSettingsPage() {
           <div className='flex justify-between items-center m-5 mt-10 mb-10'>
             <h2 className='font-roboto font-normal w-[60px] pl-25'>Email</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group' onClick={ () => {  }}>
-              <p className='font-normal'>adamrak12345@gmail.com</p>
+              <p className='font-normal'>{user.email}</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
           </div>
@@ -30,7 +35,7 @@ function AccountSettingsPage() {
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
             <h2 className='font-roboto font-normal w-[60px] pl-25'>Username</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>AadmRak239</p>
+              <p className='font-normal'>{user.username}</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
           </div>

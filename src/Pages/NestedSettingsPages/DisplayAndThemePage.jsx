@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext, createContext } from 'react';
+import { UserContext } from '../Skeleton';
+import { createRoot } from 'react-dom/client';
 import React from 'react'
 import ButtonComponent from '../../Components/ButtonComponent'
 import { motion } from 'framer-motion';
@@ -7,6 +9,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ControlledSwitches from '../../Components/ControlledSwitches';
 
 const DisplayAndThemePage = () => {
+  const {user, setUser } = useContext(UserContext);
+
   return (  
 
     <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
