@@ -4,9 +4,9 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 
-export default function FullWidthTextField() {
+export default function FullWidthTextField({onClick}) {
   return (
-    <Box sx={{ width: 500, maxWidth: '100%', marginTop: 2 }}>
+    <Box sx={{ width: 300, maxWidth: '100%'}} onClick={onClick}>
       <TextField
         fullWidth
         label="Search A Crypto Currency"

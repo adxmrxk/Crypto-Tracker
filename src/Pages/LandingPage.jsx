@@ -74,6 +74,24 @@ const LandingPage = () => {
       
 
       <div className="relative flex-1">
+        
+        <div className='mix-blend-multiply'>
+          <div className="absolute top-10 left-20 w-72 h-72 bg-stone-600 rounded-full opacity-30 blur-3xl animate-blob"></div>
+          <div className="absolute top-10 left-20 w-96 h-96 bg-gray-500 rounded-full opacity-20 blur-3xl animate-blob"></div>
+        </div>
+
+
+        <div className='mix-blend-multiply'>
+          <div className="absolute top-120 left-180 w-72 h-72 bg-stone-600 rounded-full opacity-30 blur-3xl"></div>
+          <div class="absolute top-120 left-180 w-96 h-96 bg-gray-500 rounded-full opacity-20 blur-3xl"></div>
+        </div>
+        
+        <div className='mix-blend-multiply'>
+          <div className="absolute top-0 left-275 w-72 h-72 bg-stone-600 rounded-full opacity-30 blur-3xl"></div>
+          <div className="absolute top-0 left-275 w-96 h-96 bg-gray-500 rounded-full opacity-20 blur-3xl"></div>
+        </div>
+        
+
 
         <div>
           <div className="relative rounded-lg flex justify-start items-center p-6 flex-1 mt-15">

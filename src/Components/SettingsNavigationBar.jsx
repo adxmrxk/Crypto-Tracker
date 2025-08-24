@@ -56,7 +56,7 @@ function SettingsNavigationBar() {
             }}
             >
         <AppBar position="static">
-          <Container maxWidth="xl" className='flex justify-center' sx = {{  background: 'radial-gradient(circle at top left, #072f70, #415d8a)' }}>
+          <Container maxWidth="xl" className='flex justify-center' sx = {{  background: 'radial-gradient(circle at top left, #a5b9d6, #879bbb, #7585a1, #5f6f8b)' }}>
             <Toolbar disableGutters>
               <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
               <Typography
