@@ -6,8 +6,6 @@ function hashPassword(req, res, next) {
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
     req.body.password = hashedPassword;
     next();
-
-}           
-
+}
 
 module.exports = hashPassword;

@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Countries = [
   "Canada",
-  "United States of America",
+  "America",
   "Mexico",
   "Brazil",
   "Argentina",

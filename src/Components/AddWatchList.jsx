@@ -11,10 +11,7 @@ const AddWatchList = (handleChange) => {
         setSearchBarClicked(!searchBarClicked);
     };
 
-    const addToWatchList = (name) => {
-        console.log("In WatchList Function")
-        console.log(name);
-    }
+
     
 
     const { data } = useCryptoCurrency()

@@ -40,7 +40,7 @@ const User = mongoose.model('User', new mongoose.Schema({
 
     watchList: {
         type: [String],
-        default: undefined
+        default: []
     },
 
     password: {

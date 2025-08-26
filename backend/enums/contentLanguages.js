@@ -1,13 +1,13 @@
 const CONTENT_LANGUAGES = Object.freeze({
     
-    CANADA: "English",
-    AMERICA: "English",
+    CANADA: "English (CA)",
+    AMERICA: "English (US)",
     MEXICO: "Spanish",
     BRAZIL: "Portuguese",
     ARGENTINA: "Spanish",
     COLOMBIA: "Spanish",
     CHILE: "Spanish",
-    UK: "English",
+    UK: "English (UK)",
     GERMANY: "German",
     FRANCE: "French",
     ITALY: "Italian",

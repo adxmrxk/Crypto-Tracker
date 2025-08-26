@@ -5,6 +5,7 @@ const userSettings = require('../models/userSettings.js');
 const countries = require('../enums/countries.js');
 const validateUser = require('../middleware/validateUser.js');
 const hashPassword = require('../middleware/hashPassword.js');
+const { useParams } = require('react-router');
 
 router.get('/api/users/:id', validateUser, (req, res) => {
 
@@ -17,9 +18,16 @@ router.post('/api/users', hashPassword, async (req, res) => {
 
 })
 
-router.put('/api/users/:id', (req, res) => {
+router.patch('/api/users/:id', async (req, res) => {
 
-})
+  const findId = await User.findById(req.params.id);
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id, req.body, { new: true, runValidators: true}
+  )
+
+  res.json(updatedUser);
+  
+});
 
 router.delete('/api/users/:id', (req, res) => {
 

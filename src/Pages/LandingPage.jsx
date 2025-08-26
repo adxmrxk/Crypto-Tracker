@@ -36,18 +36,19 @@ const LandingPage = () => {
       event.preventDefault();
 
       const countryMapping = userCountry.toUpperCase();
-      console.log("Users country is + " + userCountry);
-      console.log("Users content and display language is: " + CONTENT_LANGUAGES_FRONT_END[countryMapping]);
+
 
       const userObject = {
         email: userEmail,
         username: username,
         gender: "Male",
         settings: {
+
           country: userCountry,
           currency: CURRENCIES_FRONTEND[countryMapping],
           displayLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
           contentLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
+
         },
         password: userPassword
       };
@@ -63,7 +64,6 @@ const LandingPage = () => {
     
     const handleEmail_ = (event) => {
       setUserEmail(event.target.value);
-      console.log(userEmail);
     }
     
     const handleUsername_ = (event) => {
