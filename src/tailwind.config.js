@@ -1,7 +1,10 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"], // Adjust if your files are in a different folder
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        'custom-blue-gradient': 'linear-gradient(to bottom right, #a5b9d6, #879bbb, #5f6f8b)'
+      }
       
    },
   },

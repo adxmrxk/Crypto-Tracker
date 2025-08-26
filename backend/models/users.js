@@ -47,7 +47,7 @@ const User = mongoose.model('User', new mongoose.Schema({
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 32,
+        maxlength: 64,
     }
 
 

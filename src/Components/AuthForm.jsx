@@ -52,7 +52,7 @@ const AuthForm = ( {handleEmail, handleUsername, handleCountry, handlePassword, 
   
 
   return (
-    <div className="w-[430px] bg-gradient-to-r from-[#cbd0d8] to-[#9a9a9e] p-8 rounded-2xl shadow-lg">
+    <div className="w-[430px] bg-gradient-to-br from-[#cbd0d8] to-[#9a9a9e] p-8 rounded-2xl shadow-lg">
 
       {/* Header Titles */}
       <div className="flex justify-center mb-4">

@@ -6,20 +6,19 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 export default function FullWidthTextField({onClick}) {
   return (
-    <Box sx={{ width: 300, maxWidth: '100%'}} onClick={onClick}>
+    <Box sx={{ width: 300, maxWidth: '100%' }} onClick={onClick}>
       <TextField
+        variant="outlined"
         fullWidth
         label="Search A Crypto Currency"
         id="SearchACryptoCurrency"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
+        InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
+        sx={{
+          "& .MuiOutlinedInput-root": { color: "#f5f5f5", "& .MuiOutlinedInput-notchedOutline": { borderColor: "#f5f5f5" }, "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#bbbbbb" }, "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "transparent", borderImage: "linear-gradient(to right, #42a5f5, #478ed1) 1" } },
+          "& .MuiInputLabel-root": { color: "#f5f5f5" },
+          "& .MuiSvgIcon-root": { color: "#f5f5f5" }
         }}
       />
     </Box>
-
   );
 }

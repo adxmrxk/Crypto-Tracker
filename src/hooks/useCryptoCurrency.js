@@ -17,7 +17,7 @@ const useCryptoCurrency = (ids = []) => {
           ...(ids.length > 0 ? { ids: ids.join(",") } : {}),
         },
       }),
-    refetchInterval: 5 * 60 * 1000,
+    refetchInterval: 4000
   });
 };
 

@@ -10,8 +10,7 @@ router.get('/api/users/:id', validateUser, (req, res) => {
 
 })  
 
-router.post('/api/users', async (req, res) => {
-
+router.post('/api/users', hashPassword, async (req, res) => {
   const newUser = new User(req.body);
   await newUser.save(); 
   res.status(201).json(newUser);

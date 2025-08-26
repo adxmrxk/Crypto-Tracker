@@ -12,7 +12,8 @@ import { createRoot } from 'react-dom/client';
 import { UserContext } from './Skeleton';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
-
+import CURRENCIES_FRONTEND from '../utils/currenciesFrontEnd';
+import CONTENT_LANGUAGES_FRONT_END from '../utils/contentLanguagesFrontEnd';
 
 
 
@@ -33,12 +34,20 @@ const LandingPage = () => {
     
     const handleSubmit_ = async (event) => {
       event.preventDefault();
+
+      const countryMapping = userCountry.toUpperCase();
+      console.log("Users country is + " + userCountry);
+      console.log("Users content and display language is: " + CONTENT_LANGUAGES_FRONT_END[countryMapping]);
+
       const userObject = {
         email: userEmail,
         username: username,
         gender: "Male",
         settings: {
-          country: userCountry
+          country: userCountry,
+          currency: CURRENCIES_FRONTEND[countryMapping],
+          displayLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
+          contentLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
         },
         password: userPassword
       };

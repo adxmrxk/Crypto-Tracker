@@ -21,8 +21,8 @@ const AddWatchList = (handleChange) => {
 
   return (
   <div className='fixed inset-0 flex items-center justify-center z-5'>
-    <div className='h-[575px] w-[900px] bg-gradient-to-br from-[#a5b9d6] via-[#879bbb] ring ring-blue-800 to-[#5f6f8b] shadow-2xl rounded-xl pt-5'>
-      <div className='flex justify-between flex-row w-[73%] mx-auto items-center'>
+    <div className='h-[575px] w-[800px] ring ring-blue-800 shadow-2xl rounded-sm pt-5 bg-radial from-slate-600 via-slate-700 to-slate-800' >
+      <div className='flex justify-between flex-row w-[73%] mx-auto items-center mt-3'>
         <SearchBar onClick={handleClick}></SearchBar>
       </div>
       {searchBarClicked ? <div>
@@ -34,3 +34,4 @@ const AddWatchList = (handleChange) => {
 )}
 
 export default AddWatchList
+

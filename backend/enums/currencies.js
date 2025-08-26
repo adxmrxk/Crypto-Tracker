@@ -39,4 +39,7 @@ const CURRENCIES = Object.freeze({
 
 })
 
+
 module.exports = CURRENCIES;
+
+

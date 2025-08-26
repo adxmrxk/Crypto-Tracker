@@ -34,7 +34,7 @@ const NewsPage = () => {
             <React.Fragment key={pageIndex}>
               {page.Data?.map((article, index) => (
                   <Link to = {article.URL}>
-                    <div key = {index} className='mb-5 mt-5 w-[375px] h-[400px] shadow-2xl shadow-zinc-400 transform scale duration-300 ease-in-out hover:scale-105 rounded-md'>
+                    <div key = {index} className='mb-5 mt-5 w-[375px] h-[400px] shadow-2xl shadow-zinc-400  transform scale duration-300 ease-in-out hover:scale-105 rounded-md'>
                         <div className='w-[55%] h-full mx-5 pt-5'>
                           <img src = {article.IMAGE_URL} className='rounded-sm ring-1 ring-slate-600/50'></img>
                           <div className='mt-3'>
