@@ -1,0 +1,42 @@
+const CONTENT_LANGUAGES_FRONT_END = Object.freeze({
+    
+    CANADA: "English (CA)",
+    AMERICA: "English (US)",
+    MEXICO: "Spanish",
+    BRAZIL: "Portuguese",
+    ARGENTINA: "Spanish",
+    COLOMBIA: "Spanish",
+    CHILE: "Spanish",
+    UK: "English (UK)",
+    GERMANY: "German",
+    FRANCE: "French",
+    ITALY: "Italian",
+    SPAIN: "Spanish",
+    SWITZERLAND: "German",
+    PORTUGAL: "Portuguese",
+    NETHERLANDS: "Dutch",
+    ESTONIA: "Estonian",
+    MALTA: "Maltese",
+    INDIA: "Hindi",
+    JAPAN: "Japanese",
+    SOUTH_KOREA: "Korean",
+    SINGAPORE: "English (SG)",
+    HONG_KONG: "Chinese",
+    INDONESIA: "Indonesian",
+    PHILIPPINES: "Filipino",
+    THAILAND: "Thai",
+    UAE: "Arabic",
+    SAUDI_ARABIA: "Arabic",
+    ISRAEL: "Hebrew",
+    BAHRAIN: "Arabic",
+    SOUTH_AFRICA: "Zulu",
+    NIGERIA: "English (NG)",
+    KENYA: "Swahili",
+    GHANA: "English (GH)",
+    CENTRAL_AFRICAN_REPUBLIC: "French",
+    AUSTRALIA: "English (AU)",
+    NEW_ZEALAND: "English (NZ)"
+
+})
+
+export default CONTENT_LANGUAGES_FRONT_END;
