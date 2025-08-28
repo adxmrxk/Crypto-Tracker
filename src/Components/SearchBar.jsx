@@ -6,7 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 export default function FullWidthTextField({onClick}) {
   return (
-    <Box sx={{ width: 300, maxWidth: '100%' }} onClick={onClick}>
+    <Box sx={{ width: 500, maxWidth: '100%', paddingTop: 5, marginBottom: 10}} onClick={onClick}>
       <TextField
         variant="outlined"
         fullWidth

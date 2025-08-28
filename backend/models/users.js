@@ -39,7 +39,18 @@ const User = mongoose.model('User', new mongoose.Schema({
     },
 
     watchList: {
-        type: [String],
+        type: [
+            {
+                coin: {
+                type: String
+                },
+
+                amount: {
+                    type: Number
+                }
+        
+            }
+        ],
         default: []
     },
 

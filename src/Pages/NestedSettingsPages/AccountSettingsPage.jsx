@@ -20,7 +20,7 @@ function AccountSettingsPage() {
     <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
       <div className='rounded-md w-[100%] h-auto relative top-4 p-3'>
           <h1 className='font-roboto font-bold text-xl my-5 pl-9'>General</h1>
-          <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
+          <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
 
           {/* Email */}
           <div className='flex justify-between items-center m-5 mt-10 mb-10'>
@@ -53,7 +53,7 @@ function AccountSettingsPage() {
 
         
           <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Account Authorization</h1>
-          <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
+          <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
 
           {/* Google */}          
             <div className='mb-10'>
@@ -81,7 +81,7 @@ function AccountSettingsPage() {
 
 
           <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Advanced</h1>
-          <hr className='border-gray-400 my-1 w-[80%] mx-auto'></hr>
+          <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
 
           {/* Delete */}
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Delete Account')}>

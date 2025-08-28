@@ -13,11 +13,11 @@ const useCryptoCurrency = (ids = []) => {
         params: {
           vs_currency: "usd",
           order: "market_cap_desc",
-          per_page: ids.length > 0 ? ids.length : 10, 
+          per_page: ids.length > 0 ? ids.length : 12, 
           ...(ids.length > 0 ? { ids: ids.join(",") } : {}),
         },
       }),
-    refetchInterval: 4000
+    refetchInterval: 60000
   });
 };
 

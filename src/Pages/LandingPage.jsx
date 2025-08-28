@@ -105,7 +105,7 @@ const LandingPage = () => {
         <div>
           <div className="relative rounded-lg flex justify-start items-center p-6 flex-1 mt-15">
             <div className=" flex flex-col justify-center flex-grow text-left">
-              <Typography variant="button" gutterBottom sx={{ fontSize: '3.5rem', fontWeight: 'bold', fontFamily: '"Montserrat", "sans-serif"'}}>Cryptoscope</Typography>
+              <h1 className='mb-10 text-7xl font-bold font-roboto bg-gradient-to-r from-gray-400 via-gray-500 to-gray-700 bg-clip-text text-transparent'>Cryptoscope</h1>
               <Typography variant="body1" sx={{ marginTop: '-1.5rem', fontFamily: '"Montserrat"'}}>
                 Track your crypto portfolio, stay updated with the latest news, and
                 simulate trades to see your investment potential unfold through

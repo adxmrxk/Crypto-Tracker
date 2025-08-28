@@ -20,7 +20,7 @@ router.post('/api/users', hashPassword, async (req, res) => {
 
 router.patch('/api/users/:id', async (req, res) => {
 
-  const findId = await User.findById(req.params.id);
+  console.log("Inside of the patch method to change watchlist");
   const updatedUser = await User.findByIdAndUpdate(
     req.params.id, req.body, { new: true, runValidators: true}
   )

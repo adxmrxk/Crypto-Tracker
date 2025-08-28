@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import useCryptoCurrency from '../hooks/useCryptoCurrency';
 import { UserContext } from '../Pages/Skeleton';
 import axios from 'axios';
@@ -9,7 +9,7 @@ const RecommendedCoins = () => {
   const {user, setUser} = useContext(UserContext);
   const addToWatchList = async (name) => {
 
-        const response = await axios.patch(`http://localhost:5000/api/users/${user._id}`, {$push: {watchList: name.toLowerCase()}});
+        const response = await axios.patch(`http://localhost:5000/api/users/${user._id}`, {$addToSet: {watchList: name.toLowerCase()}});
         const newUser = response.data;
         setUser(newUser);
   
