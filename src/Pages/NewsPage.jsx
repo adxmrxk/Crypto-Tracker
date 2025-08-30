@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useState, createContext, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
 import { UserContext } from './Skeleton';
-
+import ChartSchema from '../utils/chartSchema';
 
 
 
@@ -48,6 +48,7 @@ const NewsPage = () => {
             </React.Fragment>
           ))}
       </div>
+      <ChartSchema></ChartSchema>
       <div className='flex justify-start border-2'>
         <h1 className='mt-10 mb-10 ml-10 border-2'>Test</h1>
       </div>

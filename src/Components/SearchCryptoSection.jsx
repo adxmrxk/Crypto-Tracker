@@ -12,7 +12,6 @@ const SearchCryptoSection = () => {
         <div className='flex justify-center'>
             <CryptoCurrencyCard></CryptoCurrencyCard>
         </div>
-        
       </div>
     </section>
   )

@@ -7,7 +7,7 @@ const validateUser = require('../middleware/validateUser.js');
 const hashPassword = require('../middleware/hashPassword.js');
 const { useParams } = require('react-router');
 
-router.get('/api/users/:id', validateUser, (req, res) => {
+router.get('/api/users/:id', (req, res) => {
 
 })  
 
@@ -20,7 +20,6 @@ router.post('/api/users', hashPassword, async (req, res) => {
 
 router.patch('/api/users/:id', async (req, res) => {
 
-  console.log("Inside of the patch method to change watchlist");
   const updatedUser = await User.findByIdAndUpdate(
     req.params.id, req.body, { new: true, runValidators: true}
   )
