@@ -4,81 +4,185 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import useCryptoCurrency from '../hooks/useCryptoCurrency';
 import { Pie, Line } from "react-chartjs-2";
+import useHistoricalCryptoData from '../hooks/useHistoricCryptoData';
 
 Chart.register(CategoryScale);
 
-const ChartSchema = () => {
+
+const ChartSchema = ( {coin, amount} ) => {
+
+  const [timeDisplay, setTimeDisplay] = useState(1);
+  
   /*  const {user, setUser} = useContext(UserContext);
   const watchListArray = user?.watchList || [];
   const coins = watchListArray.map((item) => item.coin); 
-
+  
   const {data, error} = useCryptoCurrency(coins);
-
+  
   if (!data) return <p>Loading...</p>;
   if (error) return <p>Error loading data</p>;
-
+  
   */ 
-
-  const chartRef = useRef(null)
-  const [gradient, setGradient] = useState("rgba(42,113,208,0.15)")
-
-  useEffect(() => {
-    if (chartRef.current) {
-      const ctx = chartRef.current.ctx
-      const grad = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height)
-      grad.addColorStop(0, "rgba(42, 113, 208, 0.20)");  // top, darker
-      grad.addColorStop(0.6, "rgba(42, 113, 208, 0.15)"); // middle
-      grad.addColorStop(1, "rgba(42, 113, 208, 0.05)"); // bottom, almost transparent but still visible  
-      setGradient(grad)
+ 
+ const chartRef = useRef(null)
+ const [gradient, setGradient] = useState("rgba(42,113,208,0.15)")
+ 
+ useEffect(() => {
+   if (chartRef.current) {
+     const ctx = chartRef.current.ctx
+     const grad = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height)
+     grad.addColorStop(0, "rgba(42, 113, 208, 0.20)");  // top, darker
+     grad.addColorStop(0.6, "rgba(42, 113, 208, 0.15)"); // middle
+     grad.addColorStop(1, "rgba(42, 113, 208, 0.05)"); // bottom, almost transparent but still visible  
+     setGradient(grad)
     }
   }, [])
+  
+  //TODO: 
+  
+  //Set up a second API to get historical data of a certain coin (https://docs.coingecko.com/reference/coins-id-market-chart-range).
+  //Set up the API to basically get the coins in the watch list then for each coin then call the second api to get the data for that coin in its time range (1 hour, 24 hours, 1 week, 3 months).
+  //Make a carousel type of thing to display all the coins on these graphs.
+  //Finish up any final styling on the graph.
+  
+  const now = Math.floor(Date.now() / 1000); 
+  const oneHourAgo = now - 60 * 60; 
+  const oneDayAgo = now - 24 * 60 * 60; 
+  const oneWeekAgo = now - 24 * 60 * 60 * 7;
+  const oneMonthAgo = now - 24 * 60 * 60 * 30;
+  const threeMonthsAgo = now - 24 * 60 * 60 * 90;
+  
+  const [from, setFrom] = useState(oneWeekAgo);
 
+  const {data, error, isLoading} = useHistoricalCryptoData(coin, from, now);
+  const prices = [];
+  const dates = [];
+  let relativePrices = [];
+  if (data) {
+    console.log('Data: ', data.prices);
+    for (let i = 0; i < data.prices.length; i++) {
+      for (let j = 0; j <= data.prices[i].length; j++) {
+
+
+        
+        
+        if (j === 0) {
+          console.log('Unix Time: ', data.prices[i][j]);
+          const unixTimeStamp = data.prices[i][j];
+          const dateObject = new Date(unixTimeStamp);
+          console.log('Date Time: ', dateObject);
+          const hours = dateObject.getHours();
+          const minutes = dateObject.getMinutes();
+          const timeString = `${hours}:${minutes}: EST`;
+
+          dates.push(timeString);
+        } 
+
+        if (j === 1) {
+
+          console.log('price: ', data.prices[i][j]);
+          prices.push(data.prices[i][j]);
+          
+        }
+
+      }
+
+      relativePrices = prices.map((price, index) => {
+
+          return price * amount;
+
+      })
+
+
+    }
+
+    
+  }
+  
   const chartData = {
-    labels: [5, 10, 15, 20, 25, 30, 35, 40], 
+    labels: dates,
     datasets: [
       {
-        label: 'coins',
+        label: coin,
         /*data: data.map((item, index) => Number(item.current_price.toFixed(2) * watchListArray[index].amount))*/
-        data: [
-          { x: new Date('2025-08-29T10:00:00'), y: 10 },
-          { x: new Date('2025-08-29T10:05:00'), y: 25 },
-          { x: new Date('2025-08-29T10:10:00'), y: 17 },
-          { x: new Date('2025-08-29T10:15:00'), y: 55 },
-          { x: new Date('2025-08-29T10:20:00'), y: 34 },
-          { x: new Date('2025-08-29T10:25:00'), y: 85 },
-          { x: new Date('2025-08-29T10:30:00'), y: 100 },
-          { x: new Date('2025-08-29T10:35:00'), y: 49 },
-        ],
+        data: relativePrices,
+
+        //How data looks
+
         borderColor: "#0f5fd6",
-        fill: true, // shaded area under the line
+        fill: true, 
         backgroundColor: gradient, 
-        tension: 0.1, // makes line smooth instead of sharp
+        tension: 0.3, 
         borderWidth: 1,
-        pointRadius: 2,
-        pointHoverRadius: 5,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        pointBackgroundColor: '#ededed',
+        
+
       },
     ],
   };
 
   return (
-    <div className='mt-5 px-2'>
-      <h2 className='font-semibold text-gray-900 '>{`Value of coin Holdings`}</h2>
+    <div className='mt-5 px-2 flex flex-col items-center'>
+      <h2 className='font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent'>{`Value of ${coin} Holdings`.toUpperCase()}</h2>
       <Line 
         ref={chartRef} 
         data={chartData} 
+
+        //How the chart looks
+
         options={{
+          responsive: true,
           plugins: {
             legend: {
+              display: false,
               labels: {
-                color: "#fff", // legend text color
+                color: "#fff", 
                 font: { size: 12, weight: "semibold" },
                 boxWidth: 20
               },
             },
+
+            tooltip: {
+              mode: "index",
+              intersect: false
+            }
+
           },
-        }}
+
+           scales: {
+              x: {
+                display: false
+              }, 
+
+              y: {
+                ticks: {
+                  callback: function(value, index, ticks) {
+                    
+                    return ""; 
+                    
+                  },
+                  
+              },
+
+              grid: {
+                drawTicks: false
+              }
+            }
+          
+        }}}
       />
+      <div className='mt-7 h-fit bg-gradient-to-br from-yellow-400/80 to-yellow-500/90 ring ring-amber-600/90 px-3 rounded-full flex gap-2'>
+        <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneHourAgo)}>1H</button>
+        <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneDayAgo)}>24H</button>
+        <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneWeekAgo)}>1W</button>
+        <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneMonthAgo)}>1M</button>
+        <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(threeMonthsAgo)}>3M</button>
+      </div>
     </div>
+
+    
   );
 }
 
