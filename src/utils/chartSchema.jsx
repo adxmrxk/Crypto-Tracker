@@ -45,21 +45,20 @@ const ChartSchema = ( {coin, amount} ) => {
   //Make a carousel type of thing to display all the coins on these graphs.
   //Finish up any final styling on the graph.
   
-  const now = Math.floor(Date.now() / 1000); 
-  const oneHourAgo = now - 60 * 60; 
-  const oneDayAgo = now - 24 * 60 * 60; 
-  const oneWeekAgo = now - 24 * 60 * 60 * 7;
-  const oneMonthAgo = now - 24 * 60 * 60 * 30;
-  const threeMonthsAgo = now - 24 * 60 * 60 * 90;
+const oneHourAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 60 * 60, []);
+const oneDayAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 24 * 60 * 60, []);
+const oneWeekAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 24 * 60 * 60 * 7, []);
+const oneMonthAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 24 * 60 * 60 * 30, []);
+const threeMonthsAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 24 * 60 * 60 * 90, []);
   
-  const [from, setFrom] = useState(oneWeekAgo);
+const [from, setFrom] = useState(oneWeekAgo);
+const now = React.useMemo(() => Math.floor(Date.now() / 1000), [from]);
 
   const {data, error, isLoading} = useHistoricalCryptoData(coin, from, now);
   const prices = [];
   const dates = [];
   let relativePrices = [];
   if (data) {
-    console.log('Data: ', data.prices);
     for (let i = 0; i < data.prices.length; i++) {
       for (let j = 0; j <= data.prices[i].length; j++) {
 
@@ -67,10 +66,8 @@ const ChartSchema = ( {coin, amount} ) => {
         
         
         if (j === 0) {
-          console.log('Unix Time: ', data.prices[i][j]);
           const unixTimeStamp = data.prices[i][j];
           const dateObject = new Date(unixTimeStamp);
-          console.log('Date Time: ', dateObject);
           const hours = dateObject.getHours();
           const minutes = dateObject.getMinutes();
           const timeString = `${hours}:${minutes}: EST`;
@@ -80,7 +77,6 @@ const ChartSchema = ( {coin, amount} ) => {
 
         if (j === 1) {
 
-          console.log('price: ', data.prices[i][j]);
           prices.push(data.prices[i][j]);
           
         }
@@ -126,7 +122,7 @@ const ChartSchema = ( {coin, amount} ) => {
   return (
     <div className='mt-5 px-2 flex flex-col items-center'>
       <div className='w-full items-center'>
-        <h2 className='font-semibold text-xl text-gray-200 underline underline-offset-2 shadow-2xl'>{coin.charAt(0).toUpperCase() + coin.slice(1)}</h2>
+        <h2 className='font-semibold text-xl text-gray-200 underline underline-offset-2 shadow-2xl mt-3 mb-3'>{coin.charAt(0).toUpperCase() + coin.slice(1)}</h2>
       </div>
       <Line 
         ref={chartRef} 

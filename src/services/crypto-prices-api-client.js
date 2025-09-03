@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://cors-anywhere.herokuapp.com/https://api.coingecko.com/api/v3/",
+  baseURL: "https://api.coingecko.com/api/v3/",
 });
 
 class APIClient {

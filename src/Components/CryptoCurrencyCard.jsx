@@ -12,11 +12,11 @@ const CryptoCurrencyCard = () => {
 
     const [userInput, setUserInput] = useState({});
     
-    const handleSubmit = async (event, name) => {
+    const handleSubmit = async (event, element) => {
         event.preventDefault();
         const input = event.target.querySelector("input"); 
         const value = input.value;
-        const response = await axios.patch(`http://localhost:5000/api/users/${user._id}`, { $addToSet: { watchList: { coin: name.toLowerCase(), amount: value} } } )
+        const response = await axios.patch(`http://localhost:5000/api/users/${user._id}`, { $addToSet: { watchList: { coin: element.name.toLowerCase(), amount: value, ticker: String(element.symbol)} } } )
         const newUser = response.data;
         setUser(newUser);
         setUserInput('');
@@ -36,7 +36,7 @@ const CryptoCurrencyCard = () => {
                             <h1 className='text-lg text-gray-300 font-normal text-left'>{element.symbol.toUpperCase()}</h1>
                             <div className='mt-5'>
                                 <div className='w-fit ml-[320px] -mb-[67px] flex flex-col items-center'>
-                                    <form onSubmit={(event) => handleSubmit(event, element.name)}>
+                                    <form onSubmit={(event) => handleSubmit(event, element)}>
                                         <button type = "submit" className='text-md text-gray-100 bg-slate-900/20 w-fit px-4 py-1 rounded-xs cursor-pointer mb-2 hover:bg-slate-900/40 transition-all duration-300'>Add</button>
                                         <div className='max-w-[75px mx-auto relative z-10'>
                                             <input  id={`myInput-${index}`} type = "number" step="any" placeholder = "Amount" value = {userInput[element.name] || ''} onChange = {(event) =>  setUserInput({ ...userInput, [element.name]: event.target.value })} className = 'text-white w-[75px] rounded-xs px-2 outline-none border-b'></input>

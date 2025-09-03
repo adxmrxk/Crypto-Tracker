@@ -47,6 +47,10 @@ const User = mongoose.model('User', new mongoose.Schema({
 
                 amount: {
                     type: Number
+                },
+
+                ticker: {
+                    type: String
                 }
         
             }

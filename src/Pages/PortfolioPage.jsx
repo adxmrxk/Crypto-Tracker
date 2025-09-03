@@ -19,40 +19,6 @@ export const addCryptoContext = createContext();
 const Dashboard = () => {
   
 
-const now = Math.floor(Date.now() / 1000); 
-const yesterday = now - 24 * 60 * 60; 
-const oneHourAgo = now - 60 * 60; 
-  const oneWeekAgo = now - 24 * 60 * 60 * 7;
-
-
-  const {data, error, isLoading} = useHistoricalCryptoData('bitcoin', oneWeekAgo, now);
-  const prices = [];
-  const dates = [];
-  if (data) {
-    console.log('Data: ', data.prices);
-    for (let i = 0; i < data.prices.length; i++) {
-      for (let j = 0; j <= data.prices[i].length; j++) {
-
-
-        
-        
-        if (j === 0) {
-          console.log('Unix Time: ', data.prices[i][j]);
-          const unixTimeStamp = data.prices[i][j];
-          const dateObject = new Date(unixTimeStamp);
-          console.log('Date Time: ', dateObject);
-        } 
-
-        if (j === 1) {
-
-          console.log('price: ', data.prices[i][j]);
-          prices.push(data.prices[i][j]);
-          
-        }
-
-      }
-    }
-  }
   const {user, setUser} = useContext(UserContext);
   const [addCrypto, setAddCrypto] = useState(false);
   //const { data } = useCryptoCurrency(user.watchList);
