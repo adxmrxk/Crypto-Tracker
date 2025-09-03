@@ -116,6 +116,7 @@ const LandingPage = () => {
             <img src={CryptoCurrency} alt="Crypto" className="w-128 h-128 rounded-md object-cover mr-5"/>
           </div>
         </div>
+        
       </div>
       <div className='mt-15'>
         <CryptoCard></CryptoCard>

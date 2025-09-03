@@ -66,12 +66,8 @@ const oneHourAgo = now - 60 * 60;
   return (
     
     <div>
-        {/*{addCrypto ? <addCryptoContext.Provider value = {{addCrypto, setAddCrypto}}>
-            <AddWatchList></AddWatchList>
-        </addCryptoContext.Provider> : null}
-        <div className={addCrypto ? 'blur-xs' : ""}>*/}
             <DashBoard></DashBoard>
-            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen mt-20 bg-gradient-to-br from-gray-500 to-gray-600">
+            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-gray-500 to-gray-600">
               <CryptoChartSection></CryptoChartSection>
             </div>
             <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-radial from-slate-600 via-slate-700 to-slate-800">

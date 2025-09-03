@@ -11,7 +11,6 @@ const useHistoricalCryptoData = (id, from_date, to_date) => {
     queryFn: () =>
       apiClient.getAll({
         params: {
-          id: id,
           vs_currency: "usd",
           from: from_date,
           to: to_date

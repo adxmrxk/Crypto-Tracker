@@ -5,7 +5,7 @@ import CryptoCurrencyCard from './CryptoCurrencyCard'
 const SearchCryptoSection = () => {
   return (
     <section>
-      <div className="max-w-7xl mx-auto flex flex-col ">
+      <div className="max-w-7xl mx-auto flex flex-col">
         <div className='flex justify-center'>
             <SearchBar></SearchBar>
         </div>

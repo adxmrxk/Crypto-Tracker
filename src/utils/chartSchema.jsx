@@ -125,7 +125,9 @@ const ChartSchema = ( {coin, amount} ) => {
 
   return (
     <div className='mt-5 px-2 flex flex-col items-center'>
-      <h2 className='font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent'>{`Value of ${coin} Holdings`.toUpperCase()}</h2>
+      <div className='w-full items-center'>
+        <h2 className='font-semibold text-xl text-gray-200 underline underline-offset-2 shadow-2xl'>{coin.charAt(0).toUpperCase() + coin.slice(1)}</h2>
+      </div>
       <Line 
         ref={chartRef} 
         data={chartData} 
@@ -173,7 +175,7 @@ const ChartSchema = ( {coin, amount} ) => {
           
         }}}
       />
-      <div className='mt-7 h-fit bg-gradient-to-br from-yellow-400/80 to-yellow-500/90 ring ring-amber-600/90 px-3 rounded-full flex gap-2'>
+      <div className='mt-7 h-fit bg-gradient-to-br from-yellow-400/80 to-yellow-500/90 px-3 rounded-full flex gap-2 shadow-2xl'>
         <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneHourAgo)}>1H</button>
         <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneDayAgo)}>24H</button>
         <button className='text-sm font-semibold text-gray-600 px-2 py-1 my-0.5 hover:bg-amber-300 hover:rounded-full transition-all duration-200 cursor-pointer' onClick={() => setFrom(oneWeekAgo)}>1W</button>
