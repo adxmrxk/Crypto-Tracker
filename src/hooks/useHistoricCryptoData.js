@@ -19,7 +19,8 @@ const useHistoricalCryptoData = (id, from_date, to_date) => {
     refetchInterval: false,
     staleTime: 1000 * 60 * 60 * 24, //24 hours
     cacheTime: 1000 * 60 * 60 * 24 * 2,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    
   });
 };
 

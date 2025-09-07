@@ -38,12 +38,7 @@ const ChartSchema = ( {coin, amount} ) => {
     }
   }, [])
   
-  //TODO: 
-  
-  //Set up a second API to get historical data of a certain coin (https://docs.coingecko.com/reference/coins-id-market-chart-range).
-  //Set up the API to basically get the coins in the watch list then for each coin then call the second api to get the data for that coin in its time range (1 hour, 24 hours, 1 week, 3 months).
-  //Make a carousel type of thing to display all the coins on these graphs.
-  //Finish up any final styling on the graph.
+
   
 const oneHourAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 60 * 60, []);
 const oneDayAgo = React.useMemo(() => Math.floor(Date.now() / 1000) - 24 * 60 * 60, []);

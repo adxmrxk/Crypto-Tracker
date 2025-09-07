@@ -10,7 +10,7 @@ const { data, error, isLoading } = useCryptoCurrency();
 
   return (
     <Marquee speed = '50' gradient = {true} gradientColor='#d6d3d3'>
-      <div className='flex flex-row gap-5 overflow-hidden gradient-mask-t-5'>
+      <div className='flex flex-row gap-5 overflow-hidden gradient-mask-t-5 mt-3'>
           {data.map((element, index) => (
               <div key={index}>
                 <div className = 'flex items-center gap-3 p-2'>

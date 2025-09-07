@@ -14,6 +14,7 @@ import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import CURRENCIES_FRONTEND from '../utils/currenciesFrontEnd';
 import CONTENT_LANGUAGES_FRONT_END from '../utils/contentLanguagesFrontEnd';
+import FakeChart from '../Components/FakeChart';
 
 
 
@@ -21,8 +22,17 @@ const LandingPage = () => {
   
   const { user, setUser } = useContext(UserContext);
 
+  const [signUpClicked, setSignUpClicked] = useState(false);
+
+  
+
   const handleClick = () => {
     console.log('Sign in to cryptoscope');
+    setSignUpClicked(true);
+  }
+
+  const handleExit_ = () => {
+    setSignUpClicked(!signUpClicked);
   }
 
     const [isLoginMode, setIsLoginMode] = useState(true);
@@ -79,54 +89,40 @@ const LandingPage = () => {
     }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
-      
-
-      <div className="relative flex-1">
+    <>
+      <div className="fixed top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-black/70 via-black/80 to-black/90 " ></div>
+        {signUpClicked ? <AuthForm handleEmail={handleEmail_} handleUsername={handleUsername_} handleCountry={handleCountry_} handlePassword={handlePassword_} handleSubmit={handleSubmit_} handleExit = {handleExit_}></AuthForm> : null}
+        <div className={`relative z-10 flex-1 ${signUpClicked ? 'blur-xs' : ''}`}>
         
-        <div className='mix-blend-multiply'>
-          <div className="absolute top-10 left-20 w-72 h-72 bg-stone-600 rounded-full opacity-30 blur-3xl animate-blob"></div>
-          <div className="absolute top-10 left-20 w-96 h-96 bg-gray-500 rounded-full opacity-20 blur-3xl animate-blob"></div>
-        </div>
-
-
-        <div className='mix-blend-multiply'>
-          <div className="absolute top-120 left-180 w-72 h-72 bg-stone-600 rounded-full opacity-30 blur-3xl"></div>
-          <div class="absolute top-120 left-180 w-96 h-96 bg-gray-500 rounded-full opacity-20 blur-3xl"></div>
-        </div>
+          
         
-        <div className='mix-blend-multiply'>
-          <div className="absolute top-0 left-275 w-72 h-72 bg-stone-600 rounded-full opacity-30 blur-3xl"></div>
-          <div className="absolute top-0 left-275 w-96 h-96 bg-gray-500 rounded-full opacity-20 blur-3xl"></div>
-        </div>
-        
-
-
-        <div>
-          <div className="relative rounded-lg flex justify-start items-center p-6 flex-1 mt-15">
-            <div className=" flex flex-col justify-center flex-grow text-left">
-              <h1 className='mb-10 text-7xl font-bold font-roboto bg-gradient-to-r from-gray-400 via-gray-500 to-gray-700 bg-clip-text text-transparent'>Cryptoscope</h1>
-              <Typography variant="body1" sx={{ marginTop: '-1.5rem', fontFamily: '"Montserrat"'}}>
-                Track your crypto portfolio, stay updated with the latest news, and
-                simulate trades to see your investment potential unfold through
-                history.
-              </Typography>
-              <SignInButton buttonClick={handleClick}>Sign Up</SignInButton>
+          <div data-aos="fade-up">
+            <div className="relative rounded-lg flex justify-start items-center p-6 flex-1 mt-15">
+              <div className=" flex flex-col justify-center flex-grow text-left">
+                <h1 className='mb-10 text-7xl font-bold font-roboto bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300  bg-clip-text text-transparent'>Cryptoscope</h1>
+                <Typography className = 'text-gray-200' variant="body1" sx={{ marginTop: '-1.5rem', fontFamily: '"Montserrat"'}}>
+                  Track your crypto portfolio, stay updated with the latest news, and
+                  simulate trades to see your investment potential unfold through
+                  history.
+                </Typography>
+                <SignInButton buttonClick={handleClick} borderColor = 'lightblue' textColor = 'lightgray'>Sign Up</SignInButton>
+              </div>
+              <img src={CryptoCurrency} alt="Crypto" className="w-128 h-128 rounded-md object-cover"/>
             </div>
-            <img src={CryptoCurrency} alt="Crypto" className="w-128 h-128 rounded-md object-cover mr-5"/>
+          </div>
+          <div className='grid grid-cols-2 items-center mt-5'>
+            <FakeChart/>
+            <div className='flex flex-col items-center' data-aos="fade-left" data-aos-offset="125">
+              <h1 className='text-3xl font-bold font-roboto bg-gradient-to-br from-orange-300 via-rose-500 to-purple-500 bg-clip-text text-transparent'>Leverage Advanced Analytics to Track Your Cryptocurrencies</h1>
+              <p className='mt-7 text-lg font-roboto w-[500px] text-gray-200'>Gain real-time insights, identify trends, and make smarter investment decisions with data-driven tools.</p>
+            </div>
           </div>
         </div>
-        
-      </div>
-      <div className='mt-15'>
-        <CryptoCard></CryptoCard>
-        <AuthForm handleEmail={handleEmail_} handleUsername={handleUsername_} handleCountry={handleCountry_} handlePassword={handlePassword_} handleSubmit={handleSubmit_}></AuthForm>
-      </div>
 
      
 
 
-    </motion.div>
+    </>
   );
 };
 

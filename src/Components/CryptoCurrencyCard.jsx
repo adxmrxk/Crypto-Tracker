@@ -4,6 +4,7 @@ import { useContext, createContext, useState } from 'react';
 import { UserContext } from '../Pages/Skeleton';
 import axios from 'axios';
 
+
 const CryptoCurrencyCard = () => {
 
     const {data, isLoading, error} = useCryptoCurrency();

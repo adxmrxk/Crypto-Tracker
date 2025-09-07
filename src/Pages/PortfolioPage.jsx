@@ -9,6 +9,7 @@ import AddWatchList from '../Components/AddWatchList';
 import SearchCryptoSection from '../Components/SearchCryptoSection';
 import CryptoChartSection from '../Components/CryptoChartSection';
 import useHistoricalCryptoData from '../hooks/useHistoricCryptoData';
+import LabelBottomNavigation from '../Components/LabelBottomNavigation';
 
 
 
@@ -39,6 +40,7 @@ const Dashboard = () => {
             <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-radial from-slate-600 via-slate-700 to-slate-800">
                 <SearchCryptoSection></SearchCryptoSection>
             </div>
+            <LabelBottomNavigation></LabelBottomNavigation>
         
             
         
