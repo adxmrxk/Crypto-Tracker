@@ -26,6 +26,7 @@
     "core-ui-components": "^0.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
+    "firebase": "^12.2.1",
     "joi": "^18.0.0",
     "joy": "^0.1.1",
     "keen-slider": "^6.8.6",

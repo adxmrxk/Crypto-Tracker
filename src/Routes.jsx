@@ -11,6 +11,7 @@ import MockInvestingControlsPage from "./Pages/NestedSettingsPages/MockInvesting
 import NotificationsPage from "./Pages/NestedSettingsPages/NotificationsPage";
 import PrivacyAndDataPage from "./Pages/NestedSettingsPages/PrivacyAndDataPage";
 import LandingPage from "./Pages/LandingPage";
+import ChatRoomPage from "./Pages/ChatRoomPage";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         
         { path: "/MarketsPage", element: <MarketsPage></MarketsPage>},
         { path: '/PortfolioPage', element: <PortfolioPage></PortfolioPage>},
-        { path: '/NewsPage', element: <NewsPage></NewsPage>},
+        { path: '/ChatRoomPage', element: <ChatRoomPage></ChatRoomPage>},
         { path: '/HomePage', element: <HomePage></HomePage>}
     ]
   }, 

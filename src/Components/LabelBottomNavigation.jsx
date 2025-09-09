@@ -38,9 +38,9 @@ export default function LabelBottomNavigation() {
             }}/>
           <BottomNavigationAction
             component={Link}
-            to="/NewsPage"
-            label="News"
-            value="News"
+            to="/ChatRoomPage"
+            label="Chat"
+            value="Chat"
             icon={<FeedIcon />}
             sx={{
                 color: 'gray',

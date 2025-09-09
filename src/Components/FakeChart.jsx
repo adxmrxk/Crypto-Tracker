@@ -49,8 +49,8 @@ const chartRef = useRef(null);
           const { ctx, chartArea } = context.chart;
           return getGradient(ctx, chartArea);
         }, 
-        tension: 0.3, 
-        borderWidth: 1,
+        tension: 0.5, 
+        borderWidth: 0.5,
         pointRadius: 0,
         pointHoverRadius: 0,
         pointBackgroundColor: '#ededed',

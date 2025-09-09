@@ -23,6 +23,7 @@ function AccountSettingsPage() {
         <div className='rounded-md w-[100%] h-auto relative top-4 p-3'>
             <h1 className='font-roboto font-bold text-xl my-5 pl-9'>General</h1>
             <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
+
             {/* Email */}
             <div className='flex justify-between items-center m-5 mt-10 mb-10'>
               <h2 className='font-roboto font-normal w-[60px] pl-25'>Email</h2>
@@ -31,6 +32,7 @@ function AccountSettingsPage() {
                 <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
               </div>
             </div>
+
             {/* Username*/}
             <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
               <h2 className='font-roboto font-normal w-[60px] pl-25'>Username</h2>
@@ -39,6 +41,7 @@ function AccountSettingsPage() {
                 <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
               </div>
             </div>
+
             {/* Gender */}
             <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
               <h2 className='font-roboto font-normal w-[60px] pl-25'>Gender</h2>
@@ -51,6 +54,7 @@ function AccountSettingsPage() {
         
             <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Account Authorization</h1>
             <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
+
             {/* Google */}
               <div className='mb-10'>
                 <div className='flex justify-between items-center m-5 mt-10'>
@@ -61,6 +65,7 @@ function AccountSettingsPage() {
                 </div>
                 <p className='font-roboto text-sm w-fit ml-30 -mt-5'>Connect to log in to CryptoScope with your Google account</p>
               </div>
+
             {/* Apple */}
               <div className='mb-10'>
                 <div className='flex justify-between items-center m-5 mt-8'>
@@ -74,6 +79,7 @@ function AccountSettingsPage() {
         
             <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Advanced</h1>
             <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
+            
             {/* Delete */}
             <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Delete Account')}>
               <h2 className='font-roboto font-normal w-fit ml-25'>Delete Account</h2>
