@@ -26,10 +26,6 @@ const Skeleton = () => {
 
   return (
     <UserContext.Provider value = {{ user, setUser }}>
-
-
-        
-        
       <Outlet /> {/* This is crucial. Don't forget this for next time.*/}
     </UserContext.Provider>
   )
