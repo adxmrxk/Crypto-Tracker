@@ -1,9 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { LiaUserFriendsSolid } from "react-icons/lia";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CiGlobe } from "react-icons/ci";
+import FriendMessagesComponent from './ChatRoom/FriendMessagesComponent';
+import ServersComponent from './ChatRoom/ServersComponent';
+import SettingsChatRoomComponent from './ChatRoom/SettingsChatRoomComponent';
+
+
+
 
 const TextAreaNavigation = () => {
+  const [iconSelected, setIconSelected] = useState('MagnifyGlass')
   return (
-    <div className='border-2 w-[350px]'>
-        <h1>Text</h1>
+    <div className='bg-gray-400 w-[50px] hover:w-[350px] rounded-xs mt-5 absolute h-[757px] flex flex-col items-start transition-all duration-700 cursor-pointer overflow-hidden'>
+      {iconSelected === 'Friends' ? <FriendMessagesComponent/> : null}
+      {iconSelected === 'Server' ? <ServersComponent/> : null}
+      {iconSelected === 'Settings' ? <SettingsChatRoomComponent /> : null}
+      <div className='h-[757px] w-[50px] bg-gray-500 rounded-xs flex flex-col items-center justify-between'>
+        <div>
+          <FaMagnifyingGlass className='mb-7 mt-15 w-[32px] h-[22px]' onClick={() => {setIconSelected('MagnifyGlass')}}/>
+          <LiaUserFriendsSolid className='w-[32px] h-[28px] mb-7' onClick={() => {setIconSelected('Friends')}}/>
+          <CiGlobe className='w-[32px] h-[31px]' onClick={() => {setIconSelected('Server')}}/>
+        </div>
+        <div className=''>
+          <IoSettingsOutline className=' w-[32px] h-[22px] mb-7' onClick={() => {setIconSelected('Settings')}}/>
+          <h1 className='text-sm mb-15'>Logo</h1>
+        </div>
+      </div>
+
+
+
+
     </div>
   )
 }
