@@ -28,6 +28,14 @@ router.patch('/api/users/:id', async (req, res) => {
   
 });
 
+router.patch('/api/addServer/:id', async (req, res) => {
+    console.log('Inside of /api/addServer');
+    const userId = req.params.id; 
+    const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true } );
+    res.json(updatedUser);
+
+})
+
 router.delete('/api/users/:id', (req, res) => {
 
 })
