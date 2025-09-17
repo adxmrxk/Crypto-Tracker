@@ -58,6 +58,11 @@ const User = mongoose.model('User', new mongoose.Schema({
         default: []
     },
 
+    serverList: {
+        type: [String],
+        default: []
+    },
+
     password: {
         type: String,
         required: true,
