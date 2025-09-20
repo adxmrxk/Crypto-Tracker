@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react';
-import Email from '../assets/mail.png';
 import { stringify } from 'postcss';
 import axios from 'axios';
 import { AiOutlineClose } from "react-icons/ai";

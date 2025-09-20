@@ -1,7 +1,6 @@
 import { React, useContext } from 'react';
 import Typography from '@mui/material/Typography';
 import CryptoCurrency from '../assets/CryptoCurrency2.jpg';
-import DigitalCurrency from '../assets/DigitalCurrency.png';
 import ClickableChips from './../Components/ClickableChips';
 import { motion } from 'framer-motion';
 import SignInButton from './../Components/SignInButton';

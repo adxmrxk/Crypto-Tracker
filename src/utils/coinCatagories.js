@@ -1,22 +1,69 @@
-export const Layer1 = [
-  "bitcoin", "ethereum", "cardano", "solana", "binancecoin", "avalanche",
-  "polkadot", "cosmos", "algorand", "near protocol", "hedera",
-  "tezos", "elrond", "harmony", "flow", "internet computer",
-  "fantom", "tron", "kadena", "ripple", "zilliqa"
+
+
+export const Layer1List = [ 
+  { id: 'bitcoin', name: 'Bitcoin' }, 
+  { id: 'ethereum', name: 'Ethereum' },
+  { id: 'cardano', name: 'Cardano' },
+  { id: 'solana', name: 'Solana' },
+  { id: 'binancecoin', name: 'BNB' },
+  { id: 'avalanche2', name: 'Avalanche' },
+  { id: "polkadot", name: "Polkadot" },
+  { id: "cosmos", name: "Cosmos Hub" }, // official CoinGecko name
+  { id: "algorand", name: "Algorand" },
+  { id: "near", name: "NEAR Protocol" },
+  { id: "hedera-hashgraph", name: "Hedera" },
+  { id: "tezos", name: "Tezos" },
+  { id: "elrond-erd-2", name: "MultiversX" }, // rebranded from Elrond
+  { id: "harmony", name: "Harmony" },
+  { id: "flow", name: "Flow" },
+  { id: "internet-computer", name: "Internet Computer" },
+  { id: "tron", name: "TRON" },
+  { id: "kadena", name: "Kadena" },
+  { id: "ripple", name: "XRP" }, // id is ripple, but name is XRP
+  { id: "zilliqa", name: "Zilliqa" }
+];
+  
+
+export const Layer2List = [
+  { id: "matic-network", name: "Polygon" },
+  { id: "arbitrum", name: "Arbitrum" },
+  { id: "optimism", name: "Optimism" },
+  { id: "immutable-x", name: "Immutable X" },
+  { id: "loopring", name: "Loopring" },
+  { id: "starknet", name: "StarkNet" },
+  { id: "zksync", name: "zkSync" },
+  { id: "boba-network", name: "Boba Network" },
+  { id: "metis-token", name: "MetisDAO" },
+  { id: "cartesi", name: "Cartesi" },
+  { id: "omisego", name: "OMG Network" },
+  { id: "hermez-network", name: "Hermez" },
+  { id: "celer-network", name: "Celer Network" },
+  { id: "mantle", name: "Mantle" },
+  { id: "scroll", name: "Scroll" },
+  { id: "linea", name: "Linea" } 
 ];
 
-export const Layer2 = [
-  "polygon", "arbitrum", "optimism", "immutable x", "loopring",
-  "starknet", "zksync", "boba network", "metisdao", "cartesi",
-  "omg network", "fuel", "aztec", "hermez", "celer network",
-  "mantle", "shardeum", "scroll", "linea"
-];
-
-export const DeFiTokens = [
-  "uniswap", "aave", "maker", "compound", "curve",
-  "sushiswap", "balancer", "yearn finance", "dydx",
-  "pancakeswap", "gmx", "thorchain", "kava", "venus",
-  "instadapp", "harvest finance", "liquity", "staked-ether", "wrapped-steth", "maple finance"
+export const DeFiTokensList = [
+  { id: "uniswap", name: "Uniswap" },
+  { id: "aave", name: "Aave" },
+  { id: "maker", name: "Maker" },
+  { id: "compound-governance-token", name: "Compound" },
+  { id: "curve-dao-token", name: "Curve" },
+  { id: "sushi", name: "SushiSwap" },
+  { id: "balancer", name: "Balancer" },
+  { id: "yearn-finance", name: "Yearn Finance" },
+  { id: "dydx", name: "dYdX" },
+  { id: "pancakeswap-token", name: "PancakeSwap" },
+  { id: "gmx", name: "GMX" },
+  { id: "thorchain", name: "THORChain" },
+  { id: "kava", name: "Kava" },
+  { id: "venus", name: "Venus" },
+  { id: "instadapp", name: "InstaDapp" },
+  { id: "harvest-finance", name: "Harvest Finance" },
+  { id: "liquity", name: "Liquity" },
+  { id: "staked-ether", name: "Staked Ether" },
+  { id: "wrapped-steth", name: "Wrapped stETH" },
+  { id: "maple", name: "Maple Finance" }
 ];
 
 export const StableCoins = [
@@ -33,13 +80,15 @@ export const MemeCoins = [
   "woofy", "shiba predator", "volt inu", "saitama"
 ];
 
+
 export const COIN_DESC = Object.freeze({
   // Layer 1
+
   bitcoin: "The first cryptocurrency and digital gold.",
   ethereum: "Smart contract network for apps and DeFi.",
   cardano: "Proof-of-stake blockchain for scalability.",
   solana: "Fast blockchain with low fees.",
-  avalanche: "Chain for custom blockchains and DeFi.",
+  avalanche2: "Avalanche is a fast, scalable blockchain.",
   polkadot: "Network connecting multiple blockchains.",
   cosmos: "Framework for interoperable blockchains.",
   algorand: "Eco-friendly chain for payments and DeFi.",
