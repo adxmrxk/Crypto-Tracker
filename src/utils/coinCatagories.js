@@ -81,7 +81,7 @@ export const MemeCoins = [
 ];
 
 
-export const COIN_DESC = Object.freeze({
+export const COIN_DESC_SHORT = Object.freeze({
   // Layer 1
 
   bitcoin: "The first cryptocurrency and digital gold.",
@@ -190,4 +190,114 @@ export const COIN_DESC = Object.freeze({
   shiba_predator: "Rival token to Shiba Inu.",
   volt_inu: "Deflationary meme coin.",
   saitama: "Meme coin for education."
+});
+
+export const COIN_DESC_LONG = Object.freeze({
+  // Layer 1
+  bitcoin: "The first cryptocurrency, often called digital gold, known for its security, scarcity, and role as a store of value.",
+  ethereum: "The leading smart contract platform powering DeFi, NFTs, and decentralized applications worldwide.",
+  cardano: "A proof-of-stake blockchain focused on scalability, sustainability, and research-driven development.",
+  solana: "A high-speed blockchain offering ultra-low fees, popular for DeFi and NFT ecosystems.",
+  avalanche2: "A highly scalable blockchain with fast finality and support for custom subnets and DeFi applications.",
+  polkadot: "An ecosystem connecting multiple blockchains with interoperability through parachains.",
+  cosmos: "The ‘Internet of Blockchains,’ enabling cross-chain communication and modular development.",
+  algorand: "An eco-friendly, fast blockchain optimized for payments, DeFi, and enterprise use cases.",
+  near_protocol: "A developer-friendly chain with sharding for scalability and user-friendly onboarding.",
+  hedera: "A fast, secure distributed ledger using hashgraph consensus, often used for enterprise apps.",
+  tezos: "A self-amending smart contract blockchain with strong governance and upgradeability.",
+  elrond: "A sharded blockchain delivering high throughput, rebranded as MultiversX for the metaverse.",
+  harmony: "A cross-chain sharded protocol with fast finality for dApps and DeFi.",
+  flow: "A blockchain built for NFTs, games, and large-scale consumer applications.",
+  internet_computer: "A decentralized computing platform aiming to replace traditional cloud infrastructure.",
+  fantom: "An EVM-compatible chain with low fees and fast finality, popular in DeFi.",
+  tron: "A blockchain for content sharing, DeFi, and tokens, with high throughput and low fees.",
+  kadena: "A hybrid blockchain combining public and private networks with scalable smart contracts.",
+  zilliqa: "A pioneer in sharding, enabling high transaction throughput for DeFi and gaming.",
+  binancecoin: "BNB Chain’s native token powering DeFi, trading, and Binance ecosystem apps.",
+  ripple: "XRP Ledger enabling fast, low-cost cross-border payments for financial institutions.",
+
+  // Layer 2
+  polygon: "Ethereum’s leading sidechain offering low-cost transactions and broad dApp adoption.",
+  arbitrum: "A popular Ethereum Layer 2 rollup solution providing scalability and low gas fees.",
+  optimism: "An optimistic rollup for Ethereum scaling, known for its speed and developer support.",
+  immutable_x: "Layer 2 for NFTs on Ethereum with instant trading and zero gas fees.",
+  loopring: "A zk-rollup based DEX protocol delivering fast and low-cost Ethereum trades.",
+  starknet: "A general-purpose zk-rollup for Ethereum scaling, developed by StarkWare.",
+  zksync: "A zk-rollup enabling fast, cheap payments and Ethereum transactions.",
+  boba_network: "An L2 rollup with hybrid compute, bridging on- and off-chain resources.",
+  metisdao: "A Layer 2 rollup optimized for DAOs, dApps, and scalability.",
+  cartesi: "Layer 2 enabling Linux-based smart contracts and off-chain computation.",
+  omg_network: "An early Ethereum scaling Plasma chain designed for cheaper transactions.",
+  fuel: "An execution layer optimized for modular rollup scalability.",
+  aztec: "A privacy-first zk-rollup for Ethereum enabling shielded transactions.",
+  hermez: "zk-rollup technology scaling Ethereum, now part of Polygon zkEVM.",
+  celer_network: "Cross-chain scaling platform powering bridges, L2, and interop solutions.",
+  mantle: "A modular Ethereum Layer 2 chain focused on high performance.",
+  shardeum: "An EVM-based sharded blockchain for infinite scalability.",
+  scroll: "A zk-rollup Layer 2 focused on Ethereum compatibility.",
+  linea: "A zkEVM Layer 2 by ConsenSys bringing scalability to Ethereum.",
+
+  // DeFi Tokens
+  uniswap: "The leading decentralized exchange protocol enabling peer-to-peer token swaps.",
+  aave: "A major DeFi lending platform for borrowing, lending, and earning interest.",
+  maker: "The DAO governing DAI, a decentralized stablecoin backed by collateral.",
+  compound: "An algorithmic money market protocol for lending and borrowing assets.",
+  curve: "A DEX optimized for efficient stablecoin swaps with low slippage.",
+  sushiswap: "A community-driven DEX and DeFi ecosystem forked from Uniswap.",
+  balancer: "A multi-asset automated market maker and portfolio manager.",
+  yearn_finance: "DeFi protocol automating yield farming and optimizing returns.",
+  dydx: "A decentralized exchange for margin, derivatives, and perpetuals trading.",
+  pancakeswap: "BNB Chain’s biggest DEX with token swaps, farms, and lotteries.",
+  gmx: "A decentralized perpetuals trading exchange with zero price impact swaps.",
+  thorchain: "A cross-chain DEX enabling native asset swaps without wrapped tokens.",
+  kava: "A cross-chain DeFi platform offering stablecoins and lending.",
+  venus: "A money market protocol on BNB Chain for lending and borrowing.",
+  instadapp: "A smart DeFi wallet that simplifies managing assets across protocols.",
+  harvest_finance: "A yield optimizer automating yield farming strategies.",
+  liquity: "A borrowing protocol offering ETH-backed loans with 0% interest.",
+  maple_finance: "An on-chain institutional lending marketplace.",
+  stakedether: "Lido’s liquid staking token representing staked ETH.",
+  wrappedsteth: "Wrapped version of stETH for broader DeFi compatibility.",
+
+  // Stablecoins
+  tether: "The largest USD-pegged stablecoin, widely used in trading and payments.",
+  usdcoin: "A regulated USD-backed stablecoin issued by Circle, used globally.",
+  binance_usd: "A USD-pegged stablecoin from Binance and Paxos (phased out).",
+  dai: "A decentralized stablecoin soft-pegged to the USD, backed by collateral.",
+  trueusd: "A regulated, independently audited USD-backed stablecoin.",
+  pax_dollar: "A stablecoin issued by Paxos, fully backed by USD reserves.",
+  gemini_dollar: "A regulated USD stablecoin launched by Gemini exchange.",
+  frax: "A fractional-algorithmic stablecoin with partial collateral backing.",
+  terraclassicusd: "The failed TerraUSD stablecoin that lost its peg in 2022.",
+  susd: "A synthetic USD stablecoin issued by Synthetix.",
+  fei_usd: "An algorithmic stablecoin with direct incentives for price stability.",
+  reserve_rights: "Governance token backing the Reserve stablecoin ecosystem.",
+  husd: "Once a Huobi-backed USD stablecoin, now largely defunct.",
+  eurs: "A euro-backed stablecoin for cross-border payments.",
+  alchemix_usd: "A self-repaying stablecoin using future yield as repayment.",
+  celo_dollar: "A stablecoin on the Celo network for mobile-first payments.",
+  liquity_usd: "Stablecoin minted through Liquity’s ETH-backed loans.",
+  uxd_protocol: "A delta-neutral stablecoin backed by derivatives.",
+  usdj: "A Tron-based USD-pegged stablecoin issued on JustLend.",
+
+  // Meme Coins
+  dogecoin: "The original meme coin inspired by Doge the Shiba Inu, with a strong community.",
+  shiba_inu: "Ethereum-based meme token turned DeFi ecosystem, dubbed the Dogecoin killer.",
+  pepe: "A meme coin themed after Pepe the Frog, known for viral growth.",
+  floki_inu: "A community token named after Elon Musk’s Shiba Inu dog.",
+  baby_doge_coin: "A Dogecoin-inspired token with deflationary mechanics and charity focus.",
+  dogebonk: "A humor-driven meme cryptocurrency with a satirical edge.",
+  dogelon_mars: "A Doge-inspired meme token themed around space and Mars colonization.",
+  samoyedcoin: "A Solana-based meme coin featuring the Samoyed dog breed.",
+  pitbull: "A community-driven meme coin with staking and long-term burn mechanics.",
+  catecoin: "A meme coin designed for creators, tipping, and play-to-earn.",
+  hoge_finance: "A deflationary meme coin with auto-burns and community focus.",
+  kishu_inu: "A Dogecoin-style meme coin with strong grassroots marketing.",
+  monacoin: "Japan’s first meme coin with a dedicated domestic community.",
+  akita_inu: "Another Dogecoin-inspired rival token, community-driven.",
+  banano: "A feeless meme coin forked from Nano, themed around bananas.",
+  woofy: "A companion meme token to Yearn Finance’s YFI.",
+  shiba_predator: "A token branding itself as the rival to Shiba Inu.",
+  volt_inu: "A deflationary meme coin with aggressive community marketing.",
+  saitama: "A meme token promoting crypto education and community growth."
 });
