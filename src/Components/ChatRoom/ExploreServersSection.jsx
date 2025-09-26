@@ -30,7 +30,7 @@ const ExploreServersSection = () => {
             <div className='mb-10'></div>*/}
             <Layer1></Layer1>
             <Layer2></Layer2>
-            <DeFiTokens></DeFiTokens>
+            {/*<DeFiTokens></DeFiTokens>*/}
             {/*<h1 className='font-roboto text-2xl font-semibold text-left mb-2 text-gray-300'>Stablecoins</h1>
             <div className='mb-10'></div>
             <h1 className='font-roboto text-2xl font-semibold text-left text-gray-300'>Meme Coins</h1>

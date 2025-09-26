@@ -10,14 +10,22 @@ const SearchCryptoSection = () => {
   const [clickedSearch, setClickedSearch] = useState(false);
 
   
+  const {data, isLoading, error} = useCryptoCurrency([searchedCoin]);
   
   const handleChange = (event) => {
     setSearchedCoin(event.target.value);
     
     console.log(searchedCoin);
   }
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    setSearchedCoin(event.target.querySelector("input").value);
+    event.target.querySelector("input").value = '';
+
+  }
   
-  const {data, isLoading, error} = useCryptoCurrency([searchedCoin]);
 
   const handleClick = () => {
     setClickedSearch(!clickedSearch);
@@ -32,10 +40,10 @@ const SearchCryptoSection = () => {
     <section className='border-2'>
       <div className="max-w-7xl mx-auto flex flex-col">
         <div className='flex justify-center'>
-            <SearchBar onChange = {handleChange} onClick={handleClick}></SearchBar>
+            <SearchBar onChange = {handleChange} onClick={handleClick} onSubmit={onSubmit}></SearchBar>
         </div>
         <div className='flex justify-center'>
-            { clickedSearch ? null : <CryptoCurrencyCard></CryptoCurrencyCard>}
+             <CryptoCurrencyCard searchedCoin = {searchedCoin} searchBarClicked={clickedSearch}></CryptoCurrencyCard>
         </div>
       </div>
     </section>

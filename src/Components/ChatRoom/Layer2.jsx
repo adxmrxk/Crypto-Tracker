@@ -6,7 +6,7 @@ import { IoFilter } from "react-icons/io5"
 import { Scrollbar } from 'react-scrollbars-custom'
 
 const Layer2 = () => {
-  const [viewMore, setViewMore] = useState(0)
+  const [viewMore, setViewMore] = useState(3)
   const [expanded, setExpanded] = useState(false)
 
   let layer2Coins = []
