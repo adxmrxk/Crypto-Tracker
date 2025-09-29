@@ -1,5 +1,5 @@
 import {React, useContext, useState} from 'react'
-import { UserContext } from '../Pages/Skeleton'
+import { UserContext } from '../Pages/SkeletonPage'
 import { FaCirclePlus, FaPlus } from "react-icons/fa6";
 import { createRoot } from 'react-dom/client';
 import useCryptoCurrency from '../hooks/useCryptoCurrency'

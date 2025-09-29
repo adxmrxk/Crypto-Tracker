@@ -8,7 +8,7 @@ import CryptoCard from '../Components/CryptoCard';
 import AuthForm from '../Components/AuthForm';
 import { useState, createContext } from 'react';
 import { createRoot } from 'react-dom/client';
-import { UserContext } from './Skeleton';
+import { UserContext } from './SkeletonPage';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import CURRENCIES_FRONTEND from '../utils/currenciesFrontEnd';

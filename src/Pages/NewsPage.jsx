@@ -5,7 +5,7 @@ import ButtonComponent from '../Components/ButtonComponent';
 import { motion } from 'framer-motion';
 import { useState, createContext, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
-import { UserContext } from './Skeleton';
+import { UserContext } from './SkeletonPage';
 import ChartSchema from '../utils/chartSchema';
 
 

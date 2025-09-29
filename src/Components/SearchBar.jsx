@@ -11,6 +11,7 @@ export default function FullWidthTextField({onClick, onChange, onSubmit, value})
         <TextField
           onClick={onClick}
           value = {value}
+          placeholder={value}
           onChange = {onChange}
           variant="outlined"
           fullWidth

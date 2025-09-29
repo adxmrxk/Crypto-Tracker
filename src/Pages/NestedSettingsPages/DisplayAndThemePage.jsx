@@ -1,5 +1,5 @@
 import { useState, useContext, createContext } from 'react';
-import { UserContext } from '../Skeleton';
+import { UserContext } from '../SkeletonPage';
 import { createRoot } from 'react-dom/client';
 import React from 'react'
 import ButtonComponent from '../../Components/ButtonComponent'

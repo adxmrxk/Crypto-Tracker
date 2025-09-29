@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
-import { UserContext } from '../Pages/Skeleton'
+import { UserContext } from '../Pages/SkeletonPage'
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import useCryptoCurrency from '../hooks/useCryptoCurrency';

@@ -3,11 +3,12 @@ import SearchBar from './SearchBar'
 import CryptoCurrencyCard from './CryptoCurrencyCard'
 import useCryptoCurrency from '../hooks/useCryptoCurrency'
 import { set } from 'mongoose'
+import { NameToId } from '../utils/coinNameToId'
 
 
 const SearchCryptoSection = () => {
   const [searchedCoin, setSearchedCoin] = useState('');
-  const [clickedSearch, setClickedSearch] = useState(false);
+  const [submitedSearch, setSubmitedSearch] = useState(false);
 
   
   const {data, isLoading, error} = useCryptoCurrency([searchedCoin]);
@@ -20,8 +21,9 @@ const SearchCryptoSection = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
-    setSearchedCoin(event.target.querySelector("input").value);
+    setSubmitedSearch(!submitedSearch);
+    const coinId = NameToId[event.target.querySelector("input").value];
+    setSearchedCoin(coinId);
     event.target.querySelector("input").value = '';
 
   }
@@ -43,7 +45,7 @@ const SearchCryptoSection = () => {
             <SearchBar onChange = {handleChange} onClick={handleClick} onSubmit={onSubmit}></SearchBar>
         </div>
         <div className='flex justify-center'>
-             <CryptoCurrencyCard searchedCoin = {searchedCoin} searchBarClicked={clickedSearch}></CryptoCurrencyCard>
+             <CryptoCurrencyCard searchedCoin = {searchedCoin} submitedSearch={submitedSearch} setSubmitedSearch={setSubmitedSearch}></CryptoCurrencyCard>
         </div>
       </div>
     </section>

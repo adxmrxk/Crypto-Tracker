@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import useCryptoCurrency from '../hooks/useCryptoCurrency'
 import { useContext, createContext, useState } from 'react';
-import { UserContext } from '../Pages/Skeleton';
+import { UserContext } from '../Pages/SkeletonPage';
 import axios from 'axios';
+import SingleCryptoCard from './Portfolio/SingleCryptoCard';
 
 
-const CryptoCurrencyCard = ({searchedCoin, searchBarClicked}) => {
+const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) => {
 
     let {data, isLoading, error} = useCryptoCurrency();
 
@@ -19,7 +20,12 @@ const CryptoCurrencyCard = ({searchedCoin, searchBarClicked}) => {
     const { user, setUser } = useContext(UserContext);
 
     const [userInput, setUserInput] = useState({});
-    
+
+    const handleClick = () => {
+        console.log('Test');
+        setSubmitedSearch(!submitedSearch);
+    }
+
     const handleSubmit = async (event, element) => {
         event.preventDefault();
         const input = event.target.querySelector("input"); 
@@ -31,20 +37,15 @@ const CryptoCurrencyCard = ({searchedCoin, searchBarClicked}) => {
     }
 
 
-//TODO:
-//Link up single coin search to seperate api call that works with coin names rather than ids.
-// Make a new component for single coin search results to avoid confusion and make code cleaner/readable.
-//Fix/Set up UI for single coin search up so it looks nice and clean in relation to the default card grid. 
-//Set up bank end for single coin search up. This includes a seperate handleSubmit function for the card.
-//Add a pagination for the default card grid to allow for more coins to be viewed. Plus add a loading spinner when api calls are being made.
+
 
   return (
     <div>
         <div>
-            <div>
-                <h1>{searchedCoin}</h1>
-                <h1>{data2?.[0]?.name === 'Bitcoin' && searchedCoin !== 'bitcoin' ? '' : data2?.[0]?.name }</h1>
-            </div>
+            {submitedSearch ? 
+            <div className='border-2'>
+                <SingleCryptoCard searchedCoin={searchedCoin} submitedSearch = {submitedSearch}></SingleCryptoCard>
+            </div> : 
             <div className='grid grid-cols-3 gap-4 p-3 w-[1500px]'>
                 {data?.map((element, index) =>
                     <div key = {index} className='bg-gradient-to-r from-gray-600 via-gray-700 to-gray-700 ring ring-sky-300 w-auto rounded-xs cursor-pointer hover:scale-102 transition-all duration-250 ease-in-out'>
@@ -74,7 +75,7 @@ const CryptoCurrencyCard = ({searchedCoin, searchBarClicked}) => {
                       </div>
                     </div>
                 )}
-            </div>
+            </div>}
         </div>
         <div className='flex justify-center items-center m-5 mt-20 mb-20'>
             <h2 className='font-roboto font-normal w-fit pl-9'>CryptoScope © 2025. All rights reserved</h2>

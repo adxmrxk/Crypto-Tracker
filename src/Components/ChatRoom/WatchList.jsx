@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserContext } from '../../Pages/Skeleton'
+import { UserContext } from '../../Pages/SkeletonPage'
 import { useContext } from 'react'
 import { useState } from 'react'
 import useCryptoCurrency from '../../hooks/useCryptoCurrency'

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import useCryptoCurrency from '../hooks/useCryptoCurrency';
-import { UserContext } from '../Pages/Skeleton';
+import { UserContext } from '../Pages/SkeletonPage';
 import axios from 'axios';
 
 

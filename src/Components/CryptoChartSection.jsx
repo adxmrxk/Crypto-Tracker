@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContext, createContext, useState, useEffect, useRef } from 'react'
-import { UserContext } from '../Pages/Skeleton'
+import { UserContext } from '../Pages/SkeletonPage'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartSchema from '../utils/chartSchema';

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import SettingsPage from './Pages/SettingsPage'
-import Skeleton from "./Pages/Skeleton";
+import SkeletonPage from "./Pages/SkeletonPage";
 import HomePage from "./Pages/HomePage";
 import MarketsPage from "./Pages/MarketsPage";
 import PortfolioPage from "./Pages/PortfolioPage";
@@ -16,7 +16,7 @@ import ChatRoomPage from "./Pages/ChatRoomPage";
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Skeleton></Skeleton>,
+    element: <SkeletonPage></SkeletonPage>,
     children: [
         { index: true, element: <LandingPage /> },
         
