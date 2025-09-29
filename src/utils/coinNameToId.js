@@ -57,13 +57,13 @@ export const NameToId = {
   InstaDapp: "instadapp",
   HarvestFinance: "harvest-finance",
   Liquity: "liquity",
-  StakedEther: "staked-ether",
+  Lido_Staked_Ether: "staked-ether",
   WrappedSteth: "wrapped-steth",
   MapleFinance: "maple",
 
   // Stablecoins
   Tether: "tether",
-  USDCoin: "usd-coin",
+  USDC: "usd-coin",
   BinanceUSD: "binance-usd",
   DAI: "dai",
   TrueUSD: "true-usd",

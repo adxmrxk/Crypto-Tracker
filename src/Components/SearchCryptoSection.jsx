@@ -22,7 +22,7 @@ const SearchCryptoSection = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     setSubmitedSearch(!submitedSearch);
-    const coinId = NameToId[event.target.querySelector("input").value];
+    const coinId = NameToId[event.target.querySelector("input").value.replace(/ /g, "_")];
     setSearchedCoin(coinId);
     event.target.querySelector("input").value = '';
 

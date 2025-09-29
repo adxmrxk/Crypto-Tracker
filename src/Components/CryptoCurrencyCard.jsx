@@ -46,11 +46,11 @@ const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) =
             <div className='border-2'>
                 <SingleCryptoCard searchedCoin={searchedCoin} submitedSearch = {submitedSearch}></SingleCryptoCard>
             </div> : 
-            <div className='grid grid-cols-3 gap-4 p-3 w-[1500px]'>
+            <div className='lg:grid lg:grid-cols-3 lg:gap-4 lg:p-3 lg:w-[1500px]'>
                 {data?.map((element, index) =>
                     <div key = {index} className='bg-gradient-to-r from-gray-600 via-gray-700 to-gray-700 ring ring-sky-300 w-auto rounded-xs cursor-pointer hover:scale-102 transition-all duration-250 ease-in-out'>
                         <div className='flex flex-row gap-2 items-center ml-3 mt-3'>
-                            <img src={element.image} alt={element.name} className='w-13 h-13 rounded-full mb-30'></img>
+                            <img src={element.image} alt={element.name} className='w-13 h-13 rounded-full mb-30 mt-2 lg:mt-0'></img>
                             <div className='flex flex-col'>
                                 <h1 className='text-2xl text-gray-100 font-semibold text-left'>{element.name}</h1>
                                 <h1 className='text-lg text-gray-300 font-normal text-left'>{element.symbol.toUpperCase()}</h1>
