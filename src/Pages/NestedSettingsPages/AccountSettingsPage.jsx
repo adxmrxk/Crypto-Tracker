@@ -8,7 +8,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ControlledSwitches from '../../Components/ControlledSwitches';
 import { createRoot } from 'react-dom/client';
 import LabelBottomNavigation from '../../Components/LabelBottomNavigation';
-
+import Footer from '../../Components/Footer';
 
 
 
@@ -88,9 +88,8 @@ function AccountSettingsPage() {
                 <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
               </div>
             </div>
-            <div className='flex justify-center items-center m-5 mt-20 mb-20'>
-              <h2 className='font-roboto font-normal w-fit pl-9'>CryptoScope © 2025. All rights reserved</h2>
-            </div>
+
+            <Footer/>
             <LabelBottomNavigation></LabelBottomNavigation>
         
         </div>

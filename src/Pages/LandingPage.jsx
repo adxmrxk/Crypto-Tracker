@@ -13,7 +13,7 @@ import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import CURRENCIES_FRONTEND from '../utils/currenciesFrontEnd';
 import CONTENT_LANGUAGES_FRONT_END from '../utils/contentLanguagesFrontEnd';
-import FakeChart from '../Components/FakeChart';
+import FakeChart from '../Components/Landing/FakeChart';
 
 
 
@@ -119,7 +119,6 @@ const LandingPage = () => {
         </div>
 
      
-
 
     </>
   );

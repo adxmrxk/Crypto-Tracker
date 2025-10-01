@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Dashboard from '../Components/Dashboard';
 import LabelBottomNavigation from '../Components/LabelBottomNavigation';
 
 

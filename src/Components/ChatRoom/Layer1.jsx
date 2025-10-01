@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { UserContext } from '../../Pages/SkeletonPage'
 import { COIN_DESC_LONG } from '../../utils/coinCatagories'
 import { Layer1List } from '../../utils/coinCatagories'
 import useCryptoServers from '../../hooks/useCryptoServers'
 import { IoFilter } from "react-icons/io5";
 import { Scrollbar } from 'react-scrollbars-custom';
+import axios from 'axios'
 
 const Layer1 = () => {
   const [viewMore, setViewMore] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const {user, setUser} = useContext(UserContext);
 
   let layer1Coins = [];
   const [shuffledData, setShuffledData] = useState([]);
@@ -37,6 +40,16 @@ const Layer1 = () => {
     return;
   }
 
+  const addServerList = async (coin) => {
+    const coinId = coin.id;
+    console.log(coin.id);
+    const response = await axios.patch(`http://localhost:5000/api/addServer/${user._id}`, { $addToSet: { serverList: coinId } } );
+    const newUser = response.data;
+    setUser(newUser);
+
+
+  }
+
   console.log(data); // arr is now shuffled in place
 
   return (
@@ -57,7 +70,7 @@ const Layer1 = () => {
                                       </div>
                                       <div className='flex flex-col w-fit items-center justify-end gap-5 mb-1'>
                                           <img src = {coin.image} className={` w-[55px] rounded-full mr-5 mt-3`}/>
-                                          <h1 className={`bg-blue-200/50 h-fit font-roboto mr-5 text-sm px-3 rounded-xs text-gray-900 mb-5 `}>Join</h1>
+                                          <h1 className={`bg-blue-200/50 h-fit font-roboto mr-5 text-sm px-3 rounded-xs text-gray-900 mb-5 `} onClick={() => addServerList(coin)}>Join</h1>
                                       </div>
                                   </div>
                               })}

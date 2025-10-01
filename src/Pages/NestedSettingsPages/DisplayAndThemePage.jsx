@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import ClickableChips from '../../Components/ClickableChips';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ControlledSwitches from '../../Components/ControlledSwitches';
+import Footer from '../../Components/Footer';
 
 const DisplayAndThemePage = () => {
 
@@ -100,9 +101,7 @@ const DisplayAndThemePage = () => {
             </div>
           </div>
 
-          <div className='flex justify-center items-center m-5 mt-20 mb-20'>
-            <h2 className='font-roboto font-normal w-fit pl-9'>CryptoScope © 2025. All rights reserved</h2>
-          </div>
+          <Footer/>
 
          
 

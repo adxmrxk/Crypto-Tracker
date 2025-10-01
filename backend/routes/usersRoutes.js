@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/users.js');
 const userSettings = require('../models/userSettings.js');
 const countries = require('../enums/countries.js');
-const validateUser = require('../middleware/validateUser.js');
 const hashPassword = require('../middleware/hashPassword.js');
 const { useParams } = require('react-router');
 
@@ -18,23 +17,8 @@ router.post('/api/users', hashPassword, async (req, res) => {
 
 })
 
-router.patch('/api/users/:id', async (req, res) => {
 
-  const updatedUser = await User.findByIdAndUpdate(
-    req.params.id, req.body, { new: true, runValidators: true}
-  )
 
-  res.json(updatedUser);
-  
-});
-
-router.patch('/api/addServer/:id', async (req, res) => {
-    console.log('Inside of /api/addServer');
-    const userId = req.params.id; 
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true } );
-    res.json(updatedUser);
-
-})
 
 router.delete('/api/users/:id', (req, res) => {
 

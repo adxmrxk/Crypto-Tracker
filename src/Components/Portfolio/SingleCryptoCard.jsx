@@ -32,7 +32,7 @@ const SingleCryptoCard = ({searchedCoin, submitedSearch, coinsList}) => {
 
   
 //TODO:
-//Add A loading card when api search calls are being made. 
+//Make simialr API call logic in other components when making a call.
 //Add a pagination for the default card grid to allow for more coins to be viewed. Plus add a loading spinner when api calls are being made.
 //Clean up files between this component, cryptocurrency card component, and search crypto section component.
 

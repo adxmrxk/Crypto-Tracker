@@ -15,9 +15,14 @@ app.use(express.json()); //Allows parsing JSON in request body. This tells Expre
 
 const usersRoutes = require('./routes/usersRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
+const serverListsRoutes = require('./routes/serverListsRoutes');
+const watchListRoutes = require('./routes/watchListsRoutes');
 
 app.use('/', usersRoutes);
 app.use('/', settingsRoutes);
+app.use('/', serverListsRoutes);
+app.use('/', watchListRoutes);
+
 
 app.get('/', (req, res) => {
     res.send("Hello from the backend");

@@ -9,8 +9,9 @@ const useCoinsOnce = () => {
   return useQuery({
     queryKey: ["coinlist"],
     queryFn: () => apiClient.getAll(),
-    staleTime: Infinity,
-    cacheTime: Infinity
+    staleTime: 300000,
+    cacheTime: Infinity,
+    refetchInterval: 300000, // 5 minutes (5 * 60 * 1000)
   });
 };
 

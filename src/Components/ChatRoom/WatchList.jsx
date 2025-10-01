@@ -23,17 +23,7 @@ const WatchList = () => {
         })  
     }
 
-    const handleClick = async (coin) => {
-    console.log('Inside of handleClick on Explore Server Section');
-    const coinId = coin.id;
-    console.log(coin.id);
-    const response = await axios.patch(`http://localhost:5000/api/addServer/${user._id}`, { $addToSet: { serverList: coinId } } );
-    const newUser = response.data;
-    setUser(newUser);
-    console.log('Server added to server list')
-
-
-  }
+    
 
     const {data, loading, error } = useCryptoCurrency(userCoins);
     console.log('Watch List: ', data);
