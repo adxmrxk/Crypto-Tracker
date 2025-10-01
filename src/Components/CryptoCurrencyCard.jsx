@@ -4,6 +4,7 @@ import { useContext, createContext, useState } from 'react';
 import { UserContext } from '../Pages/SkeletonPage';
 import axios from 'axios';
 import SingleCryptoCard from './Portfolio/SingleCryptoCard';
+import useCoinsOnce from '../hooks/useCoinsOnce';
 
 
 const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) => {
@@ -11,7 +12,7 @@ const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) =
     let {data, isLoading, error} = useCryptoCurrency();
 
     let { data: data2, isLoading: isLoading2, error: error2 } = 
-        useCryptoCurrency(searchedCoin ? [searchedCoin.toLowerCase()] : []);    
+        useCoinsOnce();    
 
     console.log('Data', data);
     console.log('Data2', data2);
@@ -44,7 +45,7 @@ const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) =
         <div>
             {submitedSearch ? 
             <div className='border-2'>
-                <SingleCryptoCard searchedCoin={searchedCoin} submitedSearch = {submitedSearch}></SingleCryptoCard>
+                <SingleCryptoCard searchedCoin={searchedCoin} submitedSearch = {submitedSearch} coinsList={data2}></SingleCryptoCard>
             </div> : 
             <div className='lg:grid lg:grid-cols-3 lg:gap-4 lg:p-3 lg:w-[1500px]'>
                 {data?.map((element, index) =>
@@ -52,7 +53,7 @@ const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) =
                         <div className='flex flex-row gap-2 items-center ml-3 mt-3'>
                             <img src={element.image} alt={element.name} className='w-13 h-13 rounded-full mb-30 mt-2 lg:mt-0'></img>
                             <div className='flex flex-col'>
-                                <h1 className='text-2xl text-gray-100 font-semibold text-left'>{element.name}</h1>
+                                <h1 className='lg:text-2xl text-xl text-gray-100 font-semibold text-left'>{element.name}</h1>
                                 <h1 className='text-lg text-gray-300 font-normal text-left'>{element.symbol.toUpperCase()}</h1>
                                 <div className='mt-5'>
                                     <div className='w-fit ml-[320px] -mb-[67px] flex flex-col items-center'>
@@ -64,9 +65,9 @@ const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) =
                                         </form>
                                     </div>
                                     <div className='flex flex-row items-center mb-5 mt-10 -translate-x-9'>
-                                        <h1 className='text-md font-normal text-gray-300'>Price: </h1>
+                                        <h1 className='lg:text-base text-sm font-normal text-gray-300'>Price: </h1>
                                         <h1 className='text-left text-lg font-semibold text-gray-100 bg-blue-500/20 rounded-xs px-1 ml-2'>${Number(element.current_price.toFixed(2)).toLocaleString()}</h1>
-                                        <h1 className='text-md font-normal text-gray-300 ml-3'>24H: </h1>
+                                        <h1 className='lg:text-base text-sm font-normal text-gray-300 ml-3'>24H: </h1>
                                         <h1 className={`text-left text-md ml-2 mt-0.5 px-1 rounded-xs font-semibold ${element.price_change_percentage_24h > 0 ? 'text-green-300 bg-green-500/30' : 'text-red-300 bg-red-500/30'}`}>{`${element.price_change_percentage_24h > 0 ? '+' : ''}${element.price_change_percentage_24h.toFixed(2)}`}%</h1>
                                     </div>
                                 </div>
