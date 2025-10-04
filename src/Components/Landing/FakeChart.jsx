@@ -10,9 +10,6 @@ import { Line } from "react-chartjs-2";
 Chart.register(CategoryScale);
 
 const FakeChart = ( {coin, amount} ) => {
-
-  
- 
  
 const chartRef = useRef(null);
 
@@ -27,12 +24,6 @@ const chartRef = useRef(null);
 
     return gradient;
   };
-
-
-
-  
-
-  
   
   const chartData = {
 
