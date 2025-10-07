@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   return (
     
-    <div className=''>
+    <div className='border-2 border-red-400'>
             <DashBoard></DashBoard>
             <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-gray-500 to-gray-600">
               <CryptoChartSection></CryptoChartSection>
