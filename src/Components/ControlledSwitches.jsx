@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Switch from '@mui/material/Switch';
 
-export default function ControlledSwitches() {
+export default function ControlledSwitches({marginLeft, marginRight, marginTop}) {
   const [checked, setChecked] = React.useState(true);
 
   const handleChange = (event) => {
@@ -12,6 +12,7 @@ export default function ControlledSwitches() {
     <Switch
       checked={checked}
       onChange={handleChange}
+      sx={{ ml: marginLeft, mr: marginRight, mt: marginTop }}
       inputProps={{ 'aria-label': 'controlled' }}
     />
   );

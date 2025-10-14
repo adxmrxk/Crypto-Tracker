@@ -4,6 +4,7 @@ import useCryptoCurrency from '../../hooks/useCryptoCurrency'
 import { TrendingUp } from 'lucide-react'
 
 const TopWinners = () => {
+
   const { user } = useContext(UserContext);
   const [sortedData, setSortedData] = useState([]);
 
@@ -33,9 +34,9 @@ const TopWinners = () => {
     };
 
     return (
-      <div className='group relative mb-4 rounded-lg bg-gradient-to-r from-slate-800 to-slate-700 p-4 transition-all duration-300 hover:shadow-lg hover:from-slate-700 hover:to-slate-600 hover:scale-105 cursor-pointer border border-slate-600 hover:border-cyan-500'>
+      <div className='group relative mb-4 rounded-md bg-gradient-to-r from-slate-800 to-slate-700 p-4 transition-all duration-300 hover:shadow-lg hover:from-slate-700 hover:to-slate-600 hover:scale-105 cursor-pointer border border-slate-600 hover:border-cyan-500'>
         <div className='flex items-center gap-4'>
-          {/* Rank Badge */}
+          
           <div className='relative flex-shrink-0'>
             <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${rankColors[rank]} blur-md opacity-50`}></div>
             <div className={`relative w-12 h-12 rounded-full bg-gradient-to-br ${rankColors[rank]} flex items-center justify-center font-black text-lg text-slate-900 shadow-lg`}>
@@ -43,7 +44,7 @@ const TopWinners = () => {
             </div>
           </div>
 
-          {/* Content */}
+          
           <div className='flex-1 min-w-0'>
             <div className='flex items-center gap-2 mb-2'>
               <img src={coin.image} alt={coin.name} className='w-6 h-6 rounded-full' />
@@ -70,10 +71,10 @@ const TopWinners = () => {
   };
 
   return (
-    <div className='rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6 shadow-2xl border border-slate-700 w-full max-w-md'>
-      <h2 className='mb-6 text-2xl font-bold text-white flex items-center gap-2'>
-        <span className='text-2xl'>🔥</span>
-        Top Coin Winners
+    <div className='rounded-sm bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 p-6 shadow-2xl w-full max-w-md'>
+      <h2 className='mb-6 text-2xl font-bold text-white flex items-center justify-center gap-2'>
+        <h1 className='text-2xl flex justify-center'>Top Preformers</h1>
+        
       </h2>
       
       <div className='space-y-3'>

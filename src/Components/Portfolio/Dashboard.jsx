@@ -29,7 +29,7 @@ const Dashboard = () => {
 
 
   return (
-        <div className='border-2 m-3 h-[700px]'>
+        <div className=' m-3 h-[800px]'>
           {coinClicked ? <WatchListCoinCard coin = {coin} coinClicked = {coinClicked} setCoinClicked = {setCoinClicked}></WatchListCoinCard> : null}
           <div className='flex flex-row h-[700px] justify-between'>
             <div className='flex flex-col'>
@@ -37,7 +37,7 @@ const Dashboard = () => {
                 <div className = 'flex flex-col'>
                   <TopWinners></TopWinners>
                 </div>
-                <div className='ml-5 mt-5 -mb-3'>
+                <div className='ml-5 mt-12 -mb-3'>
                     <h1 className = '-translate-y-10 mr-28 mb-4 font-roboto'>Asset Allocation</h1>
                     <CoinDisplayChart></CoinDisplayChart>
                 </div>
