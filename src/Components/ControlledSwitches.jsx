@@ -1,11 +1,9 @@
 import * as React from 'react';
 import Switch from '@mui/material/Switch';
 
-export default function ControlledSwitches({marginLeft, marginRight, marginTop}) {
-  const [checked, setChecked] = React.useState(true);
-
+export default function ControlledSwitches({marginLeft, marginRight, marginTop, checked, onChange}) {
   const handleChange = (event) => {
-    setChecked(event.target.checked);
+    onChange(event.target.checked);
   };
 
   return (

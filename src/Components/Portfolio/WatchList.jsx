@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useContext } from 'react'
 import { UserContext } from '../../Pages/SkeletonPage'
 
-const WatchList = ( {coin, setCoin, coinclicked, setCoinClicked} ) => {
+const WatchList = ( {coin, setCoin, coinClicked, setCoinClicked} ) => {
 
   const handleClick = (element) => {
 
