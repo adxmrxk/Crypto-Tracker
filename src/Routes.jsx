@@ -7,11 +7,11 @@ import PortfolioPage from "./Pages/PortfolioPage";
 import NewsPage from "./Pages/NewsPage";
 import AccountSettingsPage from "./Pages/NestedSettingsPages/AccountSettingsPage";
 import DisplayAndThemePage from "./Pages/NestedSettingsPages/DisplayAndThemePage";
-import MockInvestingControlsPage from "./Pages/NestedSettingsPages/MockInvestingControlsPage";
 import NotificationsPage from "./Pages/NestedSettingsPages/NotificationsPage";
-import PrivacyAndDataPage from "./Pages/NestedSettingsPages/PrivacyAndDataPage";
+import PrivacyAndDataPage from "./Pages/NestedSettingsPages/NotificationsPage";
 import LandingPage from "./Pages/LandingPage";
 import ChatRoomPage from "./Pages/ChatRoomPage";
+import AccountSecurityPage from "./Pages/NestedSettingsPages/AccountSecurityPage";
 
 const router = createBrowserRouter([
   {
@@ -25,9 +25,8 @@ const router = createBrowserRouter([
           children: [
             { path: "/SettingsPage/AccountSettings", element: <AccountSettingsPage></AccountSettingsPage>},
             { path: "/SettingsPage/Display", element: <DisplayAndThemePage></DisplayAndThemePage> },
-            { path: "/SettingsPage/MockInvestingControls", element: <MockInvestingControlsPage></MockInvestingControlsPage>},
             { path: "/SettingsPage/Notifications", element: <NotificationsPage></NotificationsPage>},
-            { path: "/SettingsPage/Privacy", element: <PrivacyAndDataPage></PrivacyAndDataPage>}
+            { path: "/SettingsPage/AccountSecurity", element: <AccountSecurityPage></AccountSecurityPage>}
           ]
         }, 
         

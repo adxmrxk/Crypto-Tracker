@@ -73,6 +73,8 @@ const WatchListCoinCard = ({coin, coinClicked, setCoinClicked}) => {
             </div>
             <ControlledSwitches checked={notificationsEnabled} onChange={setNotificationsEnabled}/>
           </div>
+          
+
 
           {notificationsEnabled && (
             <form>
@@ -80,6 +82,8 @@ const WatchListCoinCard = ({coin, coinClicked, setCoinClicked}) => {
               <input type='number' value={priceAlert} onChange={(e) => setPriceAlert(e.target.value)} placeholder='Set target price' step='any' className='w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'/>
             </form>
           )}
+
+          
 
           <div className='flex gap-3 pt-4'>
             <button type='button' onClick={handleClose} className='flex-1 px-4 py-3 border border-gray-700 text-white rounded-lg font-medium transition-colors cursor-pointer'>Cancel</button>

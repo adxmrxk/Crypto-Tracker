@@ -17,10 +17,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 
-const pages = ['Account', 'Display', 'Security', 'Privacy'];
+const pages = ['Account', 'Display', 'Security', 'Notifications'];
 const settingsPages = ["/SettingsPage/AccountSettings", "/SettingsPage/Display",
-                         "/SettingsPage/Notifications", 
-                        "/SettingsPage/Privacy"
+                         "/SettingsPage/AccountSecurity", 
+                        "/SettingsPage/Notifications"
                         ];
 //const settings = ['Profile', 'Account', 'Dashboard', 'CryptoScopeut'];                 
 
@@ -48,13 +48,6 @@ function SettingsNavigationBar() {
 
   return (
     <div className='pt-8'>
-      <motion.div initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.75,
-              ease: "easeOut"
-            }}
-            >
         <AppBar position="static">
           <Container maxWidth="xl" className='flex justify-center' sx = {{  background: 'radial-gradient(circle at top left, #a5b9d6, #879bbb, #7585a1, #5f6f8b)' }}>
             <Toolbar disableGutters>
@@ -145,7 +138,6 @@ function SettingsNavigationBar() {
             </Toolbar>
           </Container>
         </AppBar>
-      </motion.div>
     </div>
   );
 }

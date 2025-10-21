@@ -8,6 +8,7 @@ import ClickableChips from '../../Components/ClickableChips';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ControlledSwitches from '../../Components/ControlledSwitches';
 import Footer from '../../Components/Footer';
+import LabelBottomNavigation from '../../Components/LabelBottomNavigation';
 
 const DisplayAndThemePage = () => {
 
@@ -15,7 +16,6 @@ const DisplayAndThemePage = () => {
 
   return (  
 
-    <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: "easeOut"}}>
       <div className='rounded-md w-[100%] h-auto relative top-4 p-3'>
           <h1 className='font-roboto font-bold text-xl my-5 pl-9'>Region</h1>
           <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
@@ -24,7 +24,7 @@ const DisplayAndThemePage = () => {
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
             <h2 className='font-roboto font-normal w-fit ml-25'>Country</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>{user.settings.country}</p>
+              <p className='font-normal'>{user?.settings?.country}</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
           </div>
@@ -33,7 +33,7 @@ const DisplayAndThemePage = () => {
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
             <h2 className='font-roboto font-normal w-fit ml-25'>Currency</h2>
             <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-              <p className='font-normal'>{user.settings.currency}</p>
+              <p className='font-normal'>{user?.settings?.currency}</p>
               <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
             </div>
           </div>
@@ -43,7 +43,7 @@ const DisplayAndThemePage = () => {
             <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
               <h2 className='font-roboto font-normal w-fit ml-25'>Display Language</h2>
               <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-                <p className='font-normal'>{user.settings.displayLanguage}</p>
+                <p className='font-normal'>{user?.settings?.displayLanguage}</p>
                 <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
               </div>
             </div>
@@ -81,17 +81,26 @@ const DisplayAndThemePage = () => {
 
           </div>
 
+          {/* Screen Reader */}
+          <div>
+            <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
+              <h2 className='font-roboto font-normal w-fit ml-25'>Screen Reader Support</h2>
+              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+                <div className='mr-2'>
+                  <ControlledSwitches></ControlledSwitches>
+                </div>
+              </div>
+            </div>
+            <p className='font-roboto text-sm w-fit ml-30 -mt-9'>Adds extra descriptions for compatibility with screen readers.</p>
+
+          </div>
+
+          
+
 
           <h1 className='font-roboto font-bold text-xl pl-9 my-5'>Appearance</h1>
           <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
 
-          {/* Dark Mode */}
-          <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
-            <h2 className='font-roboto font-normal w-fit ml-25'>Dark Mode</h2>
-            <div className='pr-24'>
-              <ControlledSwitches></ControlledSwitches>
-            </div>
-          </div>
 
           {/* Animations */}
           <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
@@ -102,13 +111,13 @@ const DisplayAndThemePage = () => {
           </div>
 
           <Footer/>
+          <LabelBottomNavigation></LabelBottomNavigation>
 
          
 
           
 
       </div>
-    </motion.div>
  
   )
 }
