@@ -73,7 +73,7 @@ const TopWinners = () => {
   return (
     <div className='rounded-sm bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 p-6 shadow-2xl w-full max-w-md'>
       <h2 className='mb-6 text-2xl font-bold text-white flex items-center justify-center gap-2'>
-        <h1 className='text-2xl flex justify-center'>Top Preformers</h1>
+        <h1 className='text-2xl flex justify-center bg-gradient-to-r from-blue-300 to-purple-500 bg-clip-text text-transparent'>Top Preformers</h1>
         
       </h2>
       

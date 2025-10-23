@@ -8,6 +8,8 @@ const { useParams } = require('react-router');
 router.patch('/api/settings/changeEmail/:id', async (req, res) => {
     
     const userId = req.params.id;
+    const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true});
+    res.json(updatedUser);
 
 })
 
