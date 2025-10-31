@@ -12,17 +12,22 @@ import Footer from "../../Components/Footer";
 import { set } from "mongoose";
 import ChangeEmail from "../../Components/Settings/ChangeEmail";
 import ChangeUsername from "../../Components/Settings/ChangeUsername";
+import ChangeGender from "../../Components/Settings/ChangeGender";
 
 
 function AccountSettingsPage() {
   const { user, setUser } = useContext(UserContext);
   const [clickChangeEmail, setClickChangeEmail] = useState(false);
   const [clickChangeUsername, setClickChangeUsername] = useState(false);
+  const [clickChangeGender, setClickChangeGender] = useState(false);
 
   return (
     <div>
+
       {clickChangeEmail ? <ChangeEmail clickChangeEmail = {clickChangeEmail} setClickChangeEmail = {setClickChangeEmail}></ChangeEmail> : null}
-      {clickChangeUsername ? <ChangeUsername></ChangeUsername> : null}
+      {clickChangeUsername ? <ChangeUsername clickChangeUsername = {clickChangeUsername} setClickChangeUsername = {setClickChangeUsername}></ChangeUsername> : null}
+      {clickChangeGender ? <ChangeGender clickChangeGender = {clickChangeGender} setClickChangeGender = {setClickChangeGender}></ChangeGender> : null}
+
       <div className={`${clickChangeEmail ? '' : ''}`}>
         <div className="rounded-md w-[100%] h-auto relative top-4 p-3">
           <h1 className="font-roboto font-bold text-xl my-5">General</h1>
@@ -54,13 +59,13 @@ function AccountSettingsPage() {
             </div>
           </div>
           {/* Gender */}
-          <div
+          <div 
             className="flex justify-between items-center m-5 mt-10 mb-10"
-            onClick={() => console.log("Gender Changed")}
+            onClick={() => console.log(setClickChangeGender(!clickChangeGender))}
           >
             <h2 className="font-roboto font-normal w-[60px] pl-25">Gender</h2>
             <div className="flex items-center gap-[8px] mr-22 cursor-pointer group">
-              <p className="font-normal">Male</p>
+              <p className="font-normal">{user?.gender ? user.gender : 'Not specified'}</p>
               <ChevronRightIcon className="group-hover:bg-gray-600/20 rounded-2xl" />
             </div>
           </div>

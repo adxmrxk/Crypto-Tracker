@@ -50,7 +50,7 @@ const LandingPage = () => {
       const userObject = {
         email: userEmail,
         username: username,
-        gender: "Male",
+        gender: null,
         settings: {
 
           country: userCountry,

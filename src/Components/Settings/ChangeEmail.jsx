@@ -23,7 +23,6 @@ const ChangeEmail = ({ clickChangeEmail, setClickChangeEmail }) => {
     const updatedUser = res.data;
     setUser(updatedUser);
     setClickChangeEmail(!clickChangeEmail);
-    console.log('Email changed successfully');
 
   };
 
@@ -44,12 +43,10 @@ const ChangeEmail = ({ clickChangeEmail, setClickChangeEmail }) => {
           />
         </div>
 
-        {/* Description */}
         <p className="text-gray-300/90 mb-6 -mt-3 text-sm text-left w-[300px]">
           Please enter your new email address and confirm it before saving changes.
         </p>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
             type="email"
@@ -71,13 +68,13 @@ const ChangeEmail = ({ clickChangeEmail, setClickChangeEmail }) => {
             <button
               type="button"
               onClick={handleClose}
-              className="bg-slate-500/40 hover:bg-slate-500/60 text-gray-200 px-5 py-2 rounded-2xl transition"
+              className="bg-slate-500/40 hover:bg-slate-500/60 cursor-pointer text-gray-200 px-5 py-2 rounded-2xl transition"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold px-6 py-2 rounded-2xl hover:opacity-90 transition"
+              className="bg-gradient-to-r from-blue-400 to-purple-500 text-white cursor-pointer font-semibold px-6 py-2 rounded-2xl hover:opacity-90 transition"
             >
               Save
             </button>

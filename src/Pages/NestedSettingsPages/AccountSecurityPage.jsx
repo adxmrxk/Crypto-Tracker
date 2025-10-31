@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import React from 'react'
 import ButtonComponent from '../../Components/ButtonComponent'
 import { motion } from 'framer-motion';
@@ -7,9 +7,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ControlledSwitches from '../../Components/ControlledSwitches';
 import Footer from '../../Components/Footer';
 import LabelBottomNavigation from '../../Components/LabelBottomNavigation';
+import { UserContext } from '../SkeletonPage';
 
 const AccountSecurityPage = () => {
+
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+
+  const {user, setUser } = useContext(UserContext);
+  
   return ( 
 
       <div className='rounded-md w-[100%] h-auto relative top-4 p-3'>
@@ -90,7 +95,7 @@ const AccountSecurityPage = () => {
               <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Gender Changed')}>
                 <h2 className='font-roboto font-normal w-fit ml-25'>Recovery Email</h2>
                 <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
-                  <p className='font-normal'>adamrak239@gmail.com</p>
+                  <p className='font-normal'>{user?.settings?.recoveryEmail ? user.settings.recoveryEmail : 'Not specified'}</p>
                   <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
                 </div>
               </div>
