@@ -3,6 +3,8 @@ import { X } from "lucide-react";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
+import { FaChevronDown } from "react-icons/fa";
+
 
 const ChangeGender = ({ clickChangeGender, setClickChangeGender }) => {
 
@@ -35,7 +37,7 @@ const ChangeGender = ({ clickChangeGender, setClickChangeGender }) => {
         <p className="text-gray-300/90 mb-6 -mt-3 text-sm text-left w-[300px]">Please enter your new gender.</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <select name = 'newGender' defaultValue='' className="outline-none bg-slate-500/50 text-gray-100 placeholder-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:bg-slate-600 transition" required placeholder="New Gender">
+          <select name = 'newGender' defaultValue='' className="outline-none appearance-none bg-slate-500/50 text-gray-100 placeholder-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:bg-slate-600 transition" required placeholder="New Gender">
             <option value="" disabled hidden>{user?.gender ? user.gender : 'Select A Gender'}</option>
             <option>Male</option>
             <option>Female</option>
@@ -46,6 +48,8 @@ const ChangeGender = ({ clickChangeGender, setClickChangeGender }) => {
             <option>Two-Spirit</option>
             <option>Prefer not to say</option>
           </select>
+          <FaChevronDown size={11} className="absolute right-3 top-1/2 -translate-y-1/5 -translate-x-5 text-white pointer-events-none"/>
+          
           
           <div className="flex justify-end gap-3 mt-4">
             <button type="button" onClick={handleClose} className="bg-slate-500/40 hover:bg-slate-500/60 cursor-pointer text-gray-200 px-5 py-2 rounded-2xl transition">Cancel</button>

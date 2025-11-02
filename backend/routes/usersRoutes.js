@@ -19,9 +19,8 @@ router.post('/api/users', hashPassword, async (req, res) => {
 
 
 
-
-router.delete('/api/users/:id', (req, res) => {
-
+router.delete('/api/users/:id', async (req, res) => {
+  const user = await User.findById(req.params.id);
 })
 
 module.exports = router;

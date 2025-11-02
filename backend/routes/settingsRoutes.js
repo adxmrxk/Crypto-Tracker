@@ -56,7 +56,6 @@ router.put('/api/settings/deleteAccount/:id', async (req, res) => {
 router.patch('/api/settings/changeCountry/:id', async (req, res) => {
 
     const userId = req.params.id;
-    //const { country } = req.body;
     const updatedUser = await User.findByIdAndUpdate(userId, req.body, {new: true, runValidators: true});
 
     if (!updatedUser) {
@@ -64,6 +63,40 @@ router.patch('/api/settings/changeCountry/:id', async (req, res) => {
     }
 
     res.json(updatedUser);
+
+})
+
+router.patch('/api/settings/changeCurrency/:id', async (req, res) => {
+
+    const userId = req.params.id;
+    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {new: true, runValidators: true});
+
+    if (!updatedUser) {
+        return res.status(404).json({message: "User not found"});
+    }
+
+    res.json(updatedUser)
+})
+
+router.patch('/api/settings/changeDisplayLanguage/:id', async (req, res) => {
+    
+    const userId = req.params.id;
+
+    try {
+
+        const updatedUser = await User.findByIdAndUpdate(userId, req.body, {new: true, runValidators: true});
+
+        if (!updatedUser) {
+            return res.status(404).json({message: "User not found"});
+        }
+
+        res.status(200).json(updatedUser);
+    }
+
+    catch (error) {
+        res.status(500).json({message: "Server Error"});
+    }
+
 
 })
 

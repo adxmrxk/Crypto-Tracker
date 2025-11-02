@@ -4,6 +4,8 @@ import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import { BsChevronDown } from "react-icons/bs";
+import { FaChevronDown } from "react-icons/fa";
+
 
 
 const ChangeCountry = ({ clickChangeCountry, setClickChangeCountry }) => {
@@ -78,13 +80,14 @@ const ChangeCountry = ({ clickChangeCountry, setClickChangeCountry }) => {
         <p className="text-gray-300/90 mb-6 -mt-3 text-sm text-left w-[300px]">Please enter your new Country.</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <select name = 'newCountry' defaultValue='' className="outline-none appearance-auto apperence bg-slate-500/50 text-gray-100 placeholder-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:bg-slate-600 transition" required placeholder="New Country">
+          <select name = 'newCountry' defaultValue='' className="outline-none appearance-none bg-slate-500/50 text-gray-100 placeholder-gray-300 rounded-md px-3 py-2 focus:ring-1 focus:ring-blue-500 focus:bg-slate-600 transition" required placeholder="New Country">
 
              <option value="" disabled hidden>Select a country</option>
              {Countries.map((country, index) => (
                <option key = {index} type = "text">{country}</option>
               ))}
           </select>
+          <FaChevronDown size={11} className="absolute right-3 top-1/2 -translate-y-1/5 -translate-x-5 text-white pointer-events-none"/>
           
           <div className="flex justify-end gap-3 mt-4">
             <button type="button" onClick={handleClose} className="bg-slate-500/40 hover:bg-slate-500/60 cursor-pointer text-gray-200 px-5 py-2 rounded-2xl transition">Cancel</button>

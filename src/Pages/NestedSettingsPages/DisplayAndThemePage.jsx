@@ -10,12 +10,16 @@ import ControlledSwitches from '../../Components/ControlledSwitches';
 import Footer from '../../Components/Footer';
 import LabelBottomNavigation from '../../Components/LabelBottomNavigation';
 import ChangeCountry from '../../Components/Settings/ChangeCountry';
+import ChangeCurrency from '../../Components/Settings/ChangeCurrency';
+import ChangedisplayLanguage from '../../Components/Settings/ChangeDisplayLanguage';
 
 const DisplayAndThemePage = () => {
 
   const {user, setUser } = useContext(UserContext);
 
     const [clickChangeCountry, setClickChangeCountry] = useState(false);
+    const [clickChangeCurrency, setClickChangeCurrency] = useState(false);
+    const [clickChangedisplayLanguage, setClickChangedisplayLanguage] = useState(false);
   
 
   return (  
@@ -23,14 +27,16 @@ const DisplayAndThemePage = () => {
       <div>
         
         {clickChangeCountry ? <ChangeCountry clickChangeCountry = {clickChangeCountry} setClickChangeCountry = {setClickChangeCountry}></ChangeCountry> : null}
+        {clickChangeCurrency ? <ChangeCurrency clickChangeCurrency = {clickChangeCurrency} setClickChangeCurrency = {setClickChangeCurrency}></ChangeCurrency> : null}
+        {clickChangedisplayLanguage ? <ChangedisplayLanguage clickChangedisplayLanguage = {clickChangedisplayLanguage} setClickChangedisplayLanguage = {setClickChangedisplayLanguage}></ChangedisplayLanguage> : null}
 
         <div className='rounded-md w-[100%] h-auto relative top-4 p-3'>
             <h1 className='font-roboto font-bold text-xl my-5 pl-9'>Region</h1>
             <hr className='border-gray-600 my-1 w-[80%] mx-auto mask-x-from-0.5'></hr>
             {/* Country */}
-            <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => setClickChangeCountry(!clickChangeCountry)}>
+            <div className='flex justify-between items-center m-5 mt-10 mb-10'>
               <h2 className='font-roboto font-normal w-fit ml-25'>Country</h2>
-              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group' onClick={ () => setClickChangeCountry(!clickChangeCountry)}>
                 <p className='font-normal'>{user?.settings?.country}</p>
                 <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
               </div>
@@ -38,7 +44,7 @@ const DisplayAndThemePage = () => {
             {/* Currency */}
             <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
               <h2 className='font-roboto font-normal w-fit ml-25'>Currency</h2>
-              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+              <div className='flex items-center gap-[8px] mr-22 cursor-pointer group' onClick={ () => setClickChangeCurrency(!clickChangeCurrency)}>
                 <p className='font-normal'>{user?.settings?.currency}</p>
                 <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
               </div>
@@ -47,7 +53,7 @@ const DisplayAndThemePage = () => {
             <div>
               <div className='flex justify-between items-center m-5 mt-10 mb-10' onClick={ () => console.log('Email Changed')}>
                 <h2 className='font-roboto font-normal w-fit ml-25'>Display Language</h2>
-                <div className='flex items-center gap-[8px] mr-22 cursor-pointer group'>
+                <div className='flex items-center gap-[8px] mr-22 cursor-pointer group' onClick={() => {setClickChangedisplayLanguage(!clickChangedisplayLanguage)}}>
                   <p className='font-normal'>{user?.settings?.displayLanguage}</p>
                   <ChevronRightIcon className = 'group-hover:bg-gray-600/20 rounded-2xl'/>
                 </div>
