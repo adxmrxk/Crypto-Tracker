@@ -25,7 +25,7 @@ const User = mongoose.model('User', new mongoose.Schema({
     gender: {
         type: String,
         minlength: 4,
-        maxlength: 12,
+        maxlength: 24,
         default: null
     },
 

@@ -1,11 +1,11 @@
 import React, { useContext, useMemo } from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Pie, Bar } from 'react-chartjs-2';
 import { Chart, CategoryScale, ArcElement, Tooltip, Legend } from 'chart.js';
 import { UserContext } from '../../Pages/SkeletonPage';
 
 Chart.register(CategoryScale, ArcElement, Tooltip, Legend);
 
-const CoinDisplayChart = () => {
+const PerformanceBarChart = () => {
   const { user } = useContext(UserContext);
 
   const coinNames = user?.watchList.map(el => el.coin) || [];
@@ -110,9 +110,9 @@ const CoinDisplayChart = () => {
 
   return (
     <div className="w-[350px] h-[270px] flex flex-col items-center">
-      <Pie data={chartData} options={options} />
+      <Bar data={chartData} options={options} />
     </div>
   );
 };
 
-export default CoinDisplayChart;
+export default PerformanceBarChart;
