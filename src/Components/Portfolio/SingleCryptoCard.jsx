@@ -31,10 +31,7 @@ const SingleCryptoCard = ({searchedCoin, submitedSearch, coinsList}) => {
 
 
   
-//TODO:
-//Make simialr API call logic in other components when making a call.
-//Add a pagination for the default card grid to allow for more coins to be viewed. Plus add a loading spinner when api calls are being made.
-//Clean up files between this component, cryptocurrency card component, and search crypto section component.
+
 
   return (
     <div className='grid grid-cols-3 gap-4 p-3 w-[1500px]'>
@@ -47,7 +44,7 @@ const SingleCryptoCard = ({searchedCoin, submitedSearch, coinsList}) => {
                                 <h1 className='text-lg text-gray-300 font-normal text-left'>{userCoin?.[0]?.symbol?.toUpperCase()}</h1>
                                 <div className='mt-5'>
                                     <div className='w-fit ml-[320px] -mb-[67px] flex flex-col items-center'>
-                                        <form onSubmit={(event) => handleSubmit(event, userCoin)}>
+                                        <form onSubmit={(event) => handleSubmit(event, userCoin[0])}>
                                             <button type = "submit" className='text-md text-gray-100 bg-slate-900/20 w-fit px-4 py-1 rounded-xs cursor-pointer mb-2 hover:bg-slate-900/40 transition-all duration-300'>Add</button>
                                               <div className='max-w-[75px mx-auto relative z-10'>
                                                   <input type = "number" step="any" placeholder = "Amount" value = {userInput[userCoin.name] || ''} onChange = {(event) =>  setUserInput({ ...userInput, [userCoin?.name]: event.target.value })} className = 'text-white w-[75px] rounded-xs px-2 outline-none border-b'></input>

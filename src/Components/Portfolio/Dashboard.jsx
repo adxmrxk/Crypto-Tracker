@@ -30,27 +30,35 @@ const Dashboard = () => {
 
 
   return (
-        <div className=' m-3 h-[900px] max-h-[1200px]'>
-          {coinClicked ? <WatchListCoinCard coin = {coin} coinClicked = {coinClicked} setCoinClicked = {setCoinClicked}></WatchListCoinCard> : null}
-          <div className='flex flex-row h-[700px] justify-between'>
-            <div className='flex flex-col'>
-              <div className='w-fit h-full flex flex-col justify-between'>
-                <div className = 'flex flex-col'>
-                  <TopWinners></TopWinners>
-                </div>
-                <div className='flex flex-row w-full h-fit border-2'>
-                  <div className='mt-12 -mb-5 border-2'>
-                      <h1 className='text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-2'>Assets</h1>
-                      <CoinDisplayChart></CoinDisplayChart>
+        <div className=''>
+
+          <h1 className='text-3xl font-semibold pt-5 bg-gradient-to-br from-orange-400 via-rose-500 to-purple-700 bg-clip-text text-transparent'>Investment Overview</h1>
+          <p1 className = 'text-lg mb-15 bg-gradient-to-br from-purple-500 to-purple-700 bg-clip-text text-transparent'>Your portfolio at a glance — track, analyze, and optimize your investments.</p1>
+          <hr className='border-gray-500 my-1 w-[45%] mx-auto mt-5'></hr>
+
+
+          <div className=' p-3 h-[900px] max-h-[1200px] mt-12 w-[1700px] mx-auto'>
+            {coinClicked ? <WatchListCoinCard coin = {coin} coinClicked = {coinClicked} setCoinClicked = {setCoinClicked}></WatchListCoinCard> : null}
+            <div className='flex flex-row h-[700px] justify-between'>
+              <div className='flex flex-col'>
+                <div className='w-fit h-full flex flex-col justify-between'>
+                  <div className = 'flex flex-col'>
+                    <TopWinners></TopWinners>
                   </div>
-                  <div className='mt-12 h-fit'>
-                    <h1></h1>
-                    <PerformanceBarChart></PerformanceBarChart>
+                  <div className='flex flex-row w-full h-fit ml-55'>
+                    <div className='mt-15 -mb-5'>
+                        <h1 className='text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-2'>Assets</h1>
+                        <CoinDisplayChart></CoinDisplayChart>
+                    </div>
+                    <div className='mt-12 h-fit'>
+                      <h1></h1>
+                      <PerformanceBarChart></PerformanceBarChart>
+                    </div>
                   </div>
                 </div>
-              </div>
-             </div>
-              <WatchList coinClicked = {coinClicked} setCoinClicked = {setCoinClicked} coin = {coin} setCoin = {setCoin}></WatchList>
+               </div>
+                <WatchList coinClicked = {coinClicked} setCoinClicked = {setCoinClicked} coin = {coin} setCoin = {setCoin}></WatchList>
+            </div>
           </div>
         </div>
   )

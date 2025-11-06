@@ -6,7 +6,7 @@ import { set } from 'mongoose'
 import { NameToId } from '../utils/coinNameToId'
 
 
-const SearchCryptoSection = () => {
+const   SearchCryptoSection = () => {
   const [searchedCoin, setSearchedCoin] = useState('');
   const [submitedSearch, setSubmitedSearch] = useState(false);
 
@@ -39,7 +39,7 @@ const SearchCryptoSection = () => {
 
   
   return (
-    <section className='border-2'>
+    <section className=''>
       <div className="max-w-7xl mx-auto flex flex-col">
         <div className='flex justify-center'>
             <SearchBar onChange = {handleChange} onClick={handleClick} onSubmit={onSubmit}></SearchBar>

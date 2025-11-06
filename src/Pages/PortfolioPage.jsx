@@ -5,7 +5,6 @@ import { createRoot } from 'react-dom/client';
 import useCryptoCurrency from '../hooks/useCryptoCurrency'
 import Tooltip from '@mui/material/Tooltip';
 import DashBoard from '../Components/Portfolio/Dashboard';
-import AddWatchList from '../Components/AddWatchList';
 import SearchCryptoSection from '../Components/SearchCryptoSection';
 import CryptoChartSection from '../Components/CryptoChartSection';
 import useHistoricalCryptoData from '../hooks/useHistoricCryptoData';
@@ -15,7 +14,6 @@ import LabelBottomNavigation from '../Components/LabelBottomNavigation';
 
 
 
-export const addCryptoContext = createContext();
 
 const Dashboard = () => {
   
@@ -32,9 +30,11 @@ const Dashboard = () => {
 
   return (
     
-    <div className='border-2 border-red-400'>
-            <DashBoard></DashBoard>
-            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-gray-500 to-gray-600">
+    <div className=''>
+            <div className='relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-300 via-slate-400 to-slate-500'>
+              <DashBoard></DashBoard>
+            </div>
+            <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-500 via-slate-600 to-slate-700">
               <CryptoChartSection></CryptoChartSection>
             </div>
             <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-radial from-slate-600 via-slate-700 to-slate-800">

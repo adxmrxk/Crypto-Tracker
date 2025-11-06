@@ -11,7 +11,7 @@ const WatchList = ({ coin, setCoin, coinClicked, setCoinClicked }) => {
   };
 
   return (
-    <div className="flex flex-row flex-wrap max-w-[600px] h-fit py-4 pl-3 pr-2 mt-2 overflow-y-auto bg-slate-900/60 backdrop-blur-md rounded-xl shadow-lg shadow-slate-950/40 border border-slate-700">
+    <div className="flex flex-row flex-wrap max-w-[600px] h-fit py-4 pl-3 pr-2 mt-2 overflow-y-auto bg-slate-900/60 backdrop-blur-md rounded-xl shadow-lg shadow-slate-950/40 border border-slate-700 mr-55">
       {user?.watchList?.length ? (
         user.watchList.map((element, index) => (
           <div

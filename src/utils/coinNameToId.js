@@ -20,6 +20,7 @@ export const NameToId = {
   Kadena: "kadena",
   XRP: "ripple",
   Zilliqa: "zilliqa",
+  Litecoin: 'litecoin',
 
   // Layer 2
   Polygon: "matic-network",
