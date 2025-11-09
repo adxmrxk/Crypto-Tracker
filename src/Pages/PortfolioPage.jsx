@@ -9,6 +9,7 @@ import SearchCryptoSection from '../Components/SearchCryptoSection';
 import CryptoChartSection from '../Components/CryptoChartSection';
 import useHistoricalCryptoData from '../hooks/useHistoricCryptoData';
 import LabelBottomNavigation from '../Components/LabelBottomNavigation';
+import Analytics from '../Components/Portfolio/Analytics';
 
 
 
@@ -32,7 +33,7 @@ const Dashboard = () => {
     
     <div className=''>
             <div className='relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-300 via-slate-400 to-slate-500'>
-              <DashBoard></DashBoard>
+              <Analytics></Analytics>
             </div>
             <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-500 via-slate-600 to-slate-700">
               <CryptoChartSection></CryptoChartSection>

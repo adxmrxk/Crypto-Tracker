@@ -4,11 +4,9 @@ import { FaCirclePlus, FaPlus } from "react-icons/fa6";
 import { createRoot } from 'react-dom/client';
 import useCryptoCurrency from '../../hooks/useCryptoCurrency'
 import Tooltip from '@mui/material/Tooltip';
-import CoinDisplayChart from './CoinDisplayChart';
 import TopWinners from './TopWinners';
 import WatchList from './WatchList';
 import WatchListCoinCard from './WatchListCoinCard';
-import PerformanceBarChart from './PerformanceBarChart';
 
 
 
@@ -48,11 +46,9 @@ const Dashboard = () => {
                   <div className='flex flex-row w-full h-fit ml-55'>
                     <div className='mt-15 -mb-5'>
                         <h1 className='text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-2'>Assets</h1>
-                        <CoinDisplayChart></CoinDisplayChart>
                     </div>
                     <div className='mt-12 h-fit'>
                       <h1></h1>
-                      <PerformanceBarChart></PerformanceBarChart>
                     </div>
                   </div>
                 </div>

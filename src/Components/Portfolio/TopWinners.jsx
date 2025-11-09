@@ -34,7 +34,7 @@ const TopWinners = () => {
     };
 
     return (
-      <div className='group relative mb-4 rounded-md bg-gradient-to-r from-slate-800 to-slate-700 p-4 transition-all duration-300 hover:shadow-lg hover:from-slate-700 hover:to-slate-600 hover:scale-105 cursor-pointer border border-slate-600 hover:border-cyan-500'>
+      <div className='group relative mb-4 rounded-md bg-gradient-to-r from-slate-800 to-slate-700 p-3 transition-all duration-300 hover:shadow-lg hover:from-slate-700 hover:to-slate-600 hover:scale-105 cursor-pointer border border-slate-600 hover:border-cyan-500'>
         <div className='flex items-center gap-4'>
           
           <div className='relative flex-shrink-0'>
@@ -71,7 +71,7 @@ const TopWinners = () => {
   };
 
   return (
-    <div className='rounded-sm bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 p-6 shadow-2xl w-[400px] ml-55'>
+    <div className='rounded-sm bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 p-6 shadow-2xl w-[375px]'>
       <h2 className='mb-6 text-2xl font-bold text-white flex items-center justify-center gap-2'>
         <h1 className='text-2xl flex justify-center text-gray-200'>Top Preformers</h1>
         
