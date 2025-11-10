@@ -31,7 +31,7 @@ const CryptoCurrencyCard = ({searchedCoin, submitedSearch, setSubmitedSearch}) =
         event.preventDefault();
         const input = event.target.querySelector("input"); 
         const value = input.value;
-        const response = await axios.patch(`http://localhost:5000/api/users/${user._id}`, { $addToSet: { watchList: { coin: element.id, amount: value, ticker: String(element.symbol)} } } )
+        const response = await axios.patch(`http://localhost:5000/api/addWatchList/${user._id}`, { $addToSet: { watchList: { coin: element.id, amount: value, ticker: String(element.symbol), image: element.image} } } )
         const newUser = response.data;
         setUser(newUser);
         setUserInput('');

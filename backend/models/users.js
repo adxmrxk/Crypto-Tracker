@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const userSettings = require('./userSettings.js');
-const userCoinNotifications = require('./userCoinNotifications.js');
+const userCoinNotifications = require('./userCoinNotifications.js')
+
 
 const User = mongoose.model('User', new mongoose.Schema({
 
@@ -43,7 +44,7 @@ const User = mongoose.model('User', new mongoose.Schema({
         type: [
             {
                 coin: {
-                type: String
+                    type: String
                 },
 
                 amount: {
@@ -54,11 +55,17 @@ const User = mongoose.model('User', new mongoose.Schema({
                     type: String
                 },
 
+                image: {
+                    type: String
+                },
+
                 notifications: userCoinNotifications,
 
          }],
         default: []
     },
+
+
 
     serverList: {
         type: [String],

@@ -23,7 +23,7 @@ const SingleCryptoCard = ({searchedCoin, submitedSearch, coinsList}) => {
     const input = event.target.querySelector("input"); 
     const value = input.value;
     const coinData = data;
-    const response = await axios.patch(`http://localhost:5000/api/users/${user._id}`, { $addToSet: { watchList: { coin: coinData.name.toLowerCase(), amount: value, ticker: String(coinData.symbol)} } } );
+    const response = await axios.patch(`http://localhost:5000/api/addWatchList/${user._id}`, { $addToSet: { watchList: { coin: coinData.name.toLowerCase(), amount: value, ticker: String(coinData.symbol)} } } );
     const newUser = response.data;
     setUser(newUser);
     setUserInput('');
