@@ -1,13 +1,14 @@
 import React from 'react'
 import { useContext } from 'react'
 import { UserContext } from '../../Pages/SkeletonPage';
+import { Shield, TrendingUp, TrendingDown } from 'lucide-react'
 
 const RiskAndActivity = () => {
 
   const {user, setUser} = useContext(UserContext)
 
   return (
-    <div className=''>
+    <div className='space-y-6'>
         <div className=''>
             <h1 className='text-left text-md font-semibold'>Portfolio Risk Score</h1>
             <div className='border-2 p-3 mt-2 w-[405px]'></div>
@@ -17,25 +18,35 @@ const RiskAndActivity = () => {
                 <p1>Blah</p1>
             </div>
         </div>
+
+        {/* Transactions Section */}
         <div className='mt-7'>
-            <h1 className='text-left mb-2 text-md font-semibold'>Transactions</h1>
-            <div className='grid grid-cols-3 gap-3'>
-                {user?.watchList.map((element, index) => {
-                    return <div className='w-[120px] h-[116px] rounded-md bg-gradient-to-br from-gray-800/60 via-gray-800/70 to-gray-800/80'>
-                        <div className='flex flex-row items-center px-1'>
-                            <img src = {element.image} className='w-[29px] h-[29px]'></img>
-                            <div className='flex flex-col pl-1'>
-                                <h1 className='text-md text-left -mb-1 text-gray-200'>{element.coin}</h1>
-                                <h2 className='text-xs'>2025-10-17</h2>
+            <div className='flex flex-row justify-between'>
+                <h1 className='text-left mb-2 text-md font-semibold'>Transactions</h1>
+                <h1 className='text-md font-semibold'>View All</h1>
+            </div>
+            <div className='grid grid-cols-3 grid-rows-3 gap-3'>
+                {user?.watchList.slice(0,9).map((element, index) => {
+                    return (
+                        <div 
+                            key={index}
+                            className='group relative rounded-md bg-gradient-to-br from-gray-800/60 via-gray-800/70 to-gray-800/80 p-2 transition-all duration-300 hover:shadow-lg hover:from-slate-700 hover:to-slate-600 hover:scale-105 cursor-pointer border border-slate-600'
+                        >
+                            <div className='flex flex-row items-center gap-1 mb-3'>
+                                <img src={element.image} className='w-[29px] h-[29px] rounded-full' alt={element.coin} />
+                                <div className='flex flex-col flex-1 min-w-0'>
+                                    <h1 className='text-sm font-semibold text-white truncate text-left'>{element.coin}</h1>
+                                    <h2 className='text-xs text-slate-400 text-left -mt-0.5'>{element.dateAdded.slice(0, 10)}</h2>
+                                </div>
+                            </div>
+                            <div className='text-left pl-1'>
+                                <h1 className='text-sm font-semibold text-white'>{element.ticker.toUpperCase()}</h1>
+                                <h1 className='text-sm text-slate-300 -mt-0.5'>$242.00</h1>
+                                <h1 className='text-sm text-slate-300 -mt-0.5'>{element.amount}</h1>
                             </div>
                         </div>
-                        <h1 className='text-left text-sm px-2 mt-5'>{element.ticker.toUpperCase()}</h1>
-                        <h1 className='text-left text-sm px-2 -mt-1'>5.545454</h1>
-                        <h1 className='text-left text-sm px-2 -mt-1'>12</h1>
-                    </div>
+                    )
                 })}
-                
-            
             </div>
         </div>
     </div>

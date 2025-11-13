@@ -59,6 +59,11 @@ const User = mongoose.model('User', new mongoose.Schema({
                     type: String
                 },
 
+                dateAdded: {
+                    type: Date,
+                    default: Date.now()
+                },
+
                 notifications: userCoinNotifications,
 
          }],
