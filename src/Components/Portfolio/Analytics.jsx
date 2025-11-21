@@ -17,9 +17,9 @@ const Analytics = () => {
           Your portfolio at a glance — track, analyze, and optimize your
           investments.
         </p1>
-        <hr className="border-gray-500 my-1 w-[66.5%] mx-auto mt-5"></hr>
+        <hr className="border-gray-500 my-1 w-[50%] mx-auto mt-5"></hr>
       </div>
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-row justify-center ">
         <WalletValue></WalletValue>
       </div>
       <div className="ml-80 mt-10 flex flex-row">

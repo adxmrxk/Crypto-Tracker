@@ -7,7 +7,7 @@ const WalletValueChart = ({ timeRange }) => {
 
   return (
     <div className="">
-      <div className="w-[800px] h-[500px] ">
+      <div className="w-[800px] h-[500px]">
         <WalletValueChartSchema timeRange={timeRange}></WalletValueChartSchema>
       </div>
     </div>

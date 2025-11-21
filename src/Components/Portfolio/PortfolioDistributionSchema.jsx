@@ -1,7 +1,104 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../Pages/SkeletonPage";
+import Chart from "chart.js/auto";
+import { Pie } from "react-chartjs-2";
 
 const PortfolioDistributionSchema = () => {
-  return <div></div>;
+  const { user, setUser } = useContext(UserContext);
+
+  const coins = [
+    { ticker: "BTC", amount: 2.5, price: 45000 },
+    { ticker: "ETH", amount: 15.3, price: 3200 },
+    { ticker: "SOL", amount: 200, price: 110 },
+    { ticker: "ADA", amount: 5000, price: 0.65 },
+    { ticker: "DOT", amount: 800, price: 7.5 },
+    { ticker: "MATIC", amount: 3000, price: 0.85 },
+    { ticker: "AVAX", amount: 120, price: 38 },
+    { ticker: "LINK", amount: 450, price: 15 },
+  ];
+
+  const chartData = {
+    labels: coins.map((coin) => coin.ticker),
+    datasets: [
+      {
+        data: coins.map((coin) => coin.amount * coin.price),
+        borderColor: "#ffffff",
+        backgroundColor: [
+          "#1e40af",
+          "#2563eb",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#bfdbfe",
+          "#dbeafe",
+          "#1d4ed8",
+        ],
+        borderWidth: 1,
+        hoverOffset: 8,
+      },
+    ],
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <h3 className="text-lg font-semibold text-slate-800 mb-4">
+        Portfolio Distribution
+      </h3>
+
+      <div className="h-[250px] p-3">
+        <Pie
+          data={chartData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "30%",
+            plugins: {
+              legend: {
+                display: false,
+              },
+              tooltip: {
+                enabled: true,
+                backgroundColor: "#1e293b",
+                titleColor: "#fff",
+                bodyColor: "#e2e8f0",
+                padding: 10,
+                cornerRadius: 6,
+                callbacks: {
+                  label: function (context) {
+                    const coin = coins[context.dataIndex];
+                    return `${coin.amount} ${coin.ticker} ($${(
+                      coin.amount * coin.price
+                    ).toLocaleString()})`;
+                  },
+                },
+              },
+            },
+            animation: {
+              animateRotate: true,
+              animateScale: true,
+            },
+            layout: {
+              padding: 10,
+            },
+          }}
+        />
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 max-w-2xl">
+        {coins.map((coin, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div
+              className="w-3 h-3 flex-shrink-0"
+              style={{
+                backgroundColor: chartData.datasets[0].backgroundColor[index],
+              }}
+            />
+            <span className="text-sm text-slate-700">{coin.ticker}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default PortfolioDistributionSchema;
