@@ -41,11 +41,11 @@ const PortfolioDistributionSchema = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <h3 className="text-lg font-semibold text-slate-800 mb-4">
+      <h1 className="text-2xl font-bold flex justify-center text-gray-200">
         Portfolio Distribution
-      </h3>
+      </h1>
 
-      <div className="h-[250px] p-3">
+      <div className="h-[250px] p-2">
         <Pie
           data={chartData}
           options={{
@@ -84,16 +84,21 @@ const PortfolioDistributionSchema = () => {
         />
       </div>
 
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 max-w-2xl">
+      <div className="flex flex-wrap justify-center gap-x-2 gap-y-2 mt-2 w-[80%]">
         {coins.map((coin, index) => (
-          <div key={index} className="flex items-center gap-2">
+          <div
+            key={index}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xs bg-slate-800/30 hover:bg-slate-700/40 hover:scale-105 transition-all duration-250"
+          >
             <div
               className="w-3 h-3 flex-shrink-0"
               style={{
                 backgroundColor: chartData.datasets[0].backgroundColor[index],
               }}
             />
-            <span className="text-sm text-slate-700">{coin.ticker}</span>
+            <span className="text-sm font-semibold text-gray-100">
+              {coin.ticker}
+            </span>
           </div>
         ))}
       </div>

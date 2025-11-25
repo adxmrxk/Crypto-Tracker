@@ -2,23 +2,14 @@ import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import { Shield, TrendingUp, TrendingDown } from "lucide-react";
+import PortfolioRiskSection from "./PortfolioRiskSection";
 
 const RiskAndActivity = () => {
   const { user, setUser } = useContext(UserContext);
 
   return (
     <div className="space-y-6">
-      <div className="">
-        <h1 className="text-left text-md font-semibold">
-          Portfolio Risk Score
-        </h1>
-        <div className="border-2 p-3 mt-2 w-[405px]"></div>
-        <div className="flex flex-row gap-3 mt-2">
-          <p1>Blah</p1>
-          <p1>Blah</p1>
-          <p1>Blah</p1>
-        </div>
-      </div>
+      <PortfolioRiskSection></PortfolioRiskSection>
 
       {/* Transactions Section */}
       <div className="mt-7">
