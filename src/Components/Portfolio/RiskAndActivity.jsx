@@ -17,7 +17,7 @@ const RiskAndActivity = () => {
           <h1 className="text-left mb-2 text-md font-semibold">Transactions</h1>
           <h1 className="text-md font-semibold">View All</h1>
         </div>
-        <div className="grid grid-cols-3 grid-rows-3 gap-3">
+        <div className="grid grid-cols-3 grid-rows-2 gap-3">
           {user?.watchList.slice(0, 9).map((element, index) => {
             return (
               <div
