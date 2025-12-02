@@ -1,90 +1,86 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-const userSettings = require('./userSettings.js');
-const userCoinNotifications = require('./userCoinNotifications.js')
+const mongoose = require("mongoose");
+const Joi = require("joi");
+const userSettings = require("./userSettings.js");
+const userCoinNotifications = require("./userCoinNotifications.js");
+const userPosts = require("./userPosts.js");
 
-
-const User = mongoose.model('User', new mongoose.Schema({
-
-    
+const User = mongoose.model(
+  "User",
+  new mongoose.Schema({
     email: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 254,
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 254,
     },
 
     username: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 32,
-        unique: true
-        
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 32,
+      unique: true,
     },
 
     gender: {
-        type: String,
-        minlength: 4,
-        maxlength: 32,
-        default: null
+      type: String,
+      minlength: 4,
+      maxlength: 32,
+      default: null,
     },
 
     settings: userSettings,
 
+    posts: userPosts,
+
     createdAt: {
-        type: Date,
-        default: Date.now,
-        immutable: true
-
-
+      type: Date,
+      default: Date.now,
+      immutable: true,
     },
 
     watchList: {
-        type: [
-            {
-                coin: {
-                    type: String
-                },
+      type: [
+        {
+          coin: {
+            type: String,
+          },
 
-                amount: {
-                    type: Number
-                },
+          amount: {
+            type: Number,
+          },
 
-                ticker: {
-                    type: String
-                },
+          ticker: {
+            type: String,
+          },
 
-                image: {
-                    type: String
-                },
+          image: {
+            type: String,
+          },
 
-                dateAdded: {
-                    type: Date,
-                    default: Date.now()
-                },
+          dateAdded: {
+            type: Date,
+            default: Date.now(),
+          },
 
-                notifications: userCoinNotifications,
-
-         }],
-        default: []
+          notifications: userCoinNotifications,
+        },
+      ],
+      default: [],
     },
 
-
-
     serverList: {
-        type: [String],
-        default: []
+      type: [String],
+      default: [],
     },
 
     password: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 64,
-    }
-
-
- }));
+      type: String,
+      required: true,
+      minlength: 5,
+      maxlength: 64,
+    },
+  })
+);
 
 module.exports = User;
