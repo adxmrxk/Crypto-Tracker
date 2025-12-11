@@ -1,121 +1,69 @@
 import React from "react";
+import { useContext } from "react";
+import { UserContext } from "../../Pages/SkeletonPage";
+import useMultiHistorical from "../../hooks/useMultiHistoricCryptoData";
 
 const PortfolioTable = () => {
-  return (
-    <div className="flex justify-center w-fit">
-      <table>
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b-1 border-l-1 border-t-1 border-sky-300 font-semibold">
-              Coin
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              Ticker
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              Price
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              1H
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              24H
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              7D
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              MRKT Cap
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1 border-sky-300 font-semibold">
-              ATH
-            </th>
-            <th className="px-4 py-2 border-b-1 border-t-1  border-sky-300 font-semibold">
-              VLME (24H)
-            </th>
-          </tr>
-        </thead>
+  const { user, setUser } = useContext(UserContext);
 
-        <tbody>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-          <tr className="border-b-1 border-l-1 border-sky-300">
-            <td className="px-4 text-sm">Bitcoin</td>
-            <td className="px-4 text-sm">BTC</td>
-            <td className="px-4 text-sm">$42,000</td>
-            <td className="px-4 text-sm">+2.7%</td>
-            <td className="px-4 text-sm">-3.7%</td>
-            <td className="px-4 text-sm">-10.3%</td>
-            <td className="px-4 text-sm">$1,321,321</td>
-            <td className="px-4 text-sm">$125,000</td>
-            <td className="px-4 text-sm">$23,000</td>
-          </tr>
-        </tbody>
-      </table>
+  const coins = user?.watchList?.map((coin) => coin.coin) || [];
+
+  console.log("PortfolioTable.jsx: ", coins);
+  const now = Math.floor(Date.now() / 1000);
+  const oneHourAgo = now - 60 * 60;
+  const oneDayAgo = now - 24 * 60 * 60;
+  const sevenDaysAgo = now - 7 * 24 * 60 * 60;
+
+  const { dataOneHourAgo, isLoading, error } = useMultiHistorical(
+    coins,
+    oneHourAgo,
+    now
+  );
+  const { dataOneDayAgo } = useMultiHistorical(coins, oneDayAgo, now);
+  const { dataSevenDaysAgo } = useMultiHistorical(coins, sevenDaysAgo, now);
+
+  console.log("PortfolioTable.jsx Historical Coin Data: ", dataOneHourAgo);
+
+  return (
+    <div className="w-[800px]">
+      <div className="grid grid-cols-9 border-t border-l border-b border-sky-300">
+        <div className="px-2 py-2 font-semibold  border-sky-300">Coin</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">Ticker</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">Price</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">1H</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">24H</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">7D</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">MKT Cap</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">ATH</div>
+        <div className="px-2 py-2 font-semibold  border-sky-300">VLME</div>
+      </div>
+
+      <div className="">
+        {user?.watchList?.map((coin, index) => {
+          return (
+            <div
+              key={index}
+              className="grid grid-cols-9 border-l border-b border-sky-300"
+            >
+              <div className="px-4 py-4 text-sm  border-sky-300">
+                {coin.coin}
+              </div>
+              <div className="px-4 py-4 text-sm  border-sky-300">
+                {coin.ticker}
+              </div>
+              <div className="px-4 py-4 text-sm  border-sky-300">$42,000</div>
+              <div className="px-4 py-4 text-sm  border-sky-300">+2.7%</div>
+              <div className="px-4 py-4 text-sm  border-sky-300">-3.7%</div>
+              <div className="px-4 py-4 text-sm  border-sky-300">-10.3%</div>
+              <div className="px-4 py-4 text-sm  border-sky-300">
+                $1,321,321
+              </div>
+              <div className="px-4 py-4 text-sm  border-sky-300">$125,000</div>
+              <div className="px-4 py-4 text-sm  border-sky-300">$23,000</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

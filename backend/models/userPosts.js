@@ -2,13 +2,6 @@ const { required } = require("joi");
 const mongoose = require("mongoose");
 
 const userPosts = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    maxlength: 128,
-    minLength: 5,
-  },
-
   content: {
     type: String,
     required: true,
@@ -66,6 +59,7 @@ const userPosts = new mongoose.Schema({
         },
       },
     ],
+    default: [],
   },
 });
 

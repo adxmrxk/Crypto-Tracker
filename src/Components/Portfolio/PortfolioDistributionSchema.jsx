@@ -2,26 +2,30 @@ import React, { useContext } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import Chart from "chart.js/auto";
 import { Pie } from "react-chartjs-2";
+import useCryptoCurrency from "../../hooks/useCryptoCurrency";
 
 const PortfolioDistributionSchema = () => {
   const { user, setUser } = useContext(UserContext);
 
-  const coins = [
-    { ticker: "BTC", amount: 2.5, price: 45000 },
-    { ticker: "ETH", amount: 15.3, price: 3200 },
-    { ticker: "SOL", amount: 200, price: 110 },
-    { ticker: "ADA", amount: 5000, price: 0.65 },
-    { ticker: "DOT", amount: 800, price: 7.5 },
-    { ticker: "MATIC", amount: 3000, price: 0.85 },
-    { ticker: "AVAX", amount: 120, price: 38 },
-    { ticker: "LINK", amount: 450, price: 15 },
-  ];
+  const coins = user?.watchList?.map((coin) => coin.coin) || [];
+
+  const { data, isLoading, error } = useCryptoCurrency(coins);
+
+  const AmountToPrice =
+    data?.map((coin) => {
+      const entry = user?.watchList?.find((item) => item.coin === coin.id);
+      return {
+        amount: entry?.amount,
+        price: coin.current_price,
+        ticker: coin.symbol,
+      };
+    }) || [];
 
   const chartData = {
-    labels: coins.map((coin) => coin.ticker),
+    labels: AmountToPrice.map((coin) => coin.ticker),
     datasets: [
       {
-        data: coins.map((coin) => coin.amount * coin.price),
+        data: AmountToPrice.map((coin) => coin.amount * coin.price),
         borderColor: "#ffffff",
         backgroundColor: [
           "#1e40af",
@@ -65,7 +69,7 @@ const PortfolioDistributionSchema = () => {
                 cornerRadius: 6,
                 callbacks: {
                   label: function (context) {
-                    const coin = coins[context.dataIndex];
+                    const coin = AmountToPrice[context.dataIndex];
                     return `${coin.amount} ${coin.ticker} ($${(
                       coin.amount * coin.price
                     ).toLocaleString()})`;
@@ -85,7 +89,7 @@ const PortfolioDistributionSchema = () => {
       </div>
 
       <div className="flex flex-wrap justify-center gap-x-2 gap-y-2 mt-2 w-[80%]">
-        {coins.map((coin, index) => (
+        {AmountToPrice.map((coin, index) => (
           <div
             key={index}
             className="flex items-center gap-2 px-3 py-1.5 rounded-xs bg-slate-800/30 hover:bg-slate-700/40 hover:scale-105 transition-all duration-250"
@@ -97,7 +101,7 @@ const PortfolioDistributionSchema = () => {
               }}
             />
             <span className="text-sm font-semibold text-gray-100">
-              {coin.ticker}
+              {coin.ticker[0].toUpperCase() + coin.ticker.slice(1)}
             </span>
           </div>
         ))}
