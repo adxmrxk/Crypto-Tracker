@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
+import axios from "axios";
+import { useContext, createContext } from "react";
+import { UserContext } from "../../Pages/SkeletonPage";
 
 const MakePostSection = () => {
   const [expanded, setExpanded] = useState(false);
+  const [postText, setPostText] = useState("");
+  const { user, setUser } = useContext(UserContext);
 
-  const submitPost = async (event, element) => {
+  const submitPost = async (event) => {
     event.preventDefault();
-    const response = await axios.post();
+    const response = await axios.post(
+      `http://localhost:5000/api/posts/${user._id}`,
+      {
+        $push: {
+          posts: { content: postText, authorUsername: `${user?.username}` },
+        },
+      }
+    );
+    const newUser = response.data;
+    console.log("Post Made:", newUser);
+    setUser(newUser);
+    setPostText("");
   };
 
   return (
@@ -14,7 +30,7 @@ const MakePostSection = () => {
         <div className="flex flex-row items-center p-5">
           <div className="bg-gray-100 w-[64px] h-[64px] rounded-full"></div>
           <div className="">
-            <form className="w-[870px]">
+            <form className="w-[870px]" onSubmit={submitPost}>
               <textarea
                 className={`text-md text-left border border-blue-600 w-full ml-2 h-[50px] flex ${
                   expanded ? "h-[100px]" : "h-[50px]"
@@ -25,6 +41,8 @@ const MakePostSection = () => {
                 onBlur={() => {
                   setExpanded(false);
                 }}
+                placeholder="How do you feel about the markets today? Share your thoughts!"
+                onChange={(e) => setPostText(e.target.value)}
               ></textarea>
               <div className="flex flex-row justify-between border-2 ml-1.5 w-[872px] mt-3">
                 <div className="border border-red-800 w-fit flex flex-row gap-3">

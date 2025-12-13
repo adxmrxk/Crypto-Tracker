@@ -11,7 +11,6 @@ const userPosts = new mongoose.Schema({
   authorUsername: {
     required: true,
     type: String,
-    unique: true,
   },
 
   datePosted: {
@@ -34,7 +33,6 @@ const userPosts = new mongoose.Schema({
       {
         commenterUsername: {
           type: String,
-          unique: true,
         },
 
         content: {

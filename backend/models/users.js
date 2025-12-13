@@ -31,7 +31,10 @@ const User = mongoose.model(
 
     settings: userSettings,
 
-    posts: userPosts,
+    posts: {
+      type: [userPosts],
+      default: [],
+    },
 
     createdAt: {
       type: Date,
