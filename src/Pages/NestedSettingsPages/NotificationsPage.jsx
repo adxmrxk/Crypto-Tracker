@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import ClickableChips from "../../Components/ClickableChips";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ControlledSwitches from "../../Components/ControlledSwitches";
-import Footer from "../../Components/Footer";
+import Footer from "../../Components/Shared/Footer";
 import LabelBottomNavigation from "../../Components/LabelBottomNavigation";
 
 const NotificationsPage = () => {

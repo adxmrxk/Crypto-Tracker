@@ -28,7 +28,11 @@ const MakePostSection = () => {
     <div className="w-[70%] border-2 mx-auto">
       <div className="flex flex-col border-blue-500">
         <div className="flex flex-row items-center p-5">
-          <div className="bg-gray-100 w-[64px] h-[64px] rounded-full"></div>
+          <div className="bg-gradient-to-br to-gray-400 via-gray-300 from-gray-200 w-[64px] h-[64px] rounded-full flex justify-center items-center text-2xl">
+            {user?.profilePicture !== ""
+              ? user?.profilePicture
+              : user?.username.slice(0, 2).toUpperCase()}
+          </div>
           <div className="">
             <form className="w-[870px]" onSubmit={submitPost}>
               <textarea
@@ -43,6 +47,7 @@ const MakePostSection = () => {
                 }}
                 placeholder="How do you feel about the markets today? Share your thoughts!"
                 onChange={(e) => setPostText(e.target.value)}
+                value={postText}
               ></textarea>
               <div className="flex flex-row justify-between border-2 ml-1.5 w-[872px] mt-3">
                 <div className="border border-red-800 w-fit flex flex-row gap-3">

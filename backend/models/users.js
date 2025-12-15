@@ -18,8 +18,17 @@ const User = mongoose.model(
       type: String,
       required: true,
       minlength: 5,
-      maxlength: 32,
+      maxlength: 64,
       unique: true,
+    },
+
+    displayName: {
+      type: String,
+      minlength: 5,
+      maxlength: 32,
+      default: function () {
+        return this.username;
+      },
     },
 
     gender: {
@@ -27,6 +36,11 @@ const User = mongoose.model(
       minlength: 4,
       maxlength: 32,
       default: null,
+    },
+
+    profilePicture: {
+      type: String,
+      default: "",
     },
 
     settings: userSettings,
