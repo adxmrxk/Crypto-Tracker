@@ -43,6 +43,16 @@ const User = mongoose.model(
       default: "",
     },
 
+    followers: {
+      type: Number,
+      default: 0,
+    },
+
+    following: {
+      type: Number,
+      default: 0,
+    },
+
     settings: userSettings,
 
     posts: {

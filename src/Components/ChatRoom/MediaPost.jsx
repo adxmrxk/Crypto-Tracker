@@ -25,11 +25,16 @@ const MediaPost = () => {
                 </div>
               </div>
               <div className="flex items-center h-fit">
-                <PersonAddIcon
-                  className="cursor-pointer mr-3 text-gray-700"
-                  sx={{ fontSize: 22 }}
-                ></PersonAddIcon>
-                <div className="flex flex-row cursor-pointer">
+                <div
+                  className="w-8 h-8 flex items-center justify-center rounded-full p-1
+                hover:bg-blue-300/60 hover:scale-105 duration-300 transition-all cursor-pointer mr-2"
+                >
+                  <PersonAddIcon
+                    className=" text-gray-700"
+                    sx={{ fontSize: 22 }}
+                  ></PersonAddIcon>
+                </div>
+                <div className="flex flex-row items-center justify-center cursor-pointer w-8 h-8 hover:bg-blue-300/60 hover:scale-105 duration-300 transition-all rounded-full p-1">
                   <h1 className="text-gray-700">•</h1>
                   <h1 className="text-gray-700">•</h1>
                   <h1 className="text-gray-700">•</h1>
