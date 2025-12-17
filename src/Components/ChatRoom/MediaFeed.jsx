@@ -14,7 +14,7 @@ const MediaFeed = () => {
         <MakePostSection />
       )}
       <div className="w-[70%] mx-auto pt-5">
-        <div className="flex flex-row gap-3 p-5">
+        <div className="flex flex-row gap-3">
           <h1
             className="cursor-pointer "
             onClick={() => {
@@ -56,7 +56,10 @@ const MediaFeed = () => {
             Profile
           </h1>
         </div>
-        <div className="border-2 border-purple-500">
+        <div className="mb-6 mt-3 w-[71.5%]">
+          <hr className="border-gray-400 my-1"></hr>
+        </div>
+        <div className="">
           {sectionSelected === "Explore" ? <MediaPost></MediaPost> : null}
           {sectionSelected === "Following" ? (
             <FollowingSection></FollowingSection>

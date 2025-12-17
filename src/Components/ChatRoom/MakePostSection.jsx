@@ -14,7 +14,10 @@ const MakePostSection = () => {
       `http://localhost:5000/api/posts/${user._id}`,
       {
         $push: {
-          posts: { content: postText, authorUsername: `${user?.username}` },
+          "socials.posts": {
+            content: postText,
+            authorUsername: user?.username,
+          },
         },
       }
     );

@@ -7,7 +7,7 @@ const MediaPost = () => {
   //https://www.google.com/search?q=user+post+template+twitter&sca_esv=abeb4f522ce11e62&rlz=1C1VDKB_enCA1019CA1019&udm=2&biw=1920&bih=945&sxsrf=AE3TifMo4wM9olHg49aufq5DSA4KMK97xw%3A1765814565422&ei=JTFAaaPAGdXH0PEPq4PXwAY&ved=0ahUKEwjj5qTv-7-RAxXVIzQIHavBFWgQ4dUDCBI&uact=5&oq=user+post+template+twitter&gs_lp=Egtnd3Mtd2l6LWltZyIadXNlciBwb3N0IHRlbXBsYXRlIHR3aXR0ZXJIvwlQuAFYoQlwAXgAkAEAmAFjoAG4BKoBATe4AQPIAQD4AQGYAgCgAgCYAwCIBgGSBwCgB7sCsgcAuAcAwgcAyAcAgAgA&sclient=gws-wiz-img#sv=CAMSVhoyKhBlLUF5VmFtTzlweTE5OGlNMg5BeVZhbU85cHkxOThpTToOQWJYVHVFTzc2V0Y1MU0gBCocCgZtb3NhaWMSEGUtQXlWYW1POXB5MTk4aU0YADABGAcggbD3yAkwAkoKCAIQAhgCIAIoAg
   return (
     <div className="p-3 grid grid-cols-2 gap-3">
-      {user?.posts?.map((post, index) => (
+      {user?.socials?.posts?.map((post, index) => (
         <div key={index} className="border-2 border-blue-400 mb-5 p-5">
           <div className="">
             <div className="flex flex-row justify-between">

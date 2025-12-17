@@ -3,6 +3,7 @@ const Joi = require("joi");
 const userSettings = require("./userSettings.js");
 const userCoinNotifications = require("./userCoinNotifications.js");
 const userPosts = require("./userPosts.js");
+const userSocials = require("./userSocials.js");
 
 const User = mongoose.model(
   "User",
@@ -43,22 +44,9 @@ const User = mongoose.model(
       default: "",
     },
 
-    followers: {
-      type: Number,
-      default: 0,
-    },
-
-    following: {
-      type: Number,
-      default: 0,
-    },
-
     settings: userSettings,
 
-    posts: {
-      type: [userPosts],
-      default: [],
-    },
+    socials: userSocials,
 
     createdAt: {
       type: Date,
