@@ -11,7 +11,7 @@ import MediaFeed from "../Components/ChatRoom/MediaFeed";
 const ChatRoomPage = () => {
   return (
     <div>
-      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-400 via-slate-500 to-slate-600">
+      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen ">
         <MediaFeed></MediaFeed>
       </div>
 

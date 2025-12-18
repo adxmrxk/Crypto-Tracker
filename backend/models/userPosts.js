@@ -5,10 +5,10 @@ const userPosts = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    maxLength: 750,
+    maxLength: 1000,
   },
 
-  authorUsername: {
+  author: {
     required: true,
     type: String,
   },
@@ -31,14 +31,15 @@ const userPosts = new mongoose.Schema({
   comments: {
     type: [
       {
-        commenterUsername: {
+        author: {
           type: String,
+          required: true,
         },
 
         content: {
           type: String,
           required: true,
-          maxLength: 300,
+          maxLength: 250,
         },
 
         likes: {

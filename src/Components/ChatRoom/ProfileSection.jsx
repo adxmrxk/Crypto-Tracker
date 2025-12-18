@@ -3,14 +3,16 @@ import { UserContext } from "../../Pages/SkeletonPage";
 import CheckIcon from "@mui/icons-material/Check";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EditIcon from "@mui/icons-material/Edit";
+import RecommendedAccounts from "./RecommendedAccounts";
 
 function ProfileSection() {
   const { user, setUser } = useContext(UserContext);
   const [selected, setSelected] = useState("Posts");
+  const [editProfile, setEditProfile] = useState(false);
 
   return (
-    <div className="flex justify-start">
-      <div className="w-[71.5%] pt-5">
+    <div className="flex justify-between">
+      <div className="w-[66.5%] pt-5">
         <div className="flex justify-between border-2">
           <div className="flex flex-row">
             <div className="bg-gradient-to-br to-gray-400 via-gray-300 from-gray-200 w-[74px] h-[74px] rounded-full flex justify-center items-center text-2xl">
@@ -29,12 +31,14 @@ function ProfileSection() {
               </div>
             </div>
           </div>
-          <div className="bg-slate-700 w-fit h-fit py-1 px-4 hover:bg-slate-600 duration-300 transition-all cursor-pointer rounded-sm">
-            <EditIcon
-              className="mr-1 text-gray-200"
-              sx={{ fontSize: 23 }}
-            ></EditIcon>
-            <button className="cursor-pointer text-gray-200">Edit</button>
+          <div className="flex justify-center items-center">
+            <div className="bg-slate-700 w-fit h-fit py-1 px-4 hover:bg-slate-600 duration-300 transition-all cursor-pointer rounded-sm">
+              <EditIcon
+                className="mr-1 text-gray-200"
+                sx={{ fontSize: 23 }}
+              ></EditIcon>
+              <button className="cursor-pointer text-gray-200">Edit</button>
+            </div>
           </div>
         </div>
         <p className="w-fit mt-4">
@@ -63,9 +67,9 @@ function ProfileSection() {
         </div>
         {selected === "Posts" ? (
           <div>
-            {user.posts?.length > 0 ? (
+            {user?.socials?.posts?.length > 0 ? (
               <div>
-                {user.posts.map((post, index) => {
+                {user?.socials.posts.map((post, index) => {
                   return (
                     <div>
                       <div className="">
@@ -115,18 +119,21 @@ function ProfileSection() {
                 })}
               </div>
             ) : (
-              <div>
-                <h1 className="text-lg font-semibold">Nothing Here!</h1>
-                <p className="text-md">
+              <div className="border-2 flex flex-col justify-center items-center w-[65%]">
+                <h1 className="text-lg font-semibold text-left">
+                  Nothing Here!
+                </h1>
+                <p className="text-md text-center">
                   You can make your first post, or discover and follow accounts
                   you are interested in!
                 </p>
-                <button>Create new post</button>
+                <button className="border-2 mt-3">Create new post</button>
               </div>
             )}
           </div>
         ) : null}
       </div>
+      <RecommendedAccounts></RecommendedAccounts>
     </div>
   );
 }

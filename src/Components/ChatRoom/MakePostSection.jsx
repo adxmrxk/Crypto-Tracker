@@ -10,13 +10,14 @@ const MakePostSection = () => {
 
   const submitPost = async (event) => {
     event.preventDefault();
+    console.log("post text length: ", postText.length);
     const response = await axios.post(
       `http://localhost:5000/api/posts/${user._id}`,
       {
         $push: {
           "socials.posts": {
             content: postText,
-            authorUsername: user?.username,
+            author: user?.username,
           },
         },
       }
@@ -37,7 +38,7 @@ const MakePostSection = () => {
               : user?.username.slice(0, 2).toUpperCase()}
           </div>
           <div className="">
-            <form className="w-[870px]" onSubmit={submitPost}>
+            <form className="w-[800px]" onSubmit={submitPost}>
               <textarea
                 className={`text-md text-left border border-blue-600 w-full ml-2 h-[50px] flex ${
                   expanded ? "h-[100px]" : "h-[50px]"
@@ -52,7 +53,7 @@ const MakePostSection = () => {
                 onChange={(e) => setPostText(e.target.value)}
                 value={postText}
               ></textarea>
-              <div className="flex flex-row justify-between border-2 ml-1.5 w-[872px] mt-3">
+              <div className="flex flex-row justify-between border-2 ml-1.5 w-[800px] mt-3">
                 <div className="border border-red-800 w-fit flex flex-row gap-3">
                   <h1 className="cursor-pointer">Image</h1>
                   <h1 className="cursor-pointer">GIF</h1>

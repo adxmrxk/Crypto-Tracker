@@ -56,7 +56,7 @@ const MediaFeed = () => {
             Profile
           </h1>
         </div>
-        <div className="mb-6 mt-3 w-[71.5%]">
+        <div className="mb-6 mt-3 w-[66%]">
           <hr className="border-gray-400 my-1"></hr>
         </div>
         <div className="">
