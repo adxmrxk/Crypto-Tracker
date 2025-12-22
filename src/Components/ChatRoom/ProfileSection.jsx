@@ -4,6 +4,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import RecommendedAccounts from "./RecommendedAccounts";
+import EditProfile from "./EditProfile";
 
 function ProfileSection() {
   const { user, setUser } = useContext(UserContext);
@@ -12,6 +13,12 @@ function ProfileSection() {
 
   return (
     <div className="flex justify-between">
+      {editProfile ? (
+        <EditProfile
+          editProfile={editProfile}
+          setEditProfile={setEditProfile}
+        ></EditProfile>
+      ) : null}
       <div className="w-[66.5%] pt-5">
         <div className="flex justify-between border-2">
           <div className="flex flex-row">
@@ -32,7 +39,12 @@ function ProfileSection() {
             </div>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-slate-700 w-fit h-fit py-1 px-4 hover:bg-slate-600 duration-300 transition-all cursor-pointer rounded-sm">
+            <div
+              className="bg-slate-700 w-fit h-fit py-1 px-4 hover:bg-slate-600 duration-300 transition-all cursor-pointer rounded-sm"
+              onClick={() => {
+                setEditProfile(true);
+              }}
+            >
               <EditIcon
                 className="mr-1 text-gray-200"
                 sx={{ fontSize: 23 }}
@@ -84,10 +96,10 @@ function ProfileSection() {
                             </div>
                             <div className="flex flex-col w-fit border-2">
                               <h1 className="font-semibold text-lg">
-                                {post.authorUsername}
+                                {user?.displayName}
                               </h1>
                               <h1 className="-mt-1 -ml-5 text-md">
-                                {user?.displayName}
+                                @{user?.username}
                               </h1>
                             </div>
                           </div>

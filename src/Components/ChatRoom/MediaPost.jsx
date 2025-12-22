@@ -15,7 +15,7 @@ const MediaPost = () => {
           <div className="bg-gradient-to-r from-gray-600 via-gray-700 to-gray-700">
             <div className="flex flex-row justify-between">
               <div className="flex flex-row gap-3">
-                <div className="bg-gradient-to-br to-gray-400 via-gray-300 from-gray-200 w-[64px] h-[64px] rounded-full flex justify-center items-center text-2xl">
+                <div className="bg-gradient-to-br to-gray-400 via-gray-300 from-gray-200 w-[64px] h-[64px] rounded-full flex justify-center items-center text-2xl ">
                   {user?.profilePicture !== ""
                     ? user?.profilePicture
                     : user?.username.slice(0, 2).toUpperCase()}

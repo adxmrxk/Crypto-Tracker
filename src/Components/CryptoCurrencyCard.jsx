@@ -116,7 +116,7 @@ const CryptoCurrencyCard = ({
                         <h1 className="text-left text-lg font-semibold text-gray-100 bg-blue-500/20 rounded-xs px-1 ml-2">
                           $
                           {Number(
-                            element.current_price.toFixed(2)
+                            element.current_price?.toFixed(2)
                           ).toLocaleString()}
                         </h1>
                         <h1 className="lg:text-base text-sm font-normal text-gray-300 ml-3">
@@ -131,7 +131,7 @@ const CryptoCurrencyCard = ({
                         >
                           {`${
                             element.price_change_percentage_24h > 0 ? "+" : ""
-                          }${element.price_change_percentage_24h.toFixed(2)}`}
+                          }${element.price_change_percentage_24h?.toFixed(2)}`}
                           %
                         </h1>
                       </div>
