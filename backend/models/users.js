@@ -73,19 +73,37 @@ const User = mongoose.model(
             type: String,
           },
 
-          dateAdded: {
-            type: Date,
-            default: Date.now(),
-          },
-
           notifications: userCoinNotifications,
         },
       ],
       default: [],
     },
 
-    serverList: {
-      type: [String],
+    transactions: {
+      type: [
+        {
+          coin: {
+            type: String,
+          },
+          amount: {
+            type: Number,
+          },
+          ticker: {
+            type: String,
+          },
+          image: {
+            type: String,
+          },
+          dateOfTransaction: {
+            type: Date,
+            default: Date.now(),
+          },
+
+          transactionType: {
+            type: String,
+          },
+        },
+      ],
       default: [],
     },
 

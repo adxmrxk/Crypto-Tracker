@@ -31,14 +31,7 @@ const MediaFeed = () => {
           >
             Following
           </h1>
-          <h1
-            className="cursor-pointer"
-            onClick={() => {
-              setSectionSelected("Article");
-            }}
-          >
-            Articles
-          </h1>
+
           <h1
             className="cursor-pointer "
             onClick={() => {
@@ -64,9 +57,7 @@ const MediaFeed = () => {
           {sectionSelected === "Following" ? (
             <FollowingSection></FollowingSection>
           ) : null}
-          {sectionSelected === "Article" ? (
-            <ArticlesSection></ArticlesSection>
-          ) : null}
+
           {sectionSelected === "Message" ? (
             <MessagesSection></MessagesSection>
           ) : null}

@@ -1,18 +1,7 @@
 import React from "react";
 import { Shield, TrendingUp, Activity, AlertCircle } from "lucide-react";
-import usePortfolioRisk from "../../hooks/usePortfolioRisk";
 
-const PortfolioRiskSection = ({ watchList }) => {
-  const risk = usePortfolioRisk(watchList);
-
-  // Safe destructuring with defaults
-  const {
-    riskScore = 0,
-    volatility = 0,
-    diversity = "N/A",
-    exposure = "N/A",
-  } = risk || {};
-
+const PortfolioRiskSection = () => {
   return (
     <div>
       <h1 className="text-left text-lg font-semibold text-white mb-4">
@@ -20,7 +9,6 @@ const PortfolioRiskSection = ({ watchList }) => {
       </h1>
 
       <div className="border-2 border-slate-600 rounded-xl p-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 shadow-lg">
-        {/* TOP SECTION */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-amber-500/20">

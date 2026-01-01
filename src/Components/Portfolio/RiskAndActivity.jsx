@@ -8,19 +8,17 @@ const RiskAndActivity = () => {
   const { user, setUser } = useContext(UserContext);
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3">
-      <PortfolioRiskSection watchList={user.watchList}></PortfolioRiskSection>
-
+    <div className="space-y-6 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 h-[500px]">
       {/* Transactions Section */}
       <div className="mt-7">
         <div className="flex flex-row justify-between">
-          <h1 className="text-left mb-2 text-md font-semibold text-gray-200">
+          <h1 className="text-left mb-2 text-lg font-semibold text-gray-200">
             Transactions
           </h1>
-          <h1 className="text-md font-semibold text-gray-200">View All</h1>
+          <h1 className="text-lg font-semibold text-gray-200">View All</h1>
         </div>
         <div className="grid grid-cols-3 grid-rows-2 gap-3">
-          {user?.watchList.slice(0, 9).map((element, index) => {
+          {user?.transactions?.slice(0, 9).map((element, index) => {
             return (
               <div
                 key={index}
@@ -38,7 +36,7 @@ const RiskAndActivity = () => {
                         element.coin.slice(1, element.coin.length)}
                     </h1>
                     <h2 className="text-xs text-slate-200 text-left -mt-0.5">
-                      {element.dateAdded.slice(0, 10)}
+                      {element.dateOfTransaction.slice(0, 10)}
                     </h2>
                   </div>
                 </div>
