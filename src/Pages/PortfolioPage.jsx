@@ -18,7 +18,7 @@ const Dashboard = () => {
 
   return (
     <div className="">
-      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-400 via-slate-500 to-slate-600">
+      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-gradient-to-br from-slate-500 via-slate-600 to-slate-700">
         <Analytics></Analytics>
       </div>
 

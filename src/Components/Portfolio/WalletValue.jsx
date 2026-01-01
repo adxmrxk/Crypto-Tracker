@@ -107,7 +107,7 @@ const WalletValue = () => {
           </div>
         </div>
       </div>
-      <div className="border-2 border-purple-400 w-[420px]">
+      <div className=" w-[420px]">
         <RiskAndActivity></RiskAndActivity>
       </div>
     </div>

@@ -43,6 +43,17 @@ const PortfolioDistributionSchema = () => {
     ],
   };
 
+  if (coins.length === 0) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
+        <h1 className="text-xl font-bold mb-4 text-gray-200">
+          Portfolio Distribution
+        </h1>
+        <p className="text-sm">No assets in portfolio</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <h1 className="text-2xl font-bold flex justify-center text-gray-200">

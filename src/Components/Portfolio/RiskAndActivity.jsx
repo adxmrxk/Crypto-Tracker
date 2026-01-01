@@ -8,14 +8,16 @@ const RiskAndActivity = () => {
   const { user, setUser } = useContext(UserContext);
 
   return (
-    <div className="space-y-6">
-      <PortfolioRiskSection></PortfolioRiskSection>
+    <div className="space-y-6 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3">
+      <PortfolioRiskSection watchList={user.watchList}></PortfolioRiskSection>
 
       {/* Transactions Section */}
       <div className="mt-7">
         <div className="flex flex-row justify-between">
-          <h1 className="text-left mb-2 text-md font-semibold">Transactions</h1>
-          <h1 className="text-md font-semibold">View All</h1>
+          <h1 className="text-left mb-2 text-md font-semibold text-gray-200">
+            Transactions
+          </h1>
+          <h1 className="text-md font-semibold text-gray-200">View All</h1>
         </div>
         <div className="grid grid-cols-3 grid-rows-2 gap-3">
           {user?.watchList.slice(0, 9).map((element, index) => {

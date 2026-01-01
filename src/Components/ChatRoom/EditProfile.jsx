@@ -35,7 +35,7 @@ function EditProfile({ editProfile, setEditProfile }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/40">
-      <div className="relative bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 w-full max-w-2xl rounded-xl shadow-2xl ring-1 ring-gray-500/40 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 w-full max-w-2xl rounded-xl shadow-2xl ring-1 ring-gray-500/40 overflow-hidden">
         {/* Header */}
         <div className="border-b border-gray-600/50 p-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
