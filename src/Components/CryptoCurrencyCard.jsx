@@ -44,7 +44,22 @@ const CryptoCurrencyCard = ({
         },
       }
     );
-    const newUser = response.data;
+    const response2 = await axios.patch(
+      `http://localhost:5000/api/addTransaction/${user._id}`,
+      {
+        $addToSet: {
+          transactions: {
+            coin: element.id,
+            amount: value,
+            ticker: String(element.symbol),
+            image: element.image,
+            transactionType: "buy",
+          },
+        },
+      }
+    );
+    const newUser = response2.data;
+
     setUser(newUser);
     setUserInput("");
   };

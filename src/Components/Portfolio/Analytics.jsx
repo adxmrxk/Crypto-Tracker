@@ -29,6 +29,7 @@ const Analytics = () => {
           <PortfolioTable></PortfolioTable>
           <PortfolioDistribution></PortfolioDistribution>
         </div>
+        <WatchList></WatchList>
       </div>
     </div>
   );

@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../../Pages/SkeletonPage';
+import React, { useContext } from "react";
+import { UserContext } from "../../Pages/SkeletonPage";
 
 const WatchList = ({ coin, setCoin, coinClicked, setCoinClicked }) => {
   const { user } = useContext(UserContext);
 
   const handleClick = (element) => {
-    console.log('Watch List Handle Click');
+    console.log("Watch List Handle Click");
     setCoin(element);
     setCoinClicked(true);
   };
 
   return (
-    <div className="flex flex-row flex-wrap max-w-[600px] h-fit py-4 pl-3 pr-2 mt-2 overflow-y-auto bg-slate-900/60 backdrop-blur-md rounded-xl shadow-lg shadow-slate-950/40 border border-slate-700 mr-55">
+    <div className="flex flex-row flex-wrap max-w-[1285px] h-fit py-4 pl-3 pr-2 mt-5 overflow-y-auto bg-slate-900/60 backdrop-blur-md rounded-xl shadow-lg shadow-slate-950/40 border border-slate-700 mr-55">
       {user?.watchList?.length ? (
         user.watchList.map((element, index) => (
           <div

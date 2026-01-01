@@ -5,6 +5,7 @@ import FollowingSection from "./FollowingSection";
 import MakePostSection from "./MakePostSection";
 import MessagesSection from "./MessagesSection";
 import ProfileSection from "./ProfileSection";
+import SearchProfiles from "./SearchProfiles";
 
 const MediaFeed = () => {
   const [sectionSelected, setSectionSelected] = useState("Explore");
@@ -13,6 +14,7 @@ const MediaFeed = () => {
       {(sectionSelected === "Explore" || sectionSelected === "Following") && (
         <MakePostSection />
       )}
+      {sectionSelected === "Profile" && <SearchProfiles />}
       <div className="w-[70%] mx-auto pt-5">
         <div className="flex flex-row gap-3">
           <h1
@@ -33,14 +35,6 @@ const MediaFeed = () => {
           </h1>
 
           <h1
-            className="cursor-pointer "
-            onClick={() => {
-              setSectionSelected("Message");
-            }}
-          >
-            Messages
-          </h1>
-          <h1
             className="cursor-pointer"
             onClick={() => {
               setSectionSelected("Profile");
@@ -58,9 +52,6 @@ const MediaFeed = () => {
             <FollowingSection></FollowingSection>
           ) : null}
 
-          {sectionSelected === "Message" ? (
-            <MessagesSection></MessagesSection>
-          ) : null}
           {sectionSelected === "Profile" ? (
             <ProfileSection></ProfileSection>
           ) : null}

@@ -5,6 +5,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import RecommendedAccounts from "./RecommendedAccounts";
 import EditProfile from "./EditProfile";
+import SearchProfiles from "./SearchProfiles";
 
 function ProfileSection() {
   const { user, setUser } = useContext(UserContext);

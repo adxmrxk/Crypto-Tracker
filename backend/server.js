@@ -13,12 +13,14 @@ const settingsRoutes = require("./routes/settingsRoutes");
 const serverListsRoutes = require("./routes/serverListsRoutes");
 const watchListRoutes = require("./routes/watchListsRoutes");
 const postsRoutes = require("./routes/postsRoutes");
+const transactionsRoutes = require("./routes/transactionsRoutes");
 
 app.use("/", usersRoutes);
 app.use("/", settingsRoutes);
 app.use("/", serverListsRoutes);
 app.use("/", watchListRoutes);
 app.use("/", postsRoutes);
+app.use("/", transactionsRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello from the backend");
