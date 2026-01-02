@@ -26,28 +26,6 @@ app.get("/", (req, res) => {
   res.send("Hello from the backend");
 });
 
-app.get("/api/coin/:id/market_chart", async (req, res) => {
-  const { id } = req.params;
-  const { from, to } = req.query;
-
-  try {
-    const response = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range`,
-      {
-        params: {
-          vs_currency: "usd",
-          from,
-          to,
-        },
-      }
-    );
-    res.json(response.data);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Failed to fetch data from CoinGecko" });
-  }
-});
-
 mongoose
   .connect("mongodb://localhost:27017/cryptoApp", {
     useNewUrlParser: true,

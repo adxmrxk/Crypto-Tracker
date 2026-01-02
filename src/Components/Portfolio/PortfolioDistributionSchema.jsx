@@ -28,14 +28,14 @@ const PortfolioDistributionSchema = () => {
         data: AmountToPrice.map((coin) => coin.amount * coin.price),
         borderColor: "#ffffff",
         backgroundColor: [
-          "#1e40af",
-          "#2563eb",
-          "#3b82f6",
-          "#60a5fa",
-          "#93c5fd",
-          "#bfdbfe",
-          "#dbeafe",
-          "#1d4ed8",
+          "#d97706", // muted orange
+          "#f2873f", // soft terracotta
+          "#d6a600", // mustard yellow
+          "#c75c2b", // burnt orange
+          "#eab308", // golden mustard
+          "#d97706", // darker amber
+          "#fbbf24", // light amber
+          "#f4a261", // soft peach/orange
         ],
         borderWidth: 1,
         hoverOffset: 8,
