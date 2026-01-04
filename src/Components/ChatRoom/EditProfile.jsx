@@ -207,7 +207,7 @@ function EditProfile({ editProfile, setEditProfile }) {
           </button>
           <button
             onClick={handleSave}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 hover:opacity-90 cursor-pointer text-white font-medium rounded-lg transition-colors"
           >
             Save Changes
           </button>

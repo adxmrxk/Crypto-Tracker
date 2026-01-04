@@ -21,7 +21,7 @@ function ProfileSection() {
         ></EditProfile>
       ) : null}
       <div className="w-[66.5%] pt-5">
-        <div className="flex justify-between border-2">
+        <div className="flex justify-between border-2 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3">
           <div className="flex flex-row">
             <div className="bg-gradient-to-br to-gray-400 via-gray-300 from-gray-200 w-[74px] h-[74px] rounded-full flex justify-center items-center text-2xl">
               {user?.profilePicture !== ""
@@ -34,14 +34,20 @@ function ProfileSection() {
                 <h1>@{user?.username}</h1>
               </div>
               <div className="flex flex-row gap-3 mt-3">
-                <p className="">{user?.following} following</p>
-                <p className="">{user?.followers} followers</p>
+                <p className="">
+                  {user?.socials?.following ? user?.socials?.following : 0}{" "}
+                  following
+                </p>
+                <p className="">
+                  {user?.socials?.followers ? user?.socials?.followers : 0}{" "}
+                  followers
+                </p>
               </div>
             </div>
           </div>
           <div className="flex justify-center items-center">
             <div
-              className="bg-slate-700 w-fit h-fit py-1 px-4 hover:bg-slate-600 duration-300 transition-all cursor-pointer rounded-sm"
+              className="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600  w-fit h-fit py-1 px-4  duration-300 transition-all cursor-pointer rounded-sm"
               onClick={() => {
                 setEditProfile(true);
               }}

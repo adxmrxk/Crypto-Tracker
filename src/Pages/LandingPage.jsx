@@ -14,6 +14,7 @@ import { Navigate } from "react-router-dom";
 import CURRENCIES_FRONTEND from "../utils/currenciesFrontEnd";
 import CONTENT_LANGUAGES_FRONT_END from "../utils/contentLanguagesFrontEnd";
 import FakeChart from "../Components/Landing/FakeChart";
+import { comment } from "postcss";
 
 const LandingPage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -50,6 +51,8 @@ const LandingPage = () => {
         displayLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
         contentLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
       },
+      socials: {},
+
       password: userPassword,
     };
 
