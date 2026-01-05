@@ -20,7 +20,7 @@ function RecommendedAccounts() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 to-blue-950 p-4 h-[650px] w-[400px] overflow-hidden flex flex-col gap-3 rounded-xl border border-slate-800/50">
+    <div className="bg-gradient-to-br from-slate-900 to-blue-950 p-4 h-[650px] w-[400px] overflow-hidden flex flex-col gap-3 rounded-xl border border-slate-800/50 ml-5">
       <h1 className="text-xl font-bold text-blue-100 mb-3">
         Recommended Accounts
       </h1>
