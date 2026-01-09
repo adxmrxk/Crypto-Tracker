@@ -54,6 +54,11 @@ const User = mongoose.model(
       immutable: true,
     },
 
+    lastEdited: {
+      type: Date,
+      default: Date.now,
+    },
+
     watchList: {
       type: [
         {

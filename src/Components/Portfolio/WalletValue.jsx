@@ -1,11 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import WalletValueChart from "./WalletValueChart";
 import RiskAndActivity from "./RiskAndActivity";
+import AllTransactions from "./AllTransactions";
+import { UserContext } from "../../Pages/SkeletonPage";
 
-const WalletValue = () => {
-  const [borderColour, setBorderColour] = useState("1H");
+const WalletValue = ({ cryptoData, isLoading, isFetching }) => {
   const [timeRange, setTimeRange] = useState("1H");
+  const [showAllTransactions, setShowAllTransactions] = useState(false);
+  const { user } = useContext(UserContext);
+
+  const coins = user?.watchList?.map((coin) => coin.coin) || [];
+  const data = cryptoData;
+
+  // Calculate total wallet value
+  const totalWalletValue = data?.reduce((total, coin) => {
+    const userCoin = user?.watchList?.find((item) => item.coin === coin.id);
+    if (userCoin) {
+      return total + (userCoin.amount * coin.current_price);
+    }
+    return total;
+  }, 0) || 0;
+
+  // Calculate 24h change
+  const totalChange24h = data?.reduce((total, coin) => {
+    const userCoin = user?.watchList?.find((item) => item.coin === coin.id);
+    if (userCoin) {
+      const coinValue = userCoin.amount * coin.current_price;
+      const changePercent = coin.price_change_percentage_24h || 0;
+      return total + (coinValue * changePercent / 100);
+    }
+    return total;
+  }, 0) || 0;
+
+  const changePercent = totalWalletValue > 0 ? (totalChange24h / (totalWalletValue - totalChange24h)) * 100 : 0;
 
   return (
     <div className="flex flex-row justify-between w-[1280px] mx-auto">
@@ -13,8 +41,19 @@ const WalletValue = () => {
         <div className="">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col">
-              <h1 className="text-left ml-2">Wallet Value</h1>
-              <h2 className="text-left text-2xl font-semibold ml-2">$34,212</h2>
+              <div className="flex items-center gap-2">
+                <h1 className="text-left text-gray-300">Wallet Value</h1>
+                {isFetching && !isLoading && (
+                  <span className="text-xs text-blue-400 animate-pulse">Updating...</span>
+                )}
+              </div>
+              <h2 className="text-left text-2xl font-semibold mt-2 mb-3">
+                {isLoading ? (
+                  <span className="text-gray-400">Loading...</span>
+                ) : (
+                  `$${totalWalletValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                )}
+              </h2>
             </div>
             <div className="flex items-center">
               <ul className="flex flex-row gap-3">
@@ -88,28 +127,47 @@ const WalletValue = () => {
                     setTimeRange("3M");
                   }}
                 >
-                  3MD
+                  3M
                 </li>
               </ul>
             </div>
           </div>
-          <WalletValueChart></WalletValueChart>
+          <WalletValueChart timeRange={timeRange} />
         </div>
         <div className="flex flex-row gap-3 pt-3">
-          <div className="border-3 border-black w-[150px] py-5">
-            <h1 className="text-sm">Life Time Earnings</h1>
+          <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 border border-slate-600 rounded-lg w-[180px] py-4 px-3">
+            <h1 className="text-xs text-gray-400 mb-1">Total Holdings</h1>
+            <h2 className="text-lg font-semibold text-gray-100">
+              {coins.length} {coins.length === 1 ? 'Coin' : 'Coins'}
+            </h2>
           </div>
-          <div className="border-3 border-black w-[150px] flex items-center justify-center">
-            <h1 className="text-sm">Changes Since Last Logged In</h1>
+          <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 border border-slate-600 rounded-lg w-[180px] py-4 px-3">
+            <h1 className="text-xs text-gray-400 mb-1">24h Change</h1>
+            <h2 className={`text-lg font-semibold ${totalChange24h >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+              {isLoading ? '...' : `${totalChange24h >= 0 ? '+' : ''}$${Math.abs(totalChange24h).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            </h2>
           </div>
-          <div className="border-3 border-black w-[150px] flex items-center justify-center">
-            <h1 className="text-sm">Unrealized Gains</h1>
+          <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 border border-slate-600 rounded-lg w-[180px] py-4 px-3">
+            <h1 className="text-xs text-gray-400 mb-1">Best Performer</h1>
+            <h2 className="text-lg font-semibold text-emerald-400">
+              {isLoading ? '...' : data?.length > 0
+                ? `${data.reduce((best, coin) => (coin.price_change_percentage_24h || 0) > (best.price_change_percentage_24h || 0) ? coin : best, data[0])?.symbol?.toUpperCase() || '-'}`
+                : '-'}
+            </h2>
           </div>
         </div>
       </div>
       <div className=" w-[420px]">
-        <RiskAndActivity></RiskAndActivity>
+        <RiskAndActivity onViewAllClick={() => setShowAllTransactions(true)} />
       </div>
+
+      {/* All Transactions Modal */}
+      {showAllTransactions && (
+        <AllTransactions
+          showAllTransactions={showAllTransactions}
+          setShowAllTransactions={setShowAllTransactions}
+        />
+      )}
     </div>
   );
 };

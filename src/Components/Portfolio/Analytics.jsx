@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import WalletValue from "./WalletValue";
 import TopWinners from "./TopWinners";
 import WatchList from "./WatchList";
 import PortfolioDistribution from "./PortfolioDistribution";
 import PortfolioTable from "./PortfolioTable";
+import { UserContext } from "../../Pages/SkeletonPage";
+import useCryptoCurrency from "../../hooks/useCryptoCurrency";
 
 const Analytics = () => {
-  //https://www.google.com/search?sca_esv=bd4d588058061689&rlz=1C1VDKB_enCA1019CA1019&sxsrf=AE3TifOY8h-18iOFVSOYVDfjQe3KlG82lQ:1762665309649&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZrjP_Cx0LI1Ytb_FGcOviEiTm5uW1q0uNfK7KsnoL8hWZUZ3ZEPhe0cPqXxrOlmBaXNrzSbxDmRd08BPr8JCE3pVXYUHMVNzdlQeeldqIj87HIh_qeWv2dsxbnJ6fPc2VELOiSSXbq2vRa_L6GfTrXQznUpA3DmHKLfLVZ-NW_OcQP4WcPD_F2IquG9nkLmmIOrc7Ug&q=crypto+tracker+analytics+dashboard&sa=X&ved=2ahUKEwiV3Y79p-SQAxXnkokEHU5ROYUQtKgLegQIEhAB&biw=1920&bih=945&dpr=1#sv=CAMSVhoyKhBlLVdiakxKZS1yRTVSdm9NMg5XYmpMSmUtckU1UnZvTToOOXVtVHV5aWJaaEVxMk0gBCocCgZtb3NhaWMSEGUtV2JqTEplLXJFNVJ2b00YADABGAcg6Oi5NDACSgoIAhACGAIgAigC
-  //https://www.google.com/search?sca_esv=bd4d588058061689&rlz=1C1VDKB_enCA1019CA1019&sxsrf=AE3TifOY8h-18iOFVSOYVDfjQe3KlG82lQ:1762665309649&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZrjP_Cx0LI1Ytb_FGcOviEiTm5uW1q0uNfK7KsnoL8hWZUZ3ZEPhe0cPqXxrOlmBaXNrzSbxDmRd08BPr8JCE3pVXYUHMVNzdlQeeldqIj87HIh_qeWv2dsxbnJ6fPc2VELOiSSXbq2vRa_L6GfTrXQznUpA3DmHKLfLVZ-NW_OcQP4WcPD_F2IquG9nkLmmIOrc7Ug&q=crypto+tracker+analytics+dashboard&sa=X&ved=2ahUKEwiV3Y79p-SQAxXnkokEHU5ROYUQtKgLegQIEhAB&biw=1920&bih=945&dpr=1#sv=CAMSVhoyKhBlLVNsZXdoSkszcWZmQWtNMg5TbGV3aEpLM3FmZkFrTToOSUZOV2VTQWZBenRVRE0gBCocCgZtb3NhaWMSEGUtU2xld2hKSzNxZmZBa00YADABGAcgp8avhw4wAkoKCAIQAhgCIAIoAg
-  //https://www.google.com/search?sca_esv=bd4d588058061689&rlz=1C1VDKB_enCA1019CA1019&sxsrf=AE3TifOY8h-18iOFVSOYVDfjQe3KlG82lQ:1762665309649&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZrjP_Cx0LI1Ytb_FGcOviEiTm5uW1q0uNfK7KsnoL8hWZUZ3ZEPhe0cPqXxrOlmBaXNrzSbxDmRd08BPr8JCE3pVXYUHMVNzdlQeeldqIj87HIh_qeWv2dsxbnJ6fPc2VELOiSSXbq2vRa_L6GfTrXQznUpA3DmHKLfLVZ-NW_OcQP4WcPD_F2IquG9nkLmmIOrc7Ug&q=crypto+tracker+analytics+dashboard&sa=X&ved=2ahUKEwiV3Y79p-SQAxXnkokEHU5ROYUQtKgLegQIEhAB&biw=1920&bih=945&dpr=1#sv=CAMSVhoyKhBlLXAzS2RpWU9GN1haVkNNMg5wM0tkaVlPRjdYWlZDTToONkJTRmVvX1FhTTZMY00gBCocCgZtb3NhaWMSEGUtcDNLZGlZT0Y3WFpWQ00YADABGAcg-_ziiwswAkoKCAIQAhgCIAIoAg
+  const { user } = useContext(UserContext);
+
+  // Fetch crypto data ONCE here and pass to children
+  const coins = user?.watchList?.map((coin) => coin.coin) || [];
+  const { data: cryptoData, isLoading, isFetching } = useCryptoCurrency(coins);
+
+  // Only show loading on first load when there's no data at all
+  const showLoading = isLoading && !cryptoData;
+
   return (
     <div>
       <div className="mb-10">
@@ -22,12 +30,12 @@ const Analytics = () => {
         <hr className="border-gray-500 my-1 w-[50%] mx-auto mt-5"></hr>
       </div>
       <div className="flex flex-row justify-center ">
-        <WalletValue></WalletValue>
+        <WalletValue cryptoData={cryptoData} isLoading={showLoading} isFetching={isFetching} />
       </div>
       <div className="ml-80 mt-15 pb-10">
         <div className="flex flex-row justify-between w-[1280px] ">
-          <PortfolioTable></PortfolioTable>
-          <PortfolioDistribution></PortfolioDistribution>
+          <PortfolioTable cryptoData={cryptoData} isLoading={showLoading} isFetching={isFetching} />
+          <PortfolioDistribution cryptoData={cryptoData} isLoading={showLoading} isFetching={isFetching} />
         </div>
         <WatchList></WatchList>
       </div>

@@ -1,10 +1,10 @@
 import React from "react";
 import PortfolioDistributionSchema from "./PortfolioDistributionSchema";
 
-const PortfolioDistribution = () => {
+const PortfolioDistribution = ({ cryptoData, isLoading, isFetching }) => {
   return (
     <div className="w-[420px] h-[395px] bg-gradient-to-br from-slate-900 to-blue-950">
-      <PortfolioDistributionSchema></PortfolioDistributionSchema>
+      <PortfolioDistributionSchema cryptoData={cryptoData} isLoading={isLoading} isFetching={isFetching} />
     </div>
   );
 };

@@ -1,107 +1,192 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useMemo, useContext } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-import useCryptoCurrency from "../../hooks/useCryptoCurrency";
-import { Pie, Line } from "react-chartjs-2";
-import useHistoricalCryptoData from "../../hooks/useHistoricCryptoData";
-import { Form } from "react-router";
+import { Line } from "react-chartjs-2";
+import useMultiHistorical from "../../hooks/useMultiHistoricCryptoData";
 
 Chart.register(CategoryScale);
 
 const WalletValueChartSchema = ({ timeRange }) => {
-  const { user, setUser } = useContext(UserContext);
-  const oneHourAgo = React.useMemo(
-    () => Math.floor(Date.now() / 1000) - 60 * 60,
-    []
-  );
-  const oneDayAgo = React.useMemo(
-    () => Math.floor(Date.now() / 1000) - 24 * 60 * 60,
-    []
-  );
-  const oneWeekAgo = React.useMemo(
-    () => Math.floor(Date.now() / 1000) - 24 * 60 * 60 * 7,
-    []
-  );
-  const oneMonthAgo = React.useMemo(
-    () => Math.floor(Date.now() / 1000) - 24 * 60 * 60 * 30,
-    []
-  );
-  const threeMonthsAgo = React.useMemo(
-    () => Math.floor(Date.now() / 1000) - 24 * 60 * 60 * 90,
-    []
-  );
+  const { user } = useContext(UserContext);
 
-  const [from, setFrom] = useState(oneWeekAgo);
-  const now = React.useMemo(() => Math.floor(Date.now() / 1000), [from]);
-  let portfolioValue = 0;
+  const now = useMemo(() => Math.floor(Date.now() / 1000), []);
+
+  const getFromTimestamp = useMemo(() => {
+    switch (timeRange) {
+      case "1H":
+        return now - 60 * 60;
+      case "24H":
+        return now - 24 * 60 * 60;
+      case "7D":
+        return now - 7 * 24 * 60 * 60;
+      case "1M":
+        return now - 30 * 24 * 60 * 60;
+      case "3M":
+        return now - 90 * 24 * 60 * 60;
+      default:
+        return now - 7 * 24 * 60 * 60;
+    }
+  }, [timeRange, now]);
+
+  const coins = user?.watchList?.map((coin) => coin.coin) || [];
+  const { data: historicalData, isLoading } = useMultiHistorical(coins, getFromTimestamp, now);
+
+  // Process historical data to calculate portfolio value over time
+  const portfolioHistory = useMemo(() => {
+    if (!historicalData || historicalData.length === 0 || !user?.watchList?.length) {
+      return { labels: [], values: [] };
+    }
+
+    // Get price arrays from each coin's historical data
+    const coinPrices = historicalData.map((coinData, index) => {
+      const userCoin = user.watchList[index];
+      return {
+        amount: userCoin?.amount || 0,
+        prices: coinData?.prices || []
+      };
+    });
+
+    // Find the coin with the most data points to use as reference
+    const maxLength = Math.max(...coinPrices.map(c => c.prices.length));
+    if (maxLength === 0) return { labels: [], values: [] };
+
+    // Sample data points (max 50 points for smooth chart)
+    const sampleRate = Math.max(1, Math.floor(maxLength / 50));
+    const labels = [];
+    const values = [];
+
+    for (let i = 0; i < maxLength; i += sampleRate) {
+      let totalValue = 0;
+      let timestamp = null;
+
+      coinPrices.forEach((coin) => {
+        if (coin.prices[i]) {
+          if (!timestamp) timestamp = coin.prices[i][0];
+          totalValue += coin.amount * coin.prices[i][1];
+        }
+      });
+
+      if (timestamp) {
+        const date = new Date(timestamp);
+        let label;
+        if (timeRange === "1H") {
+          label = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } else if (timeRange === "24H") {
+          label = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } else {
+          label = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        }
+        labels.push(label);
+        values.push(totalValue);
+      }
+    }
+
+    return { labels, values };
+  }, [historicalData, user?.watchList, timeRange]);
 
   const chartData = {
-    labels: ["a", "b", "c", "d"],
+    labels: portfolioHistory.labels,
     datasets: [
       {
-        label: ["a", "b", "c", "d"],
-        data: [10, 20, 15, 30, 50, 45, 55, 37, 60, 80, 120, 90, 110],
-
-        //How data looks
-
-        borderColor: "#0f5fd6",
+        label: "Portfolio Value",
+        data: portfolioHistory.values,
+        borderColor: "#f59e0b",
         fill: true,
-        backgroundColor: "#fff",
-        tension: 0.3,
-        borderWidth: 1,
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, "rgba(245, 158, 11, 0.5)");
+          gradient.addColorStop(0.5, "rgba(251, 191, 36, 0.3)");
+          gradient.addColorStop(1, "rgba(252, 211, 77, 0.15)");
+          return gradient;
+        },
+        tension: 0.4,
+        borderWidth: 2,
         pointRadius: 0,
-        pointHoverRadius: 0,
-        pointBackgroundColor: "#ededed",
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: "#f59e0b",
+        pointHoverBorderColor: "#fff",
+        pointHoverBorderWidth: 2,
       },
     ],
   };
 
+  // Empty state
+  if (coins.length === 0) {
+    return (
+      <div className="w-[800px] h-[500px] flex items-center justify-center">
+        <p className="text-gray-400">Add coins to your watchlist to see portfolio history</p>
+      </div>
+    );
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="w-[800px] h-[500px] flex items-center justify-center">
+        <p className="text-gray-400">Loading chart data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-[800px] h-[500px]">
       <Line
-        className=""
         style={{ height: "100%", width: "100%" }}
         data={chartData}
         options={{
           responsive: true,
           maintainAspectRatio: false,
-          aspectRatio: 0,
+          interaction: {
+            mode: "index",
+            intersect: false,
+          },
           plugins: {
             legend: {
               display: false,
-              labels: {
-                color: "#fff",
-                font: { size: 12, weight: "semibold" },
-                boxWidth: 20,
-              },
             },
-
             tooltip: {
-              mode: "index",
-              intersect: false,
-            },
-          },
-
-          scales: {
-            x: {
-              display: false,
-            },
-
-            y: {
-              ticks: {
-                callback: function (value, index, ticks) {
-                  return "";
+              enabled: true,
+              backgroundColor: "#1e293b",
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              padding: 12,
+              cornerRadius: 8,
+              displayColors: false,
+              callbacks: {
+                label: function (context) {
+                  return `$${context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                 },
               },
-
+            },
+          },
+          scales: {
+            x: {
+              display: true,
               grid: {
-                drawTicks: false,
+                display: false,
+              },
+              ticks: {
+                color: "#9ca3af",
+                maxTicksLimit: 8,
+              },
+            },
+            y: {
+              display: true,
+              grid: {
+                color: "rgba(107, 114, 128, 0.2)",
+              },
+              ticks: {
+                color: "#9ca3af",
+                callback: function (value) {
+                  return "$" + value.toLocaleString();
+                },
               },
             },
           },
         }}
-      ></Line>
+      />
     </div>
   );
 };

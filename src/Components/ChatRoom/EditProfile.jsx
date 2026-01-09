@@ -102,7 +102,7 @@ function EditProfile({ editProfile, setEditProfile }) {
               </label>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
-                  <label className="relative w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden ring-4 ring-slate-600 cursor-pointer group">
+                  <label className="relative w-20 h-20 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 text-white cursor-pointer  flex items-center justify-center overflow-hidden ring-4 ring-slate-600 group">
                     {avatarPreview ? (
                       <img
                         src={avatarPreview}
@@ -111,7 +111,7 @@ function EditProfile({ editProfile, setEditProfile }) {
                       />
                     ) : (
                       <div className="text-white text-2xl font-bold group-hover:opacity-70 transition-opacity">
-                        @
+                        <img></img>
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity rounded-full"></div>
@@ -147,7 +147,7 @@ function EditProfile({ editProfile, setEditProfile }) {
                   className="w-full bg-slate-700/50 text-white px-4 py-3 rounded-lg border border-gray-600/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
-                  {displayName.length}/20
+                  {displayName.length}/32
                 </span>
               </div>
             </div>
@@ -166,12 +166,9 @@ function EditProfile({ editProfile, setEditProfile }) {
                   className="w-full bg-slate-700/50 text-white px-4 py-3 rounded-lg border border-gray-600/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
-                  {username.length}/20
+                  {username.length}/32
                 </span>
               </div>
-              <p className="text-xs text-left text-gray-400 mt-2">
-                * Username can only be changed once per 7 days
-              </p>
             </div>
           </div>
 

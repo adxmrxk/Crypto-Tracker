@@ -22,7 +22,7 @@ function ProfileSection() {
           ></EditProfile>
         ) : null}
         <div className="w-[66.5%] pt-5">
-          <div className="flex justify-between border-1 border-slate-600 hover:border-amber-400 p-3 w-[850px] bg-slate-800/50 transition-colors duration-300">
+          <div className="flex justify-between border-1 border-slate-600 p-3 w-[850px] bg-slate-800/50 transition-colors duration-300">
             <div className="flex flex-row">
               <div className="bg-gradient-to-r from-blue-400 to-purple-500 cursor-pointer hover:opacity-90 w-[74px] h-[74px] rounded-full flex justify-center items-center text-2xl text-white font-bold">
                 {user?.profilePicture !== ""
@@ -142,7 +142,7 @@ function ProfileSection() {
                   })}
                 </div>
               ) : (
-                <div className="border-1 border-slate-600 hover:border-amber-400 flex flex-col justify-center items-center w-[65%] p-6 bg-slate-800/30 transition-colors duration-300">
+                <div className="border-1 border-slate-600 flex flex-col justify-center items-center w-[65%] p-6 bg-slate-800/30 transition-colors duration-300">
                   <h1 className="text-lg font-semibold text-left text-white">
                     Nothing Here!
                   </h1>

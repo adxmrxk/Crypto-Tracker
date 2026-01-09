@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import APIClient from "../services/crypto-prices-api-client";
 
 const useMultiHistorical = (ids, from_date, to_date) => {
   return useQuery({
-    queryKey: ["multi-crypto", ids, from_date, to_date],
+    queryKey: ["multi-crypto", ids.slice().sort().join(","), from_date, to_date],
     queryFn: async () => {
       return Promise.all(
         ids.map((id) =>
@@ -13,6 +13,8 @@ const useMultiHistorical = (ids, from_date, to_date) => {
         )
       );
     },
+    staleTime: 30000,
+    placeholderData: keepPreviousData, // Keep old data visible while fetching new data
   });
 };
 

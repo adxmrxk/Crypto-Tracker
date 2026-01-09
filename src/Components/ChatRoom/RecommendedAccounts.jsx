@@ -28,7 +28,7 @@ function RecommendedAccounts() {
       {allUsers.length === 0 ? (
         <p className="text-slate-500 text-sm">No users found</p>
       ) : (
-        allUsers.map((userG) => (
+        allUsers.slice(0, 6).map((userG) => (
           <div
             key={userG._id}
             className="flex flex-row items-center justify-between w-full mb-2 bg-gradient-to-br from-slate-800/80 to-slate-800/40 p-3 rounded-xl hover:from-slate-700/80 hover:to-slate-700/40 transition-all duration-300 cursor-pointer border border-slate-700/30 hover:border-amber-400/50 backdrop-blur-sm"

@@ -64,7 +64,7 @@ const LandingPage = () => {
     setUser(createdUser);
   };
 
-  if (user.username) {
+  if (user && user.username) {
     return <Navigate to="/HomePage" replace />;
   }
 
