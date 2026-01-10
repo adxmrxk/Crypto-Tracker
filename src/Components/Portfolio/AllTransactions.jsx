@@ -31,7 +31,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/40">
-      <div className="relative bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 w-full max-w-3xl rounded-xl shadow-2xl ring-1 ring-amber-500/20 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 w-full max-w-5xl rounded-xl shadow-2xl ring-1 ring-amber-500/20 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-amber-500/20">
           <h1 className="font-semibold text-xl text-gray-100 tracking-wide">
@@ -76,14 +76,14 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
                     className="grid grid-cols-6 gap-4 px-4 py-3 bg-slate-800/30 rounded-lg items-center hover:bg-slate-600/50 transition-colors"
                   >
                     {/* Coin */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
                       <img
                         src={transaction.image}
                         alt={transaction.coin}
-                        className="w-8 h-8 rounded-full"
+                        className="w-8 h-8 rounded-full flex-shrink-0"
                       />
-                      <div className="flex flex-col items-start">
-                        <span className="text-sm font-medium text-gray-100 leading-tight">
+                      <div className="flex flex-col items-start min-w-0">
+                        <span className="text-sm font-medium text-gray-100 leading-tight truncate w-full" title={transaction.coin[0].toUpperCase() + transaction.coin.slice(1)}>
                           {transaction.coin[0].toUpperCase() +
                             transaction.coin.slice(1)}
                         </span>

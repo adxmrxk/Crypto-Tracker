@@ -6,7 +6,10 @@ import { Pie } from "react-chartjs-2";
 const PortfolioDistributionSchema = ({ cryptoData, isLoading, isFetching }) => {
   const { user } = useContext(UserContext);
 
-  const coins = user?.watchList?.map((coin) => coin.coin) || [];
+  const watchList = user?.watchList || [];
+  const hasCoins = watchList.length > 0;
+
+  const coins = watchList.map((coin) => coin.coin);
   const data = cryptoData;
 
   const AmountToPrice =
@@ -50,6 +53,47 @@ const PortfolioDistributionSchema = ({ cryptoData, isLoading, isFetching }) => {
       },
     ],
   };
+
+  // Empty state when no coins in watchlist
+  if (!hasCoins) {
+    return (
+      <div className="w-full h-full flex flex-col p-4">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-col items-start">
+            <h1 className="text-lg font-semibold text-gray-200">Distribution</h1>
+          </div>
+        </div>
+
+        {/* Empty State */}
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
+          <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+            <svg
+              className="w-8 h-8 text-slate-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
+              />
+            </svg>
+          </div>
+          <p className="text-gray-400 text-sm mb-1">No coins in your watchlist</p>
+          <p className="text-gray-500 text-xs">Add coins to see your portfolio distribution</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full flex flex-col p-4">

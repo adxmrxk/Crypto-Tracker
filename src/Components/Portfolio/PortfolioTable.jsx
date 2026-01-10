@@ -76,15 +76,12 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
       </div>
 
       {/* Header */}
-      <div className="grid grid-cols-8 border-t border-l border-r border-b border-slate-600 bg-slate-800/50 rounded-t-md">
+      <div className="grid grid-cols-7 border-t border-l border-r border-b border-slate-600 bg-slate-800/50 rounded-t-md">
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
           Coin
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
           Price
-        </div>
-        <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
-          Amount
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
           1H
@@ -108,23 +105,20 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
         {tableData.map((coin, index) => (
           <div
             key={index}
-            className="grid grid-cols-8 border-l border-r border-b border-slate-600 items-center hover:bg-slate-700/30 transition-colors"
+            className="grid grid-cols-7 border-l border-r border-b border-slate-600 items-center hover:bg-slate-700/30 transition-colors"
           >
-            <div className="px-2 py-3 text-sm flex flex-row gap-2 items-center">
+            <div className="px-2 py-3 text-sm flex flex-row gap-2 items-center min-w-0">
               <img
                 src={coin.image}
                 className="w-[24px] h-[24px] rounded-full flex-shrink-0"
                 alt={coin.name}
               />
-              <h1 className="text-gray-100">
+              <span className="text-gray-100 truncate" title={coin.name}>
                 {coin.name}
-              </h1>
+              </span>
             </div>
             <div className="px-2 py-3 text-sm text-gray-100">
               {formatPrice(coin.current_price)}
-            </div>
-            <div className="px-2 py-3 text-sm text-gray-100">
-              {coin.amount}
             </div>
             <div className="px-2 py-3 text-sm">
               {formatPercent(coin.price_change_percentage_1h_in_currency)}
