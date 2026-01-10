@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import CryptoCurrencyCard from './CryptoCurrencyCard'
-import { NameToId } from '../utils/coinNameToId'
+import useCoinsOnce from '../hooks/useCoinsOnce'
 import { Search } from 'lucide-react'
 
 const SearchCryptoSection = () => {
@@ -12,17 +12,18 @@ const SearchCryptoSection = () => {
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
-  // Get all coin names from NameToId
-  const coinNames = Object.keys(NameToId);
+  // Get coins from API - this ensures suggestions match available data
+  const { data: coinsList } = useCoinsOnce();
 
-  // Filter suggestions based on input
+  // Filter suggestions based on input using actual API data
   const handleChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
 
-    if (value.length > 0) {
-      const filtered = coinNames.filter(name =>
-        name.toLowerCase().includes(value.toLowerCase())
+    if (value.length > 0 && coinsList) {
+      const filtered = coinsList.filter(coin =>
+        coin.name.toLowerCase().includes(value.toLowerCase()) ||
+        coin.symbol.toLowerCase().includes(value.toLowerCase())
       ).slice(0, 8); // Limit to 8 suggestions
       setSuggestions(filtered);
       setShowSuggestions(true);
@@ -33,41 +34,40 @@ const SearchCryptoSection = () => {
   };
 
   // Handle selecting a suggestion
-  const handleSelectSuggestion = (coinName) => {
-    const coinId = NameToId[coinName];
-    if (coinId) {
-      setSearchedCoin(coinId);
-      setSubmitedSearch(true);
-      setInputValue('');
-      setSuggestions([]);
-      setShowSuggestions(false);
-    }
+  const handleSelectSuggestion = (coin) => {
+    setSearchedCoin(coin.id);
+    setSubmitedSearch(true);
+    setInputValue('');
+    setSuggestions([]);
+    setShowSuggestions(false);
   };
 
   // Handle form submit
   const onSubmit = (event) => {
     event.preventDefault();
 
-    // Try to find exact match or partial match
-    const exactMatch = coinNames.find(name =>
-      name.toLowerCase() === inputValue.toLowerCase()
+    if (!coinsList) return;
+
+    // Try to find exact match or partial match from API data
+    const exactMatch = coinsList.find(coin =>
+      coin.name.toLowerCase() === inputValue.toLowerCase() ||
+      coin.symbol.toLowerCase() === inputValue.toLowerCase()
     );
 
-    const partialMatch = coinNames.find(name =>
-      name.toLowerCase().includes(inputValue.toLowerCase())
+    const partialMatch = coinsList.find(coin =>
+      coin.name.toLowerCase().includes(inputValue.toLowerCase()) ||
+      coin.symbol.toLowerCase().includes(inputValue.toLowerCase())
     );
 
     const matchedCoin = exactMatch || partialMatch;
 
     if (matchedCoin) {
-      const coinId = NameToId[matchedCoin];
-      setSearchedCoin(coinId);
+      setSearchedCoin(matchedCoin.id);
       setSubmitedSearch(true);
       setInputValue('');
       setSuggestions([]);
       setShowSuggestions(false);
     } else {
-      // No match found - show alert or handle gracefully
       alert('Coin not found. Please select from the suggestions.');
     }
   };
@@ -122,13 +122,15 @@ const SearchCryptoSection = () => {
                 ref={suggestionsRef}
                 className="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden"
               >
-                {suggestions.map((coinName, index) => (
+                {suggestions.map((coin) => (
                   <div
-                    key={index}
-                    onClick={() => handleSelectSuggestion(coinName)}
-                    className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-gray-100 transition-colors border-b border-slate-700 last:border-b-0"
+                    key={coin.id}
+                    onClick={() => handleSelectSuggestion(coin)}
+                    className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-gray-100 transition-colors border-b border-slate-700 last:border-b-0 flex items-center gap-3"
                   >
-                    {coinName}
+                    <img src={coin.image} alt={coin.name} className="w-6 h-6 rounded-full" />
+                    <span>{coin.name}</span>
+                    <span className="text-gray-400 text-sm">{coin.symbol.toUpperCase()}</span>
                   </div>
                 ))}
               </div>

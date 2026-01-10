@@ -64,7 +64,15 @@ router.post("/api/users", hashPassword, async (req, res) => {
 });
 
 router.delete("/api/users/:id", async (req, res) => {
-  const user = await User.findById(req.params.id);
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json({ message: "Account deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to delete account" });
+  }
 });
 
 router.patch("/api/usersProfile/:id", async (req, res) => {

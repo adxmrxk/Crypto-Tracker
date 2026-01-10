@@ -3,7 +3,7 @@ import APIClient from "../services/crypto-prices-api-client";
 
 
 
-const apiClient = new APIClient("/coins/markets?vs_currency=usd");
+const apiClient = new APIClient("/coins/markets?vs_currency=usd&per_page=200");
 
 const useCoinsOnce = () => {
   return useQuery({

@@ -81,7 +81,7 @@ const CryptoCurrencyCard = ({
     <div>
       <div>
         {submitedSearch ? (
-          <div className="border-2">
+          <div>
             <SingleCryptoCard
               searchedCoin={searchedCoin}
               submitedSearch={submitedSearch}
