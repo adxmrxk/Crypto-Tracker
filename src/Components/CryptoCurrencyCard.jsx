@@ -21,6 +21,19 @@ const CryptoCurrencyCard = ({
   const { user, setUser } = useContext(UserContext);
 
   const [userInput, setUserInput] = useState({});
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 9;
+
+  const totalPages = Math.ceil((data?.length || 0) / itemsPerPage);
+  const paginatedData = data?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+  const handlePrevious = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
+  };
 
   const handleClick = () => {
     console.log("Test");
@@ -77,10 +90,10 @@ const CryptoCurrencyCard = ({
           </div>
         ) : (
           <div className="lg:grid lg:grid-cols-3 lg:gap-4 lg:p-3 lg:w-[1500px]">
-            {data?.map((element, index) => (
+            {paginatedData?.map((element, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-r from-gray-600 via-gray-700 to-gray-700 border border-amber-400/50 w-auto rounded-xs cursor-pointer hover:scale-102 transition-all duration-250 ease-in-out"
+                className="bg-gradient-to-r from-gray-600 via-gray-700 to-gray-700 border border-amber-400/50 w-auto min-h-[180px] rounded-xs cursor-pointer hover:scale-102 transition-all duration-250 ease-in-out"
               >
                 <div className="flex flex-row gap-2 items-center ml-3 mt-3">
                   <img
@@ -158,6 +171,27 @@ const CryptoCurrencyCard = ({
           </div>
         )}
       </div>
+      {!submitedSearch && (
+        <div className="flex items-center gap-4 ml-3 mt-6">
+          <button
+            onClick={handlePrevious}
+            disabled={currentPage === 0}
+            className="px-4 py-2 bg-slate-700 text-gray-100 rounded-lg hover:bg-slate-600 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="text-gray-300">
+            {currentPage + 1} / {totalPages}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={currentPage >= totalPages - 1}
+            className="px-4 py-2 bg-slate-700 text-gray-100 rounded-lg hover:bg-slate-600 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
       <div className="flex justify-center items-center m-5 mt-20 mb-20">
         <h2 className="font-roboto font-normal w-fit pl-9">
           CryptoScope © 2025. All rights reserved

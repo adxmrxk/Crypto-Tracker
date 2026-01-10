@@ -21,12 +21,10 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
   // Format price
   const formatPrice = (price) => {
     if (!price) return "$0.00";
-    if (price >= 1)
-      return `$${price.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`;
-    return `$${price.toFixed(4)}`;
+    return `$${price.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
   };
 
   const handleClose = () => setShowAllTransactions(false);
@@ -47,7 +45,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 max-h-[60vh] overflow-y-auto">
+        <div className="p-6">
           {transactions.length === 0 ? (
             <div className="text-center text-gray-400 py-8">
               <p>No transactions yet</p>
@@ -65,6 +63,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
               </div>
 
               {/* Transaction Rows */}
+              <div className="max-h-[50vh] overflow-y-scroll pr-0 hover:pr-3 transition-all duration-300 [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:transition-all [&::-webkit-scrollbar]:duration-300 hover:[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:my-1 [&::-webkit-scrollbar-thumb]:bg-slate-400/60 [&::-webkit-scrollbar-thumb]:rounded-full space-y-3">
               {transactions.map((transaction, index) => {
                 const currentPrice = getCoinPrice(transaction.coin);
                 const totalValue = currentPrice * transaction.amount;
@@ -74,7 +73,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
                 return (
                   <div
                     key={index}
-                    className="grid grid-cols-6 gap-4 px-4 py-3 bg-slate-800/30 rounded-lg items-center hover:bg-slate-700/40 transition-colors"
+                    className="grid grid-cols-6 gap-4 px-4 py-3 bg-slate-800/30 rounded-lg items-center hover:bg-slate-600/50 transition-colors"
                   >
                     {/* Coin */}
                     <div className="flex items-center gap-2">
@@ -84,7 +83,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
                         className="w-8 h-8 rounded-full"
                       />
                       <div className="flex flex-col items-start">
-                        <span className="text-sm font-medium text-gray-100">
+                        <span className="text-sm font-medium text-gray-100 leading-tight">
                           {transaction.coin[0].toUpperCase() +
                             transaction.coin.slice(1)}
                         </span>
@@ -109,7 +108,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
 
                     {/* Amount */}
                     <div className="text-sm text-gray-200">
-                      {transaction.amount} {transaction.ticker?.toUpperCase()}
+                      {transaction.amount}
                     </div>
 
                     {/* Price */}
@@ -135,6 +134,7 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
                   </div>
                 );
               })}
+              </div>
             </div>
           )}
         </div>

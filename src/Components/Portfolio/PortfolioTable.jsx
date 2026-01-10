@@ -18,8 +18,7 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
   // Format price
   const formatPrice = (price) => {
     if (!price) return "$0.00";
-    if (price >= 1) return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    return `$${price.toFixed(6)}`;
+    return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   // Format percentage with color
@@ -82,10 +81,10 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
           Coin
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
-          Amount
+          Price
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
-          Price
+          Amount
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
           1H
@@ -97,15 +96,15 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
           7D
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
-          MKT Cap
+          ATH
         </div>
         <div className="px-2 py-2 font-semibold text-blue-100 text-sm">
-          ATH
+          MKT Cap
         </div>
       </div>
 
       {/* Table Body */}
-      <div className="max-h-[280px] overflow-y-auto">
+      <div className="max-h-[280px] overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {tableData.map((coin, index) => (
           <div
             key={index}
@@ -114,18 +113,18 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
             <div className="px-2 py-3 text-sm flex flex-row gap-2 items-center">
               <img
                 src={coin.image}
-                className="w-[24px] h-[24px] rounded-full"
+                className="w-[24px] h-[24px] rounded-full flex-shrink-0"
                 alt={coin.name}
               />
-              <h1 className="text-gray-100 truncate">
+              <h1 className="text-gray-100">
                 {coin.name}
               </h1>
             </div>
-            <div className="px-2 py-3 text-sm text-gray-300">
-              {coin.amount} {coin.symbol?.toUpperCase()}
-            </div>
             <div className="px-2 py-3 text-sm text-gray-100">
               {formatPrice(coin.current_price)}
+            </div>
+            <div className="px-2 py-3 text-sm text-gray-100">
+              {coin.amount}
             </div>
             <div className="px-2 py-3 text-sm">
               {formatPercent(coin.price_change_percentage_1h_in_currency)}
@@ -136,11 +135,11 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
             <div className="px-2 py-3 text-sm">
               {formatPercent(coin.price_change_percentage_7d_in_currency)}
             </div>
-            <div className="px-2 py-3 text-sm text-gray-300">
-              {formatMarketCap(coin.market_cap)}
+            <div className="px-2 py-3 text-sm text-gray-100">
+              {formatPrice(coin.ath)}
             </div>
             <div className="px-2 py-3 text-sm text-gray-300">
-              {formatPrice(coin.ath)}
+              {formatMarketCap(coin.market_cap)}
             </div>
           </div>
         ))}

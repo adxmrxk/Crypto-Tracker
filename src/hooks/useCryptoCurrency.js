@@ -11,7 +11,7 @@ const useCryptoCurrency = (ids = []) => {
         params: {
           vs_currency: "usd",
           order: "market_cap_desc",
-          per_page: ids.length > 0 ? ids.length : 12,
+          per_page: ids.length > 0 ? ids.length : 100,
           price_change_percentage: "1h,24h,7d",
           ...(ids.length > 0 ? { ids: ids.join(",") } : {}),
         },

@@ -19,16 +19,27 @@ const SkeletonPage = () => {
   useEffect(() => {
     const restoreSession = async () => {
       const savedUserId = localStorage.getItem('cryptoUserId');
+      const loginTimestamp = localStorage.getItem('cryptoLoginTime');
 
-      if (savedUserId) {
+      // Check if session is expired (1 hour in milliseconds)
+      const ONE_HOUR = 60 * 60 * 1000;
+      const isExpired = !loginTimestamp || (Date.now() - parseInt(loginTimestamp)) > ONE_HOUR;
+
+      if (savedUserId && !isExpired) {
         try {
           const response = await axios.get(`http://localhost:5000/api/users/${savedUserId}`);
           setUser(response.data);
         } catch (err) {
           // If user not found, clear localStorage
           localStorage.removeItem('cryptoUserId');
+          localStorage.removeItem('cryptoLoginTime');
           setUser(null);
         }
+      } else if (isExpired && savedUserId) {
+        // Session expired, clear localStorage
+        localStorage.removeItem('cryptoUserId');
+        localStorage.removeItem('cryptoLoginTime');
+        setUser(null);
       }
       setIsLoading(false);
     };
@@ -45,8 +56,10 @@ const SkeletonPage = () => {
   const setUserWithPersist = (userData) => {
     if (userData && userData._id) {
       localStorage.setItem('cryptoUserId', userData._id);
+      localStorage.setItem('cryptoLoginTime', Date.now().toString());
     } else {
       localStorage.removeItem('cryptoUserId');
+      localStorage.removeItem('cryptoLoginTime');
     }
     setUser(userData);
   };

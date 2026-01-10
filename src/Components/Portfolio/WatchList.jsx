@@ -10,35 +10,38 @@ const WatchList = ({ coin, setCoin, coinClicked, setCoinClicked }) => {
     setCoinClicked(true);
   };
 
+  if (!user?.watchList?.length) {
+    return (
+      <div className="w-[1280px] h-[180px] bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-lg mt-5 flex flex-col items-center justify-center">
+        <h1 className="text-xl font-bold mb-3 text-gray-200">Watchlist</h1>
+        <p className="text-sm text-gray-400">No coins in your watchlist yet</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-row flex-wrap max-w-[1285px] h-fit py-4 pl-3 pr-2 mt-5 overflow-y-auto bg-slate-900/60 backdrop-blur-md rounded-xl shadow-lg shadow-slate-950/40 border border-slate-700 mr-55">
-      {user?.watchList?.length ? (
-        user.watchList.map((element, index) => (
+    <div className="w-[1280px] bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-lg mt-5 p-4">
+      <h1 className="text-xl font-bold text-gray-200 mb-4">Watchlist</h1>
+      <div className="flex flex-row flex-wrap gap-3">
+        {user.watchList.map((element, index) => (
           <div
             key={index}
             onClick={() => handleClick(element)}
-            className="
-              flex items-center justify-center
-              m-2 px-5 py-3
-              bg-gradient-to-br from-indigo-500/20 to-indigo-300/10
-              border border-indigo-400/30
-              rounded-lg
-              hover:from-indigo-500/40 hover:to-indigo-300/30 hover:border-indigo-300/60
-              hover:shadow-md hover:shadow-indigo-500/20
-              transition-all duration-200 ease-out
-              cursor-pointer select-none
-            "
+            className="flex items-center gap-3 px-5 py-3 min-w-[120px] bg-slate-800/60 border border-slate-600 rounded-lg hover:border-amber-500/50 hover:bg-slate-700/60 transition-all duration-200 cursor-pointer"
           >
-            <h1 className="font-roboto text-lg font-semibold text-slate-100 tracking-wide">
-              {element.ticker.toUpperCase()}
-            </h1>
+            <img
+              src={element.image}
+              alt={element.ticker}
+              className="w-8 h-8 min-w-[32px] rounded-full"
+            />
+            <span className="font-semibold text-lg text-gray-100">
+              <h1 className={element?.ticker === "eth" ? "-ml-3 pr-3" : ""}>
+                {element.ticker.trim().toUpperCase()}
+              </h1>
+            </span>
           </div>
-        ))
-      ) : (
-        <div className="w-full text-center text-slate-400 italic py-4">
-          No coins in your watchlist yet.
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 };
