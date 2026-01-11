@@ -15,9 +15,7 @@ import {
   MessageCircle,
   Sparkles,
 } from "lucide-react";
-import RecommendedAccounts from "./RecommendedAccounts";
 import EditProfile from "./EditProfile";
-import SearchProfiles from "./SearchProfiles";
 
 function ProfileSection() {
   const { user, setUser } = useContext(UserContext);
@@ -25,9 +23,9 @@ function ProfileSection() {
   const [editProfile, setEditProfile] = useState(false);
 
   return (
-    <div className="flex gap-6 mb-15">
+    <div className="mb-15">
       {/* Main Profile Area */}
-      <div className="flex-1">
+      <div>
         {editProfile && (
           <EditProfile
             editProfile={editProfile}
@@ -249,9 +247,6 @@ function ProfileSection() {
           </div>
         )}
       </div>
-
-      {/* Sidebar */}
-      <RecommendedAccounts />
     </div>
   );
 }

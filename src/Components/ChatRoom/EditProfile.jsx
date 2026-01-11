@@ -7,7 +7,6 @@ import {
   Camera,
   User,
   AtSign,
-  FileText,
   Trash2,
   Save,
   Loader2,
@@ -22,7 +21,6 @@ function EditProfile({ editProfile, setEditProfile }) {
   // Form state initialized with current user data
   const [displayName, setDisplayName] = useState(user?.displayName || "");
   const [username, setUsername] = useState(user?.username || "");
-  const [bio, setBio] = useState(user?.bio || "");
   const [avatarPreview, setAvatarPreview] = useState(null);
 
   // UI state
@@ -35,10 +33,9 @@ function EditProfile({ editProfile, setEditProfile }) {
   // Calculate profile completion
   const calculateCompletion = () => {
     let completed = 0;
-    if (displayName) completed += 25;
-    if (username) completed += 25;
-    if (bio) completed += 25;
-    if (user?.profilePicture || avatarPreview) completed += 25;
+    if (displayName) completed += 33;
+    if (username) completed += 33;
+    if (user?.profilePicture || avatarPreview) completed += 34;
     return completed;
   };
 
@@ -64,7 +61,6 @@ function EditProfile({ editProfile, setEditProfile }) {
       const updateData = {
         displayName,
         username,
-        bio,
         lastEdited: new Date(),
       };
 
@@ -252,27 +248,6 @@ function EditProfile({ editProfile, setEditProfile }) {
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500">
                 {username.length}/32
-              </span>
-            </div>
-          </div>
-
-          {/* Bio */}
-          <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-              <FileText className="w-4 h-4" />
-              Bio
-            </label>
-            <div className="relative">
-              <textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                maxLength={160}
-                rows={3}
-                placeholder="Tell others a bit about yourself..."
-                className="w-full bg-slate-900/50 text-white px-4 py-3 rounded-xl border border-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all resize-none"
-              />
-              <span className="absolute right-4 bottom-3 text-xs text-gray-500">
-                {bio.length}/160
               </span>
             </div>
           </div>

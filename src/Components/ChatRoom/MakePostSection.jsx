@@ -3,11 +3,12 @@ import axios from "axios";
 import { UserContext } from "../../Pages/SkeletonPage";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import SearchPosts from "./SearchPosts";
+import { Image, Smile, Send, X } from "lucide-react";
 
-const MakePostSection = () => {
+const MakePostSection = ({ onPostCreated }) => {
   const [expanded, setExpanded] = useState(false);
   const [postText, setPostText] = useState("");
+  const [posting, setPosting] = useState(false);
   const { user, setUser } = useContext(UserContext);
 
   const [showEmoji, setShowEmoji] = useState(false);
@@ -19,24 +20,36 @@ const MakePostSection = () => {
 
   const submitPost = async (event) => {
     event.preventDefault();
+    if (!postText.trim() || posting) return;
 
-    const response = await axios.post(
-      `http://localhost:5000/api/posts/${user._id}`,
-      {
-        $push: {
-          "socials.posts": {
-            content: postText,
-            author: user?.username,
-            // image intentionally NOT sent yet
+    setPosting(true);
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/posts/${user._id}`,
+        {
+          $push: {
+            "socials.posts": {
+              content: postText,
+              author: user?.username,
+            },
           },
-        },
-      }
-    );
+        }
+      );
 
-    setUser(response.data);
-    setPostText("");
-    setImageFile(null);
-    setImagePreview(null);
+      setUser(response.data);
+      setPostText("");
+      setImageFile(null);
+      setImagePreview(null);
+      setExpanded(false);
+
+      if (onPostCreated) {
+        onPostCreated();
+      }
+    } catch (err) {
+      console.error("Failed to create post:", err);
+    } finally {
+      setPosting(false);
+    }
   };
 
   const handleImageSelect = (e) => {
@@ -45,6 +58,11 @@ const MakePostSection = () => {
 
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   useEffect(() => {
@@ -59,86 +77,97 @@ const MakePostSection = () => {
   }, []);
 
   return (
-    <div className="w-[70%] border-5 mx-auto flex justify-between">
-      <div className="flex flex-col">
-        <div className="flex flex-row items-center p-5">
-          <div className="bg-gradient-to-br to-gray-400 via-gray-300 from-gray-200 w-[64px] h-[64px] rounded-full flex justify-center items-center text-2xl">
-            {user?.profilePicture
-              ? user.profilePicture
-              : user?.username.slice(0, 2).toUpperCase()}
-          </div>
+    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-5">
+      <div className="flex gap-4">
+        {/* Avatar */}
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex-shrink-0 flex items-center justify-center text-lg font-bold text-white">
+          {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
+        </div>
 
-          <form className="w-[800px] ml-2" onSubmit={submitPost}>
-            <textarea
-              className={`text-md border border-blue-600 w-full ${
-                expanded ? "h-[100px]" : "h-[50px]"
-              }`}
-              onFocus={() => setExpanded(true)}
-              onBlur={() => setExpanded(false)}
-              placeholder="How do you feel about the markets today? Share your thoughts!"
-              value={postText}
-              onChange={(e) => setPostText(e.target.value)}
-            />
+        {/* Post Form */}
+        <form className="flex-1" onSubmit={submitPost}>
+          <textarea
+            className={`w-full bg-slate-700/50 text-white px-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none resize-none transition-all duration-200 placeholder-gray-400 ${
+              expanded ? "h-28" : "h-14"
+            }`}
+            onFocus={() => setExpanded(true)}
+            placeholder="What's happening in the crypto world?"
+            value={postText}
+            onChange={(e) => setPostText(e.target.value)}
+          />
 
-            {imagePreview && (
-              <div className="mt-3">
+          {/* Image Preview */}
+          {imagePreview && (
+            <div className="flex justify-start mt-3">
+              <div className="relative inline-block">
                 <img
                   src={imagePreview}
                   alt="preview"
-                  className="max-h-20 rounded-lg border"
+                  className="max-h-32 rounded-lg border border-slate-600"
                 />
-              </div>
-            )}
-
-            <div className="flex justify-between mt-3">
-              <div className="flex gap-3 relative">
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={imageInputRef}
-                  className="hidden"
-                  onChange={handleImageSelect}
-                />
-
-                <h1
-                  className="cursor-pointer"
-                  onClick={() => imageInputRef.current.click()}
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-400 rounded-full flex items-center justify-center transition-colors"
                 >
-                  Image
-                </h1>
-
-                <h1 className="cursor-pointer">GIF</h1>
-
-                <h1
-                  className="cursor-pointer select-none"
-                  onClick={() => setShowEmoji((prev) => !prev)}
-                >
-                  Emoji
-                </h1>
-
-                {showEmoji && (
-                  <div ref={emojiRef} className="absolute top-full mt-2 z-50">
-                    <Picker
-                      data={data}
-                      previewPosition="none"
-                      onEmojiSelect={(emoji) => {
-                        setPostText((prev) => prev + emoji.native);
-                        setShowEmoji(false);
-                      }}
-                    />
-                  </div>
-                )}
+                  <X className="w-4 h-4 text-white" />
+                </button>
               </div>
-
-              <button type="submit" className="cursor-pointer">
-                Post
-              </button>
             </div>
-          </form>
-        </div>
-      </div>
-      <div className="flex border-2 border-pink-400 max-w-[500px] items-center">
-        <SearchPosts></SearchPosts>
+          )}
+
+          {/* Actions */}
+          <div className="flex justify-between items-center mt-3">
+            <div className="flex gap-1 relative">
+              <input
+                type="file"
+                accept="image/*"
+                ref={imageInputRef}
+                className="hidden"
+                onChange={handleImageSelect}
+              />
+
+              <button
+                type="button"
+                onClick={() => imageInputRef.current.click()}
+                className="p-2 text-gray-400 hover:text-amber-400 hover:bg-slate-700 rounded-lg transition-all"
+              >
+                <Image className="w-5 h-5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowEmoji((prev) => !prev)}
+                className="p-2 text-gray-400 hover:text-amber-400 hover:bg-slate-700 rounded-lg transition-all"
+              >
+                <Smile className="w-5 h-5" />
+              </button>
+
+              {showEmoji && (
+                <div ref={emojiRef} className="absolute top-full mt-2 z-50">
+                  <Picker
+                    data={data}
+                    previewPosition="none"
+                    theme="dark"
+                    onEmojiSelect={(emoji) => {
+                      setPostText((prev) => prev + emoji.native);
+                      setShowEmoji(false);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={!postText.trim() || posting}
+              className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900 font-semibold rounded-xl transition-all"
+            >
+              <Send className="w-4 h-4" />
+              {posting ? "Posting..." : "Post"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

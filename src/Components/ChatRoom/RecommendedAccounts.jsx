@@ -21,8 +21,8 @@ function RecommendedAccounts() {
   }, []);
 
   return (
-    <div className="w-[380px] flex-shrink-0">
-      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 overflow-hidden sticky top-6">
+    <div className="w-full">
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 overflow-hidden">
         {/* Header */}
         <div className="p-5 border-b border-slate-700">
           <div className="flex items-center gap-2">
@@ -79,14 +79,6 @@ function RecommendedAccounts() {
           )}
         </div>
 
-        {/* Footer */}
-        {allUsers.length > 5 && (
-          <div className="p-4 border-t border-slate-700">
-            <button className="w-full text-center text-amber-400 hover:text-amber-300 text-sm font-medium transition-colors">
-              Show More
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -44,12 +44,6 @@ const User = mongoose.model(
       default: "",
     },
 
-    bio: {
-      type: String,
-      maxlength: 160,
-      default: "",
-    },
-
     settings: userSettings,
 
     socials: userSocials,
