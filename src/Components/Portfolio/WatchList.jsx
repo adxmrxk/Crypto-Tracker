@@ -24,7 +24,7 @@ const WatchList = ({ coin, setCoin, coinClicked, setCoinClicked }) => {
   }
 
   return (
-    <div className="w-[1280px] bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-lg mt-5 p-4">
+    <div className="w-[1280px] bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-lg mt-5 px-4 py-6">
       <h1 className="text-xl font-bold text-gray-200 mb-4">Watchlist</h1>
       <div className="flex flex-row flex-wrap gap-3">
         {user.watchList.map((element, index) => (

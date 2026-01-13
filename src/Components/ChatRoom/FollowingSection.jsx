@@ -23,57 +23,6 @@ const FollowingSection = () => {
     return text.slice(0, maxLength) + "...";
   };
 
-  // Fake posts from people you "follow"
-  const followingPosts = [
-    {
-      _id: "follow1",
-      content: "Just closed a massive trade on BTC. Patience pays off! Remember: the best traders aren't the ones who trade the most, they're the ones who wait for the right setup. 📈",
-      username: "whale_hunter",
-      displayName: "Whale Hunter",
-      profilePicture: "",
-      datePosted: new Date(Date.now() - 1000 * 60 * 15), // 15 mins ago
-      likes: 89,
-      comments: [
-        { author: "daytrader_x", content: "What was your entry point?", datePosted: new Date() },
-      ],
-    },
-    {
-      _id: "follow2",
-      content: "Thread on why I think Layer 2 solutions are the future of Ethereum scaling 🧵\n\n1/ Gas fees on mainnet are still too high for everyday users...",
-      username: "defi_sarah",
-      displayName: "Sarah | DeFi Analyst",
-      profilePicture: "",
-      datePosted: new Date(Date.now() - 1000 * 60 * 45), // 45 mins ago
-      likes: 234,
-      comments: [
-        { author: "eth_maxi", content: "Great thread! Bookmarked.", datePosted: new Date() },
-        { author: "crypto_newbie", content: "Can you explain L2 for beginners?", datePosted: new Date() },
-      ],
-    },
-    {
-      _id: "follow3",
-      content: "Portfolio update: Rebalanced to 50% BTC, 30% ETH, 20% alts. Feeling good about this allocation for the current market conditions. What's your split?",
-      username: "hodl_master",
-      displayName: "HODL Master",
-      profilePicture: "",
-      datePosted: new Date(Date.now() - 1000 * 60 * 60 * 3), // 3 hours ago
-      likes: 156,
-      comments: [],
-    },
-    {
-      _id: "follow4",
-      content: "The amount of innovation happening in crypto right now is insane. New protocols, better UX, institutional adoption... We're still so early. Don't let the noise distract you from the signal. 🎯",
-      username: "crypto_visionary",
-      displayName: "Crypto Visionary",
-      profilePicture: "",
-      datePosted: new Date(Date.now() - 1000 * 60 * 60 * 6), // 6 hours ago
-      likes: 312,
-      comments: [
-        { author: "blockchain_dev", content: "The dev tools have improved so much!", datePosted: new Date() },
-      ],
-    },
-  ];
-
   const handleLike = (postId) => {
     if (likedPosts.has(postId)) return;
     // If already disliked, remove dislike
@@ -124,8 +73,8 @@ const FollowingSection = () => {
     return postDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
-  // Use fake posts for demo
-  const posts = followingPosts;
+  // No posts from following yet - will be populated when following feature is implemented
+  const posts = [];
 
   if (posts.length === 0) {
     return (

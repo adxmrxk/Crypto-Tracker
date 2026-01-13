@@ -273,7 +273,7 @@ function ProfileSection() {
           </div>
 
           {/* Profile Info */}
-          <div className="px-6 pb-6 -mt-12 relative">
+          <div className="px-6 pb-6 -mt-12 relative z-10">
             <div className="flex justify-between items-end mb-4">
               {/* Avatar */}
               <div className="relative">
@@ -287,10 +287,7 @@ function ProfileSection() {
 
               {/* Edit Button */}
               <button
-                onClick={() => {
-                  alert("Button clicked!");
-                  setEditProfile(true);
-                }}
+                onClick={() => setEditProfile(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200"
               >
                 <Edit3 className="w-4 h-4" />

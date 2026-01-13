@@ -2,7 +2,17 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/users.js");
 
-// Get all posts from all users for the explore feed
+// Shuffle array helper function (Fisher-Yates algorithm)
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Get all posts from all users for the explore feed (randomized)
 router.get("/api/posts", async (req, res) => {
   try {
     const users = await User.find({ "socials.posts": { $exists: true, $ne: [] } });
@@ -32,10 +42,10 @@ router.get("/api/posts", async (req, res) => {
       }
     });
 
-    // Sort by date (newest first)
-    allPosts.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted));
+    // Randomize the posts for explore feed
+    const randomizedPosts = shuffleArray(allPosts);
 
-    return res.status(200).json(allPosts);
+    return res.status(200).json(randomizedPosts);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Failed to fetch posts" });

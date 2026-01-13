@@ -27,74 +27,6 @@ const MediaPost = () => {
     return text.slice(0, maxLength) + "...";
   };
 
-  // Fake posts for demo
-  const fakePosts = [
-    {
-      _id: "fake1",
-      content: "Bitcoin just broke $100k! This is the moment we've all been waiting for. The institutional adoption is real and it's happening faster than anyone predicted. What a time to be alive! 🚀",
-      username: "cryptoking",
-      displayName: "Crypto King",
-      profilePicture: "",
-      userId: "fake-user-1",
-      datePosted: new Date(Date.now() - 1000 * 60 * 30), // 30 mins ago
-      likes: 234,
-      comments: [
-        { author: "trader_mike", content: "This is insane! So glad I held!", datePosted: new Date() },
-        { author: "sarah_crypto", content: "To the moon! 🌙", datePosted: new Date() },
-      ],
-    },
-    {
-      _id: "fake2",
-      content: "Just published my analysis on Ethereum's upcoming upgrades. The shift to PoS has been massive for energy efficiency, and the next updates will make gas fees even lower. ETH is seriously undervalued right now.",
-      username: "ethdev_anna",
-      displayName: "Anna | ETH Developer",
-      profilePicture: "",
-      userId: "fake-user-2",
-      datePosted: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-      likes: 89,
-      comments: [
-        { author: "blockchain_bob", content: "Great analysis! Shared with my community.", datePosted: new Date() },
-      ],
-    },
-    {
-      _id: "fake3",
-      content: "Unpopular opinion: Most altcoins won't survive the next bear market. Focus on projects with real utility and strong teams. Don't get caught holding bags. DYOR always! 📊",
-      username: "trader_mike",
-      displayName: "Mike Trading",
-      profilePicture: "",
-      userId: "fake-user-3",
-      datePosted: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
-      likes: 156,
-      comments: [],
-    },
-    {
-      _id: "fake4",
-      content: "New to crypto? Here's my advice:\n\n1. Never invest more than you can lose\n2. Dollar cost average\n3. Use hardware wallets\n4. Don't chase pumps\n5. Learn about the tech\n\nWelcome to the community! 💪",
-      username: "crypto_mentor",
-      displayName: "Crypto Mentor",
-      profilePicture: "",
-      userId: "fake-user-4",
-      datePosted: new Date(Date.now() - 1000 * 60 * 60 * 8), // 8 hours ago
-      likes: 412,
-      comments: [
-        { author: "newbie_joe", content: "This is exactly what I needed. Thank you!", datePosted: new Date() },
-        { author: "sarah_crypto", content: "Solid advice for beginners 👍", datePosted: new Date() },
-        { author: "hodler99", content: "Number 4 is so important!", datePosted: new Date() },
-      ],
-    },
-    {
-      _id: "fake5",
-      content: "Solana ecosystem is exploding right now. The transaction speeds and low fees make it perfect for DeFi and NFTs. Just deployed my first dApp on it - the developer experience is 🔥",
-      username: "solana_dev",
-      displayName: "Sol Builder",
-      profilePicture: "",
-      userId: "fake-user-5",
-      datePosted: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
-      likes: 67,
-      comments: [],
-    },
-  ];
-
   // Fetch all posts on mount
   useEffect(() => {
     fetchPosts();
@@ -104,13 +36,10 @@ const MediaPost = () => {
     try {
       setLoading(true);
       const response = await axios.get("http://localhost:5000/api/posts");
-      // Combine real posts with fake posts, real posts first
-      const allPosts = [...response.data, ...fakePosts];
-      setPosts(allPosts);
+      setPosts(response.data);
     } catch (err) {
       console.error("Failed to fetch posts:", err);
-      // If API fails, just show fake posts
-      setPosts(fakePosts);
+      setPosts([]);
     } finally {
       setLoading(false);
     }
@@ -141,13 +70,10 @@ const MediaPost = () => {
     );
     setLikedPosts((prev) => new Set([...prev, postId]));
 
-    // Only call API for real posts
-    if (!postId.startsWith("fake")) {
-      try {
-        await axios.patch(`http://localhost:5000/api/posts/${userId}/${postId}/like`);
-      } catch (err) {
-        console.error("Failed to like post:", err);
-      }
+    try {
+      await axios.patch(`http://localhost:5000/api/posts/${userId}/${postId}/like`);
+    } catch (err) {
+      console.error("Failed to like post:", err);
     }
   };
 
@@ -176,13 +102,10 @@ const MediaPost = () => {
     );
     setDislikedPosts((prev) => new Set([...prev, postId]));
 
-    // Only call API for real posts
-    if (!postId.startsWith("fake")) {
-      try {
-        await axios.patch(`http://localhost:5000/api/posts/${userId}/${postId}/dislike`);
-      } catch (err) {
-        console.error("Failed to dislike post:", err);
-      }
+    try {
+      await axios.patch(`http://localhost:5000/api/posts/${userId}/${postId}/dislike`);
+    } catch (err) {
+      console.error("Failed to dislike post:", err);
     }
   };
 
@@ -206,16 +129,13 @@ const MediaPost = () => {
     );
     setCommentText((prev) => ({ ...prev, [postId]: "" }));
 
-    // Only call API for real posts
-    if (!postId.startsWith("fake")) {
-      try {
-        await axios.post(
-          `http://localhost:5000/api/posts/${userId}/${postId}/comment`,
-          newComment
-        );
-      } catch (err) {
-        console.error("Failed to add comment:", err);
-      }
+    try {
+      await axios.post(
+        `http://localhost:5000/api/posts/${userId}/${postId}/comment`,
+        newComment
+      );
+    } catch (err) {
+      console.error("Failed to add comment:", err);
     }
   };
 
