@@ -13,8 +13,12 @@ const WatchList = ({ coin, setCoin, coinClicked, setCoinClicked }) => {
   if (!user?.watchList?.length) {
     return (
       <div className="w-[1280px] h-[180px] bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-lg mt-5 flex flex-col items-center justify-center">
-        <h1 className="text-xl font-bold mb-3 text-gray-200">Watchlist</h1>
-        <p className="text-sm text-gray-400">No coins in your watchlist yet</p>
+        <h1 className="text-xl font-bold mb-4 text-gray-200">Watchlist</h1>
+        <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+          <span className="text-3xl grayscale opacity-60">👀</span>
+        </div>
+        <p className="text-sm text-gray-400 mb-1">No coins in your watchlist yet</p>
+        <p className="text-gray-500 text-xs">Add coins to start tracking them</p>
       </div>
     );
   }

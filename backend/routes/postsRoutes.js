@@ -17,6 +17,7 @@ router.get("/api/posts", async (req, res) => {
             _id: post._id,
             content: post.content,
             author: post.author,
+            media: post.media,
             datePosted: post.datePosted,
             likes: post.likes,
             dislikes: post.dislikes,
@@ -71,6 +72,29 @@ router.patch("/api/posts/:userId/:postId/like", async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Failed to like post" });
+  }
+});
+
+// Dislike a post
+router.patch("/api/posts/:userId/:postId/dislike", async (req, res) => {
+  try {
+    const { userId, postId } = req.params;
+
+    const user = await User.findOneAndUpdate(
+      { _id: userId, "socials.posts._id": postId },
+      { $inc: { "socials.posts.$.dislikes": 1 } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const updatedPost = user.socials.posts.find(p => p._id.toString() === postId);
+    return res.status(200).json(updatedPost);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to dislike post" });
   }
 });
 

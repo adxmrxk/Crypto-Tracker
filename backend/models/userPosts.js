@@ -13,6 +13,11 @@ const userPosts = new mongoose.Schema({
     type: String,
   },
 
+  media: {
+    type: String,
+    default: "",
+  },
+
   datePosted: {
     type: Date,
     default: Date.now,

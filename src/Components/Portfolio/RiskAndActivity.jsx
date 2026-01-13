@@ -29,10 +29,12 @@ const RiskAndActivity = ({ onViewAllClick }) => {
   if (!hasTransactions) {
     return (
       <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 h-[500px] flex flex-col items-center justify-center text-gray-400 rounded-lg">
-        <h1 className="text-xl font-bold mb-2 text-gray-200">Transactions</h1>
-        <p className="text-sm text-center">
-          No transactions have been made so far
-        </p>
+        <h1 className="text-xl font-bold mb-4 text-gray-200">Transactions</h1>
+        <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+          <span className="text-3xl grayscale opacity-60">💸</span>
+        </div>
+        <p className="text-sm text-center mb-1">No transactions yet</p>
+        <p className="text-gray-500 text-xs">Your buy/sell history will appear here</p>
       </div>
     );
   }

@@ -108,8 +108,10 @@ function EditProfile({ editProfile, setEditProfile }) {
     }
   };
 
+  if (!editProfile) return null;
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/60">
+    <div className="fixed inset-0 flex items-center justify-center z-[9999] px-4 backdrop-blur-sm bg-black/60">
       <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
         {/* Header */}
         <div className="border-b border-slate-700 p-5 flex items-center justify-between">
@@ -178,20 +180,18 @@ function EditProfile({ editProfile, setEditProfile }) {
           <div className="flex items-center gap-6">
             <div className="relative group">
               <label className="cursor-pointer">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-pink-500 p-1">
-                  <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden">
-                    {avatarPreview ? (
-                      <img
-                        src={avatarPreview}
-                        alt="Avatar preview"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-2xl font-bold text-white">
-                        {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
-                      </span>
-                    )}
-                  </div>
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden">
+                  {avatarPreview ? (
+                    <img
+                      src={avatarPreview}
+                      alt="Avatar preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-2xl font-bold text-white">
+                      {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
                 </div>
                 <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Camera className="w-6 h-6 text-white" />

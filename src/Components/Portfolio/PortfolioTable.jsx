@@ -38,7 +38,11 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
         <h1 className="text-xl font-bold mb-4 text-gray-200">
           Wallet Breakdown
         </h1>
-        <p className="text-sm">No assets in portfolio</p>
+        <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+          <span className="text-3xl grayscale opacity-60">📊</span>
+        </div>
+        <p className="text-sm mb-1">No assets in portfolio</p>
+        <p className="text-gray-500 text-xs">Add coins to see your wallet breakdown</p>
       </div>
     );
   }

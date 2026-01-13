@@ -115,8 +115,12 @@ const WalletValueChartSchema = ({ timeRange }) => {
   // Empty state
   if (coins.length === 0) {
     return (
-      <div className="w-[800px] h-[500px] flex items-center justify-center">
-        <p className="text-gray-400">Add coins to your watchlist to see portfolio history</p>
+      <div className="w-[800px] h-[500px] flex flex-col items-center justify-center">
+        <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+          <span className="text-3xl grayscale opacity-60">📈</span>
+        </div>
+        <p className="text-gray-400 text-sm mb-1">No coins in your watchlist</p>
+        <p className="text-gray-500 text-xs">Add coins to see your portfolio history</p>
       </div>
     );
   }

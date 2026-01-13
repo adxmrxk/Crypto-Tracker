@@ -1,19 +1,27 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import {
-  Heart,
+  ThumbsUp,
+  ThumbsDown,
   MessageCircle,
   Share2,
-  Bookmark,
   MoreHorizontal,
   Users,
+  X,
 } from "lucide-react";
 
 const FollowingSection = () => {
   const { user } = useContext(UserContext);
   const [likedPosts, setLikedPosts] = useState(new Set());
+  const [dislikedPosts, setDislikedPosts] = useState(new Set());
   const [expandedComments, setExpandedComments] = useState(new Set());
   const [commentText, setCommentText] = useState({});
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const truncateText = (text, maxLength = 150) => {
+    if (!text || text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + "...";
+  };
 
   // Fake posts from people you "follow"
   const followingPosts = [
@@ -68,7 +76,28 @@ const FollowingSection = () => {
 
   const handleLike = (postId) => {
     if (likedPosts.has(postId)) return;
+    // If already disliked, remove dislike
+    if (dislikedPosts.has(postId)) {
+      setDislikedPosts((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+    }
     setLikedPosts((prev) => new Set([...prev, postId]));
+  };
+
+  const handleDislike = (postId) => {
+    if (dislikedPosts.has(postId)) return;
+    // If already liked, remove like
+    if (likedPosts.has(postId)) {
+      setLikedPosts((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+    }
+    setDislikedPosts((prev) => new Set([...prev, postId]));
   };
 
   const toggleComments = (postId) => {
@@ -114,74 +143,217 @@ const FollowingSection = () => {
 
   return (
     <div className="space-y-5">
+      {/* Full Post Modal */}
+      {selectedPost && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/60">
+          <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-700 overflow-hidden max-h-[90vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="border-b border-slate-700 p-5 flex items-center justify-between flex-shrink-0">
+              <h1 className="text-xl font-bold text-white">Post</h1>
+              <button
+                onClick={() => setSelectedPost(null)}
+                className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto flex-1">
+              {/* Post Header */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
+                  {selectedPost.profilePicture || selectedPost.username?.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-white">{selectedPost.displayName}</h3>
+                    <span className="text-xs text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full">Following</span>
+                  </div>
+                  <p className="text-gray-500 text-sm">@{selectedPost.username} · {formatTimeAgo(selectedPost.datePosted)}</p>
+                </div>
+              </div>
+
+              {/* Full Post Content */}
+              <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap break-words">
+                {selectedPost.content}
+              </p>
+
+              {/* Post Stats */}
+              <div className="flex items-center gap-6 py-3 border-t border-b border-slate-700 mb-4">
+                <div className="flex items-center gap-2">
+                  <ThumbsUp className="w-4 h-4 text-emerald-400" />
+                  <span className="font-semibold text-white">{(selectedPost.likes || 0) + (likedPosts.has(selectedPost._id) ? 1 : 0)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ThumbsDown className="w-4 h-4 text-red-400" />
+                  <span className="font-semibold text-white">{(selectedPost.dislikes || 0) + (dislikedPosts.has(selectedPost._id) ? 1 : 0)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4 text-blue-400" />
+                  <span className="font-semibold text-white">{selectedPost.comments?.length || 0}</span>
+                </div>
+              </div>
+
+              {/* Post Actions */}
+              <div className="flex items-center justify-around py-2">
+                <button
+                  onClick={() => handleLike(selectedPost._id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                    likedPosts.has(selectedPost._id)
+                      ? "text-emerald-500 bg-emerald-500/10"
+                      : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                  }`}
+                >
+                  <ThumbsUp className={`w-5 h-5 ${likedPosts.has(selectedPost._id) ? "fill-current" : ""}`} />
+                  <span className="text-sm font-medium">Like</span>
+                </button>
+                <button
+                  onClick={() => handleDislike(selectedPost._id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                    dislikedPosts.has(selectedPost._id)
+                      ? "text-red-500 bg-red-500/10"
+                      : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                  }`}
+                >
+                  <ThumbsDown className={`w-5 h-5 ${dislikedPosts.has(selectedPost._id) ? "fill-current" : ""}`} />
+                  <span className="text-sm font-medium">Dislike</span>
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all">
+                  <MessageCircle className="w-5 h-5" />
+                  <span className="text-sm font-medium">Comment</span>
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all">
+                  <Share2 className="w-5 h-5" />
+                  <span className="text-sm font-medium">Share</span>
+                </button>
+              </div>
+
+              {/* Comments Section */}
+              {selectedPost.comments?.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-slate-700">
+                  <h4 className="text-white font-semibold mb-3">Comments</h4>
+                  <div className="space-y-3">
+                    {selectedPost.comments.map((comment, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                          {comment.author?.slice(0, 2).toUpperCase()}
+                        </div>
+                        <div className="flex-1 bg-slate-700/30 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-white text-sm">@{comment.author}</span>
+                            <span className="text-gray-500 text-xs">{formatTimeAgo(comment.datePosted)}</span>
+                          </div>
+                          <p className="text-gray-300 text-sm break-words">{comment.content}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {posts.map((post) => (
         <div
           key={post._id}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-5 hover:border-slate-600 transition-all duration-200"
+          onClick={() => setSelectedPost(post)}
+          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-5 hover:border-slate-600 transition-all duration-200 cursor-pointer"
         >
           {/* Post Header */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-sm font-bold text-slate-900">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
                 {post.profilePicture || post.username?.slice(0, 2).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-white">{post.displayName}</h3>
+                  <h3 className="font-semibold text-white text-sm">{post.displayName}</h3>
                   <span className="text-xs text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full">Following</span>
                 </div>
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-500 text-xs">
                   @{post.username} · {formatTimeAgo(post.datePosted)}
                 </p>
               </div>
             </div>
-            <button className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <MoreHorizontal className="w-5 h-5 text-gray-400" />
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors"
+            >
+              <MoreHorizontal className="w-4 h-4 text-gray-400" />
             </button>
           </div>
 
-          {/* Post Content */}
-          <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap">
-            {post.content}
+          {/* Post Content - Truncated */}
+          <p className="text-gray-200 text-sm mb-3 leading-relaxed">
+            {truncateText(post.content, 150)}
           </p>
 
           {/* Post Actions */}
-          <div className="flex items-center gap-1 pt-3 border-t border-slate-700">
+          <div className="flex items-center gap-2 pt-2 border-t border-slate-700">
             <button
-              onClick={() => toggleComments(post._id)}
-              className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all group"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLike(post._id);
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all group ${
+                likedPosts.has(post._id)
+                  ? "text-emerald-500 bg-emerald-500/10"
+                  : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+              }`}
             >
-              <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-medium">{post.comments?.length || 0}</span>
+              <ThumbsUp
+                className={`w-4 h-4 group-hover:scale-110 transition-transform ${
+                  likedPosts.has(post._id) ? "fill-current" : ""
+                }`}
+              />
+              <span className="text-xs font-medium">
+                {(post.likes || 0) + (likedPosts.has(post._id) ? 1 : 0)}
+              </span>
             </button>
             <button
-              onClick={() => handleLike(post._id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all group ${
-                likedPosts.has(post._id)
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDislike(post._id);
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all group ${
+                dislikedPosts.has(post._id)
                   ? "text-red-500 bg-red-500/10"
                   : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
               }`}
             >
-              <Heart
-                className={`w-5 h-5 group-hover:scale-110 transition-transform ${
-                  likedPosts.has(post._id) ? "fill-current" : ""
+              <ThumbsDown
+                className={`w-4 h-4 group-hover:scale-110 transition-transform ${
+                  dislikedPosts.has(post._id) ? "fill-current" : ""
                 }`}
               />
-              <span className="text-sm font-medium">
-                {(post.likes || 0) + (likedPosts.has(post._id) ? 1 : 0)}
+              <span className="text-xs font-medium">
+                {(post.dislikes || 0) + (dislikedPosts.has(post._id) ? 1 : 0)}
               </span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-all group">
-              <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleComments(post._id);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all group"
+            >
+              <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span className="text-xs font-medium">{post.comments?.length || 0}</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all group ml-auto">
-              <Bookmark className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all group"
+            >
+              <Share2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
             </button>
           </div>
 
           {/* Comments Section */}
           {expandedComments.has(post._id) && (
-            <div className="mt-4 pt-4 border-t border-slate-700">
+            <div className="mt-4 pt-4 border-t border-slate-700" onClick={(e) => e.stopPropagation()}>
               {/* Add Comment */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white">

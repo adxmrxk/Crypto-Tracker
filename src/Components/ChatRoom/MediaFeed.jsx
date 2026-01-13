@@ -95,7 +95,7 @@ const MediaFeed = () => {
           <div>
             {sectionSelected === "Explore" && <MediaPost key={refreshKey} />}
             {sectionSelected === "Following" && <FollowingSection />}
-            {sectionSelected === "Profile" && <ProfileSection />}
+            {sectionSelected === "Profile" && <ProfileSection key={Date.now()} />}
           </div>
         </div>
 

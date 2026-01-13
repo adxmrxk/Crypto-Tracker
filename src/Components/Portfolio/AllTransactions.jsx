@@ -47,8 +47,12 @@ const AllTransactions = ({ showAllTransactions, setShowAllTransactions }) => {
         {/* Content */}
         <div className="p-6">
           {transactions.length === 0 ? (
-            <div className="text-center text-gray-400 py-8">
-              <p>No transactions yet</p>
+            <div className="text-center text-gray-400 py-8 flex flex-col items-center">
+              <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+                <span className="text-3xl grayscale opacity-60">🧾</span>
+              </div>
+              <p className="text-sm mb-1">No transactions yet</p>
+              <p className="text-gray-500 text-xs">Your transaction history will appear here</p>
             </div>
           ) : (
             <div className="space-y-3">
