@@ -13,14 +13,16 @@ import {
 } from "lucide-react";
 
 const MediaPost = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [likedPosts, setLikedPosts] = useState(new Set());
-  const [dislikedPosts, setDislikedPosts] = useState(new Set());
   const [expandedComments, setExpandedComments] = useState(new Set());
   const [commentText, setCommentText] = useState({});
   const [selectedPost, setSelectedPost] = useState(null);
+
+  // Get liked/disliked posts from user's data
+  const likedPosts = new Set(user?.socials?.likedPosts?.map(id => id.toString()) || []);
+  const dislikedPosts = new Set(user?.socials?.dislikedPosts?.map(id => id.toString()) || []);
 
   const truncateText = (text, maxLength = 150) => {
     if (!text || text.length <= maxLength) return text;
@@ -45,65 +47,47 @@ const MediaPost = () => {
     }
   };
 
-  const handleLike = async (userId, postId) => {
+  const handleLike = async (postOwnerId, postId) => {
     if (likedPosts.has(postId)) return;
 
-    // If already disliked, remove dislike first
-    if (dislikedPosts.has(postId)) {
-      setDislikedPosts((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(postId);
-        return newSet;
-      });
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/posts/${postOwnerId}/${postId}/like`,
+        { currentUserId: user._id }
+      );
+
+      // Update user context with new likedPosts
+      setUser(response.data.currentUser);
+
+      // Update local posts state
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post._id === postId ? { ...post, dislikes: Math.max((post.dislikes || 0) - 1, 0) } : post
+          post._id === postId ? { ...post, likes: response.data.post.likes, dislikes: response.data.post.dislikes } : post
         )
       );
-    }
-
-    // Update local state immediately
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post._id === postId ? { ...post, likes: (post.likes || 0) + 1 } : post
-      )
-    );
-    setLikedPosts((prev) => new Set([...prev, postId]));
-
-    try {
-      await axios.patch(`http://localhost:5000/api/posts/${userId}/${postId}/like`);
     } catch (err) {
       console.error("Failed to like post:", err);
     }
   };
 
-  const handleDislike = async (userId, postId) => {
+  const handleDislike = async (postOwnerId, postId) => {
     if (dislikedPosts.has(postId)) return;
 
-    // If already liked, remove like first
-    if (likedPosts.has(postId)) {
-      setLikedPosts((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(postId);
-        return newSet;
-      });
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/posts/${postOwnerId}/${postId}/dislike`,
+        { currentUserId: user._id }
+      );
+
+      // Update user context with new dislikedPosts
+      setUser(response.data.currentUser);
+
+      // Update local posts state
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post._id === postId ? { ...post, likes: Math.max((post.likes || 0) - 1, 0) } : post
+          post._id === postId ? { ...post, likes: response.data.post.likes, dislikes: response.data.post.dislikes } : post
         )
       );
-    }
-
-    // Update local state immediately
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post._id === postId ? { ...post, dislikes: (post.dislikes || 0) + 1 } : post
-      )
-    );
-    setDislikedPosts((prev) => new Set([...prev, postId]));
-
-    try {
-      await axios.patch(`http://localhost:5000/api/posts/${userId}/${postId}/dislike`);
     } catch (err) {
       console.error("Failed to dislike post:", err);
     }
@@ -250,9 +234,10 @@ const MediaPost = () => {
               {/* Post Actions */}
               <div className="flex items-center justify-around py-2">
                 <button
-                  onClick={() => {
-                    handleLike(selectedPost.userId, selectedPost._id);
-                    setSelectedPost({...selectedPost, likes: (selectedPost.likes || 0) + 1});
+                  onClick={async () => {
+                    await handleLike(selectedPost.userId, selectedPost._id);
+                    const updatedPost = posts.find(p => p._id === selectedPost._id);
+                    if (updatedPost) setSelectedPost(updatedPost);
                   }}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
                     likedPosts.has(selectedPost._id)
@@ -264,9 +249,10 @@ const MediaPost = () => {
                   <span className="text-sm font-medium">Like</span>
                 </button>
                 <button
-                  onClick={() => {
-                    handleDislike(selectedPost.userId, selectedPost._id);
-                    setSelectedPost({...selectedPost, dislikes: (selectedPost.dislikes || 0) + 1});
+                  onClick={async () => {
+                    await handleDislike(selectedPost.userId, selectedPost._id);
+                    const updatedPost = posts.find(p => p._id === selectedPost._id);
+                    if (updatedPost) setSelectedPost(updatedPost);
                   }}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
                     dislikedPosts.has(selectedPost._id)
@@ -425,7 +411,7 @@ const MediaPost = () => {
 
           {/* Comments Section */}
           {expandedComments.has(post._id) && (
-            <div className="mt-4 pt-4 border-t border-slate-700">
+            <div className="mt-4 pt-4 border-t border-slate-700" onClick={(e) => e.stopPropagation()}>
               {/* Add Comment */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900">
@@ -436,6 +422,7 @@ const MediaPost = () => {
                     type="text"
                     placeholder="Write a comment..."
                     value={commentText[post._id] || ""}
+                    onClick={(e) => e.stopPropagation()}
                     onChange={(e) =>
                       setCommentText((prev) => ({ ...prev, [post._id]: e.target.value }))
                     }
@@ -445,7 +432,10 @@ const MediaPost = () => {
                     className="flex-1 bg-slate-700/50 text-white px-4 py-2 rounded-lg border border-slate-600 focus:border-amber-500 focus:outline-none text-sm"
                   />
                   <button
-                    onClick={() => handleComment(post.userId, post._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleComment(post.userId, post._id);
+                    }}
                     className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-medium rounded-lg text-sm transition-colors"
                   >
                     Post

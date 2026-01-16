@@ -42,11 +42,11 @@ const MediaFeed = () => {
               </div>
               <div className="flex justify-between text-center">
                 <div>
-                  <p className="text-white font-semibold">{user?.socials?.following || 0}</p>
+                  <p className="text-white font-semibold">{user?.socials?.following?.length || 0}</p>
                   <p className="text-gray-500 text-xs">Following</p>
                 </div>
                 <div>
-                  <p className="text-white font-semibold">{user?.socials?.followers || 0}</p>
+                  <p className="text-white font-semibold">{user?.socials?.followers?.length || 0}</p>
                   <p className="text-gray-500 text-xs">Followers</p>
                 </div>
                 <div>
@@ -58,7 +58,7 @@ const MediaFeed = () => {
 
             {/* Navigation */}
             <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-3">
-              <nav className="space-y-1">
+              <nav className="space-y-2">
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = sectionSelected === item.id;
@@ -66,7 +66,7 @@ const MediaFeed = () => {
                     <button
                       key={item.id}
                       onClick={() => setSectionSelected(item.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 cursor-pointer ${
                         isActive
                           ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900"
                           : "text-gray-400 hover:text-white hover:bg-slate-700/50"

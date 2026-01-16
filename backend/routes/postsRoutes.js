@@ -66,19 +66,53 @@ router.post("/api/posts/:id", async (req, res) => {
 router.patch("/api/posts/:userId/:postId/like", async (req, res) => {
   try {
     const { userId, postId } = req.params;
+    const { currentUserId } = req.body;
 
-    const user = await User.findOneAndUpdate(
+    // Check if user already liked this post
+    const currentUser = await User.findById(currentUserId);
+    if (!currentUser) {
+      return res.status(404).json({ error: "Current user not found" });
+    }
+
+    const alreadyLiked = currentUser.socials.likedPosts.some(
+      (id) => id.toString() === postId
+    );
+    const alreadyDisliked = currentUser.socials.dislikedPosts.some(
+      (id) => id.toString() === postId
+    );
+
+    if (alreadyLiked) {
+      return res.status(400).json({ error: "Already liked this post" });
+    }
+
+    // If previously disliked, remove dislike and decrement dislike count
+    if (alreadyDisliked) {
+      await User.findOneAndUpdate(
+        { _id: userId, "socials.posts._id": postId },
+        { $inc: { "socials.posts.$.dislikes": -1 } }
+      );
+      currentUser.socials.dislikedPosts = currentUser.socials.dislikedPosts.filter(
+        (id) => id.toString() !== postId
+      );
+    }
+
+    // Increment like count on the post
+    const postOwner = await User.findOneAndUpdate(
       { _id: userId, "socials.posts._id": postId },
       { $inc: { "socials.posts.$.likes": 1 } },
       { new: true }
     );
 
-    if (!user) {
+    if (!postOwner) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const updatedPost = user.socials.posts.find(p => p._id.toString() === postId);
-    return res.status(200).json(updatedPost);
+    // Add post to current user's likedPosts
+    currentUser.socials.likedPosts.push(postId);
+    await currentUser.save();
+
+    const updatedPost = postOwner.socials.posts.find(p => p._id.toString() === postId);
+    return res.status(200).json({ post: updatedPost, currentUser });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Failed to like post" });
@@ -89,19 +123,53 @@ router.patch("/api/posts/:userId/:postId/like", async (req, res) => {
 router.patch("/api/posts/:userId/:postId/dislike", async (req, res) => {
   try {
     const { userId, postId } = req.params;
+    const { currentUserId } = req.body;
 
-    const user = await User.findOneAndUpdate(
+    // Check if user already disliked this post
+    const currentUser = await User.findById(currentUserId);
+    if (!currentUser) {
+      return res.status(404).json({ error: "Current user not found" });
+    }
+
+    const alreadyDisliked = currentUser.socials.dislikedPosts.some(
+      (id) => id.toString() === postId
+    );
+    const alreadyLiked = currentUser.socials.likedPosts.some(
+      (id) => id.toString() === postId
+    );
+
+    if (alreadyDisliked) {
+      return res.status(400).json({ error: "Already disliked this post" });
+    }
+
+    // If previously liked, remove like and decrement like count
+    if (alreadyLiked) {
+      await User.findOneAndUpdate(
+        { _id: userId, "socials.posts._id": postId },
+        { $inc: { "socials.posts.$.likes": -1 } }
+      );
+      currentUser.socials.likedPosts = currentUser.socials.likedPosts.filter(
+        (id) => id.toString() !== postId
+      );
+    }
+
+    // Increment dislike count on the post
+    const postOwner = await User.findOneAndUpdate(
       { _id: userId, "socials.posts._id": postId },
       { $inc: { "socials.posts.$.dislikes": 1 } },
       { new: true }
     );
 
-    if (!user) {
+    if (!postOwner) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const updatedPost = user.socials.posts.find(p => p._id.toString() === postId);
-    return res.status(200).json(updatedPost);
+    // Add post to current user's dislikedPosts
+    currentUser.socials.dislikedPosts.push(postId);
+    await currentUser.save();
+
+    const updatedPost = postOwner.socials.posts.find(p => p._id.toString() === postId);
+    return res.status(200).json({ post: updatedPost, currentUser });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Failed to dislike post" });

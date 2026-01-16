@@ -93,4 +93,45 @@ router.patch("/api/usersProfile/:id", async (req, res) => {
   }
 });
 
+// Follow/Unfollow a user
+router.patch("/api/follow/:id", async (req, res) => {
+  const currentUserId = req.params.id;
+  const { targetUserId } = req.body;
+
+  try {
+    const currentUser = await User.findById(currentUserId);
+    const targetUser = await User.findById(targetUserId);
+
+    if (!currentUser || !targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isFollowing = currentUser.socials.following.some(
+      (id) => id.toString() === targetUserId.toString()
+    );
+
+    if (isFollowing) {
+      // Unfollow
+      currentUser.socials.following = currentUser.socials.following.filter(
+        (id) => id.toString() !== targetUserId.toString()
+      );
+      targetUser.socials.followers = targetUser.socials.followers.filter(
+        (id) => id.toString() !== currentUserId.toString()
+      );
+    } else {
+      // Follow
+      currentUser.socials.following.push(targetUserId);
+      targetUser.socials.followers.push(currentUserId);
+    }
+
+    await currentUser.save();
+    await targetUser.save();
+
+    res.json(currentUser);
+  } catch (error) {
+    console.error("Follow/Unfollow error:", error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
 module.exports = router;

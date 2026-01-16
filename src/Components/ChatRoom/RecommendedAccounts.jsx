@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
-import { UserPlus, Users, Sparkles } from "lucide-react";
+import { UserPlus, UserCheck, Users, Sparkles } from "lucide-react";
 import axios from "axios";
 
 function RecommendedAccounts() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [allUsers, setAllUsers] = useState([]);
 
   const getUsers = async () => {
@@ -19,6 +19,24 @@ function RecommendedAccounts() {
   useEffect(() => {
     getUsers();
   }, []);
+
+  const isFollowing = (targetUserId) => {
+    return user?.socials?.following?.some(
+      (id) => id.toString() === targetUserId.toString()
+    );
+  };
+
+  const handleFollow = async (targetUserId) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/follow/${user._id}`,
+        { targetUserId }
+      );
+      setUser(response.data);
+    } catch (error) {
+      console.error("Failed to follow user:", error);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -42,20 +60,22 @@ function RecommendedAccounts() {
             </div>
           ) : (
             <div className="space-y-3">
-              {allUsers.slice(0, 5).map((userG) => (
+              {allUsers
+                .filter((u) => u._id !== user?._id)
+                .slice(0, 5)
+                .map((userG) => (
                 <div
                   key={userG._id}
                   className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl hover:bg-slate-700/50 transition-all duration-200 cursor-pointer border border-slate-700/50 hover:border-amber-500/30 group"
                 >
                   {/* User Info */}
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="relative flex-shrink-0">
+                    <div className="flex-shrink-0">
                       <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg">
                         {userG?.profilePicture && userG.profilePicture !== ""
                           ? userG.profilePicture
                           : userG?.username?.slice(0, 2).toUpperCase()}
                       </div>
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-800"></div>
                     </div>
 
                     <div className="flex-1 min-w-0">
@@ -69,10 +89,20 @@ function RecommendedAccounts() {
                   </div>
 
                   {/* Follow Button */}
-                  <button className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold text-sm rounded-lg transition-all duration-200 hover:scale-105 flex-shrink-0">
-                    <UserPlus className="w-3.5 h-3.5" />
-                    Follow
-                  </button>
+                  {isFollowing(userG._id) ? (
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 flex-shrink-0">
+                      <UserCheck className="w-3.5 h-3.5" />
+                      Following
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleFollow(userG._id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg transition-all duration-200 cursor-pointer flex-shrink-0 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      Follow
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

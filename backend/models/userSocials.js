@@ -41,17 +41,29 @@ const userSocials = new mongoose.Schema({
   },
 
   following: {
-    type: Number,
-    default: 0,
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
+    default: [],
   },
 
   followers: {
-    type: Number,
-    default: 0,
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
+    default: [],
   },
 
   blockList: {
     type: [String],
+    default: [],
+  },
+
+  likedPosts: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+  },
+
+  dislikedPosts: {
+    type: [mongoose.Schema.Types.ObjectId],
     default: [],
   },
 });

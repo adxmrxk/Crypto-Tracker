@@ -21,9 +21,9 @@ const SkeletonPage = () => {
       const savedUserId = localStorage.getItem('cryptoUserId');
       const loginTimestamp = localStorage.getItem('cryptoLoginTime');
 
-      // Check if session is expired (1 hour in milliseconds)
-      const ONE_HOUR = 60 * 60 * 1000;
-      const isExpired = !loginTimestamp || (Date.now() - parseInt(loginTimestamp)) > ONE_HOUR;
+      // Check if session is expired (5 minutes in milliseconds)
+      const FIVE_MINUTES = 5 * 60 * 1000;
+      const isExpired = !loginTimestamp || (Date.now() - parseInt(loginTimestamp)) > FIVE_MINUTES;
 
       if (savedUserId && !isExpired) {
         try {

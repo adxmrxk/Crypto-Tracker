@@ -30,17 +30,6 @@ function EditProfile({ editProfile, setEditProfile }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Calculate profile completion
-  const calculateCompletion = () => {
-    let completed = 0;
-    if (displayName) completed += 33;
-    if (username) completed += 33;
-    if (user?.profilePicture || avatarPreview) completed += 34;
-    return completed;
-  };
-
-  const completion = calculateCompletion();
-
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -82,7 +71,10 @@ function EditProfile({ editProfile, setEditProfile }) {
         setEditProfile(false);
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to update profile. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          "Failed to update profile. Please try again."
+      );
     } finally {
       setSaving(false);
     }
@@ -103,7 +95,10 @@ function EditProfile({ editProfile, setEditProfile }) {
       navigate("/");
       setEditProfile(false);
     } catch (err) {
-      setError(err.response?.data?.error || "Failed to delete account. Please try again.");
+      setError(
+        err.response?.data?.error ||
+          "Failed to delete account. Please try again."
+      );
       setDeleting(false);
     }
   };
@@ -117,47 +112,13 @@ function EditProfile({ editProfile, setEditProfile }) {
         <div className="border-b border-slate-700 p-5 flex items-center justify-between">
           <h1 className="text-xl font-bold text-white">Edit Profile</h1>
 
-          <div className="flex items-center gap-4">
-            {/* Profile Completion */}
-            <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10">
-                <svg className="w-10 h-10 transform -rotate-90">
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="16"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="none"
-                    className="text-slate-700"
-                  />
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="16"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 16}`}
-                    strokeDashoffset={`${2 * Math.PI * 16 * (1 - completion / 100)}`}
-                    className="text-amber-500 transition-all duration-500"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-white">{completion}%</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Close Button */}
-            <button
-              onClick={() => setEditProfile(false)}
-              className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
-            >
-              <X className="w-5 h-5 text-gray-400" />
-            </button>
-          </div>
+          {/* Close Button */}
+          <button
+            onClick={() => setEditProfile(false)}
+            className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
         </div>
 
         {/* Content */}
@@ -189,7 +150,8 @@ function EditProfile({ editProfile, setEditProfile }) {
                     />
                   ) : (
                     <span className="text-2xl font-bold text-white">
-                      {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
+                      {user?.profilePicture ||
+                        user?.username?.slice(0, 2).toUpperCase()}
                     </span>
                   )}
                 </div>
@@ -205,8 +167,12 @@ function EditProfile({ editProfile, setEditProfile }) {
               </label>
             </div>
             <div>
-              <h3 className="text-white font-semibold mb-1">Profile Photo</h3>
-              <p className="text-gray-400 text-sm">Click to upload a new photo</p>
+              <h3 className="text-white font-semibold mb-1 text-left">
+                Profile Photo
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Click to upload a new photo
+              </p>
             </div>
           </div>
 
@@ -241,7 +207,9 @@ function EditProfile({ editProfile, setEditProfile }) {
               <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s/g, ''))}
+                onChange={(e) =>
+                  setUsername(e.target.value.toLowerCase().replace(/\s/g, ""))
+                }
                 maxLength={32}
                 placeholder="your_username"
                 className="w-full bg-slate-900/50 text-white px-4 py-3 rounded-xl border border-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
@@ -259,14 +227,15 @@ function EditProfile({ editProfile, setEditProfile }) {
                 <Trash2 className="w-4 h-4 text-red-400" />
                 Danger Zone
               </h3>
-              <p className="text-gray-400 text-sm mb-4">
-                Once you delete your account, there is no going back. All your data will be permanently removed.
+              <p className="text-gray-400 text-sm mb-4 text-left px-2">
+                Once you delete your account, there is no going back. Your data
+                will be removed.
               </p>
 
               {!showDeleteConfirm ? (
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="px-4 py-2 bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 text-sm font-medium rounded-lg transition-colors"
+                  className="px-4 py-2 bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 text-sm font-medium rounded-lg transition-colors cursor-pointer"
                 >
                   Delete Account
                 </button>

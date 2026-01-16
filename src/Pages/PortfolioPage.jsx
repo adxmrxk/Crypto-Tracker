@@ -22,7 +22,7 @@ const Dashboard = () => {
         <Analytics></Analytics>
       </div>
 
-      <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-radial from-slate-600 via-slate-700 to-slate-800">
+      <div id="search-crypto" className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen bg-radial from-slate-600 via-slate-700 to-slate-800">
         <SearchCryptoSection></SearchCryptoSection>
       </div>
       <LabelBottomNavigation></LabelBottomNavigation>

@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Pages/SkeletonPage";
 import {
   Edit3,
@@ -21,11 +22,18 @@ import EditProfile from "./EditProfile";
 
 function ProfileSection() {
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [selected, setSelected] = useState("Posts");
   const [editProfile, setEditProfile] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
-  const [likedPosts, setLikedPosts] = useState(new Set());
-  const [dislikedPosts, setDislikedPosts] = useState(new Set());
+
+  // Get liked/disliked posts from user's data
+  const likedPosts = new Set(
+    user?.socials?.likedPosts?.map((id) => id.toString()) || []
+  );
+  const dislikedPosts = new Set(
+    user?.socials?.dislikedPosts?.map((id) => id.toString()) || []
+  );
 
   const truncateText = (text, maxLength = 150) => {
     if (!text || text.length <= maxLength) return text;
@@ -37,7 +45,9 @@ function ProfileSection() {
     const fetchUserData = async () => {
       if (!user?._id) return;
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/${user._id}`);
+        const response = await axios.get(
+          `http://localhost:5000/api/users/${user._id}`
+        );
         setUser(response.data);
       } catch (err) {
         console.error("Failed to fetch user data:", err);
@@ -49,33 +59,22 @@ function ProfileSection() {
   const handleLike = async (postId) => {
     if (likedPosts.has(postId)) return;
 
-    // If already disliked, remove dislike
-    if (dislikedPosts.has(postId)) {
-      setDislikedPosts((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(postId);
-        return newSet;
-      });
-    }
-
-    setLikedPosts((prev) => new Set([...prev, postId]));
-
     try {
-      const response = await axios.patch(`http://localhost:5000/api/posts/${user._id}/${postId}/like`);
-      // Update user state with new like count from database
-      const updatedPost = response.data;
-      setUser((prevUser) => ({
-        ...prevUser,
-        socials: {
-          ...prevUser.socials,
-          posts: prevUser.socials.posts.map((post) =>
-            post._id === postId ? { ...post, likes: updatedPost.likes, dislikes: updatedPost.dislikes } : post
-          ),
-        },
-      }));
+      const response = await axios.patch(
+        `http://localhost:5000/api/posts/${user._id}/${postId}/like`,
+        { currentUserId: user._id }
+      );
+
+      // Update user context with new likedPosts and updated post
+      setUser(response.data.currentUser);
+
       // Update selectedPost if it's the same post
       if (selectedPost?._id === postId) {
-        setSelectedPost((prev) => ({ ...prev, likes: updatedPost.likes, dislikes: updatedPost.dislikes }));
+        setSelectedPost((prev) => ({
+          ...prev,
+          likes: response.data.post.likes,
+          dislikes: response.data.post.dislikes,
+        }));
       }
     } catch (err) {
       console.error("Failed to like post:", err);
@@ -85,33 +84,22 @@ function ProfileSection() {
   const handleDislike = async (postId) => {
     if (dislikedPosts.has(postId)) return;
 
-    // If already liked, remove like
-    if (likedPosts.has(postId)) {
-      setLikedPosts((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(postId);
-        return newSet;
-      });
-    }
-
-    setDislikedPosts((prev) => new Set([...prev, postId]));
-
     try {
-      const response = await axios.patch(`http://localhost:5000/api/posts/${user._id}/${postId}/dislike`);
-      // Update user state with new dislike count from database
-      const updatedPost = response.data;
-      setUser((prevUser) => ({
-        ...prevUser,
-        socials: {
-          ...prevUser.socials,
-          posts: prevUser.socials.posts.map((post) =>
-            post._id === postId ? { ...post, likes: updatedPost.likes, dislikes: updatedPost.dislikes } : post
-          ),
-        },
-      }));
+      const response = await axios.patch(
+        `http://localhost:5000/api/posts/${user._id}/${postId}/dislike`,
+        { currentUserId: user._id }
+      );
+
+      // Update user context with new dislikedPosts and updated post
+      setUser(response.data.currentUser);
+
       // Update selectedPost if it's the same post
       if (selectedPost?._id === postId) {
-        setSelectedPost((prev) => ({ ...prev, likes: updatedPost.likes, dislikes: updatedPost.dislikes }));
+        setSelectedPost((prev) => ({
+          ...prev,
+          likes: response.data.post.likes,
+          dislikes: response.data.post.dislikes,
+        }));
       }
     } catch (err) {
       console.error("Failed to dislike post:", err);
@@ -126,9 +114,14 @@ function ProfileSection() {
 
     if (diffInSeconds < 60) return "just now";
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    return postDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800)
+      return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    return postDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
   };
 
   return (
@@ -167,8 +160,13 @@ function ProfileSection() {
                       : user?.username?.slice(0, 2).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{user?.displayName}</h3>
-                    <p className="text-gray-500 text-sm">@{user?.username} · {formatTimeAgo(selectedPost?.datePosted)}</p>
+                    <h3 className="font-semibold text-white">
+                      {user?.displayName}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      @{user?.username} ·{" "}
+                      {formatTimeAgo(selectedPost?.datePosted)}
+                    </p>
                   </div>
                 </div>
 
@@ -192,46 +190,38 @@ function ProfileSection() {
                 <div className="flex items-center gap-6 py-3 border-t border-b border-slate-700 mb-4">
                   <div className="flex items-center gap-2">
                     <ThumbsUp className="w-4 h-4 text-emerald-400" />
-                    <span className="font-semibold text-white">{selectedPost?.likes || 0}</span>
+                    <span className="font-semibold text-white">
+                      {selectedPost?.likes || 0}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <ThumbsDown className="w-4 h-4 text-red-400" />
-                    <span className="font-semibold text-white">{selectedPost?.dislikes || 0}</span>
+                    <span className="font-semibold text-white">
+                      {selectedPost?.dislikes || 0}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MessageCircle className="w-4 h-4 text-blue-400" />
-                    <span className="font-semibold text-white">{selectedPost?.comments?.length || 0}</span>
+                    <span className="font-semibold text-white">
+                      {selectedPost?.comments?.length || 0}
+                    </span>
                   </div>
                 </div>
 
                 {/* Post Actions */}
                 <div className="flex items-center justify-around py-2">
-                  <button
-                    onClick={() => handleLike(selectedPost?._id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                      likedPosts.has(selectedPost?._id)
-                        ? "text-emerald-500 bg-emerald-500/10"
-                        : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
-                    }`}
-                  >
-                    <ThumbsUp className={`w-5 h-5 ${likedPosts.has(selectedPost?._id) ? "fill-current" : ""}`} />
+                  <div className="flex items-center gap-2 px-4 py-2 text-gray-400">
+                    <ThumbsUp className="w-5 h-5" />
                     <span className="text-sm font-medium">Like</span>
-                  </button>
-                  <button
-                    onClick={() => handleDislike(selectedPost?._id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                      dislikedPosts.has(selectedPost?._id)
-                        ? "text-red-500 bg-red-500/10"
-                        : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
-                    }`}
-                  >
-                    <ThumbsDown className={`w-5 h-5 ${dislikedPosts.has(selectedPost?._id) ? "fill-current" : ""}`} />
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 text-gray-400">
+                    <ThumbsDown className="w-5 h-5" />
                     <span className="text-sm font-medium">Dislike</span>
-                  </button>
-                  <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all">
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 text-gray-400">
                     <MessageSquare className="w-5 h-5" />
                     <span className="text-sm font-medium">Comment</span>
-                  </button>
+                  </div>
                   <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all">
                     <Share2 className="w-5 h-5" />
                     <span className="text-sm font-medium">Share</span>
@@ -250,10 +240,16 @@ function ProfileSection() {
                           </div>
                           <div className="flex-1 bg-slate-700/30 rounded-lg p-3">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-white text-sm">@{comment.author}</span>
-                              <span className="text-gray-500 text-xs">{formatTimeAgo(comment.datePosted)}</span>
+                              <span className="font-medium text-white text-sm">
+                                @{comment.author}
+                              </span>
+                              <span className="text-gray-500 text-xs">
+                                {formatTimeAgo(comment.datePosted)}
+                              </span>
                             </div>
-                            <p className="text-gray-300 text-sm">{comment.content}</p>
+                            <p className="text-gray-300 text-sm">
+                              {comment.content}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -297,7 +293,9 @@ function ProfileSection() {
 
             {/* Name & Username */}
             <div className="mb-4">
-              <h1 className="text-2xl font-bold text-white">{user?.displayName}</h1>
+              <h1 className="text-2xl font-bold text-white">
+                {user?.displayName}
+              </h1>
               <p className="text-gray-400">@{user?.username}</p>
             </div>
 
@@ -310,12 +308,16 @@ function ProfileSection() {
             <div className="flex items-center gap-6 mb-4">
               <div className="flex items-center gap-2 text-gray-300 hover:text-amber-400 cursor-pointer transition-colors">
                 <Users className="w-4 h-4" />
-                <span className="font-semibold text-white">{user?.socials?.following || 0}</span>
+                <span className="font-semibold text-white">
+                  {user?.socials?.following?.length || 0}
+                </span>
                 <span className="text-gray-400">Following</span>
               </div>
               <div className="flex items-center gap-2 text-gray-300 hover:text-amber-400 cursor-pointer transition-colors">
                 <UserPlus className="w-4 h-4" />
-                <span className="font-semibold text-white">{user?.socials?.followers || 0}</span>
+                <span className="font-semibold text-white">
+                  {user?.socials?.followers?.length || 0}
+                </span>
                 <span className="text-gray-400">Followers</span>
               </div>
             </div>
@@ -345,11 +347,25 @@ function ProfileSection() {
                   <Sparkles className="w-5 h-5 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold">Create Your Watchlist</h3>
-                  <p className="text-gray-400 text-sm">Start tracking your favorite cryptocurrencies</p>
+                  <h3 className="text-white font-semibold text-left">
+                    Create Your Watchlist
+                  </h3>
+                  <p className="text-gray-400 text-sm">
+                    Start tracking your favorite cryptocurrencies
+                  </p>
                 </div>
               </div>
-              <button className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200">
+              <button
+                onClick={() => {
+                  navigate("/PortfolioPage");
+                  setTimeout(() => {
+                    document
+                      .getElementById("search-crypto")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }}
+                className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200 cursor-pointer"
+              >
                 Get Started
               </button>
             </div>
@@ -403,9 +419,14 @@ function ProfileSection() {
                             ? user?.profilePicture
                             : user?.username?.slice(0, 2).toUpperCase()}
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-white text-sm">{user?.displayName}</h3>
-                          <p className="text-gray-500 text-xs">@{user?.username} · {formatTimeAgo(post?.datePosted)}</p>
+                        <div className="">
+                          <h3 className="font-semibold text-white text-sm">
+                            {user?.displayName}
+                          </h3>
+                          <p className="text-gray-500 text-xs">
+                            @{user?.username} ·{" "}
+                            {formatTimeAgo(post?.datePosted)}
+                          </p>
                         </div>
                       </div>
                       <button
@@ -432,43 +453,26 @@ function ProfileSection() {
                       </div>
                     )}
 
-                    {/* Post Actions */}
-                    <div className="flex items-center gap-2 pt-2 border-t border-slate-700">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLike(post?._id);
-                        }}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all group ${
-                          likedPosts.has(post?._id)
-                            ? "text-emerald-500 bg-emerald-500/10"
-                            : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
-                        }`}
-                      >
-                        <ThumbsUp className={`w-4 h-4 group-hover:scale-110 transition-transform ${likedPosts.has(post?._id) ? "fill-current" : ""}`} />
-                        <span className="text-xs font-medium">{post?.likes || 0}</span>
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDislike(post?._id);
-                        }}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all group ${
-                          dislikedPosts.has(post?._id)
-                            ? "text-red-500 bg-red-500/10"
-                            : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
-                        }`}
-                      >
-                        <ThumbsDown className={`w-4 h-4 group-hover:scale-110 transition-transform ${dislikedPosts.has(post?._id) ? "fill-current" : ""}`} />
-                        <span className="text-xs font-medium">{post?.dislikes || 0}</span>
-                      </button>
-                      <button
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all group"
-                      >
-                        <MessageSquare className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                        <span className="text-xs font-medium">{post?.comments?.length || 0}</span>
-                      </button>
+                    {/* Post Stats */}
+                    <div className="flex items-center gap-4 pt-2 border-t border-slate-700">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400">
+                        <ThumbsUp className="w-4 h-4" />
+                        <span className="text-xs font-medium">
+                          {post?.likes || 0}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400">
+                        <ThumbsDown className="w-4 h-4" />
+                        <span className="text-xs font-medium">
+                          {post?.dislikes || 0}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400">
+                        <MessageSquare className="w-4 h-4" />
+                        <span className="text-xs font-medium">
+                          {post?.comments?.length || 0}
+                        </span>
+                      </div>
                       <button
                         onClick={(e) => e.stopPropagation()}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all group"
@@ -485,9 +489,12 @@ function ProfileSection() {
                 <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
                   <FileText className="w-8 h-8 text-gray-500" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">No Posts Yet</h3>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  No Posts Yet
+                </h3>
                 <p className="text-gray-400 mb-6 max-w-sm mx-auto">
-                  Share your thoughts, insights, and crypto journey with the community!
+                  Share your thoughts, insights, and crypto journey with the
+                  community!
                 </p>
                 <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200">
                   <Plus className="w-4 h-4" />
@@ -505,9 +512,12 @@ function ProfileSection() {
               <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MessageCircle className="w-8 h-8 text-gray-500" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">No Comments Yet</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                No Comments Yet
+              </h3>
               <p className="text-gray-400 max-w-sm mx-auto">
-                Join the conversation! Your comments on other posts will appear here.
+                Join the conversation! Your comments on other posts will appear
+                here.
               </p>
             </div>
           </div>
