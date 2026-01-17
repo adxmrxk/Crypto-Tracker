@@ -112,7 +112,7 @@ const FollowingSection = () => {
               {/* Post Header */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                  {selectedPost.profilePicture || selectedPost.username?.slice(0, 2).toUpperCase()}
+                  {selectedPost.username?.slice(0, 2).toUpperCase()}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -215,7 +215,7 @@ const FollowingSection = () => {
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                {post.profilePicture || post.username?.slice(0, 2).toUpperCase()}
+                {post.username?.slice(0, 2).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -306,7 +306,7 @@ const FollowingSection = () => {
               {/* Add Comment */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white">
-                  {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
+                  {user?.username?.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="flex-1 flex gap-2">
                   <input

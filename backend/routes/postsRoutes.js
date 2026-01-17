@@ -180,17 +180,20 @@ router.patch("/api/posts/:userId/:postId/dislike", async (req, res) => {
 router.post("/api/posts/:userId/:postId/comment", async (req, res) => {
   try {
     const { userId, postId } = req.params;
-    const { author, content } = req.body;
+    const { author, content, commenterId } = req.body;
 
+    const commentData = {
+      author,
+      content,
+      datePosted: new Date(),
+    };
+
+    // Add comment to the post
     const user = await User.findOneAndUpdate(
       { _id: userId, "socials.posts._id": postId },
       {
         $push: {
-          "socials.posts.$.comments": {
-            author,
-            content,
-            datePosted: new Date(),
-          },
+          "socials.posts.$.comments": commentData,
         },
       },
       { new: true }
@@ -198,6 +201,22 @@ router.post("/api/posts/:userId/:postId/comment", async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ error: "Post not found" });
+    }
+
+    // Also save comment to the commenter's socials.comments array
+    if (commenterId) {
+      await User.findByIdAndUpdate(
+        commenterId,
+        {
+          $push: {
+            "socials.comments": {
+              ...commentData,
+              postId: postId,
+              postOwnerId: userId,
+            },
+          },
+        }
+      );
     }
 
     const updatedPost = user.socials.posts.find(p => p._id.toString() === postId);

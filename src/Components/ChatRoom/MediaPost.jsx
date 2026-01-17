@@ -21,8 +21,12 @@ const MediaPost = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
   // Get liked/disliked posts from user's data
-  const likedPosts = new Set(user?.socials?.likedPosts?.map(id => id.toString()) || []);
-  const dislikedPosts = new Set(user?.socials?.dislikedPosts?.map(id => id.toString()) || []);
+  const likedPosts = new Set(
+    user?.socials?.likedPosts?.map((id) => id.toString()) || [],
+  );
+  const dislikedPosts = new Set(
+    user?.socials?.dislikedPosts?.map((id) => id.toString()) || [],
+  );
 
   const truncateText = (text, maxLength = 150) => {
     if (!text || text.length <= maxLength) return text;
@@ -53,18 +57,35 @@ const MediaPost = () => {
     try {
       const response = await axios.patch(
         `http://localhost:5000/api/posts/${postOwnerId}/${postId}/like`,
-        { currentUserId: user._id }
+        { currentUserId: user._id },
       );
 
       // Update user context with new likedPosts
       setUser(response.data.currentUser);
 
+      const updatedPost = { ...response.data.post, userId: postOwnerId };
+
       // Update local posts state
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post._id === postId ? { ...post, likes: response.data.post.likes, dislikes: response.data.post.dislikes } : post
-        )
+          post._id === postId
+            ? {
+                ...post,
+                likes: updatedPost.likes,
+                dislikes: updatedPost.dislikes,
+              }
+            : post,
+        ),
       );
+
+      // Update selectedPost if this post is currently expanded
+      if (selectedPost?._id === postId) {
+        setSelectedPost((prev) => ({
+          ...prev,
+          likes: updatedPost.likes,
+          dislikes: updatedPost.dislikes,
+        }));
+      }
     } catch (err) {
       console.error("Failed to like post:", err);
     }
@@ -76,18 +97,35 @@ const MediaPost = () => {
     try {
       const response = await axios.patch(
         `http://localhost:5000/api/posts/${postOwnerId}/${postId}/dislike`,
-        { currentUserId: user._id }
+        { currentUserId: user._id },
       );
 
       // Update user context with new dislikedPosts
       setUser(response.data.currentUser);
 
+      const updatedPost = { ...response.data.post, userId: postOwnerId };
+
       // Update local posts state
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
-          post._id === postId ? { ...post, likes: response.data.post.likes, dislikes: response.data.post.dislikes } : post
-        )
+          post._id === postId
+            ? {
+                ...post,
+                likes: updatedPost.likes,
+                dislikes: updatedPost.dislikes,
+              }
+            : post,
+        ),
       );
+
+      // Update selectedPost if this post is currently expanded
+      if (selectedPost?._id === postId) {
+        setSelectedPost((prev) => ({
+          ...prev,
+          likes: updatedPost.likes,
+          dislikes: updatedPost.dislikes,
+        }));
+      }
     } catch (err) {
       console.error("Failed to dislike post:", err);
     }
@@ -101,6 +139,7 @@ const MediaPost = () => {
       author: user?.username,
       content: content.trim(),
       datePosted: new Date(),
+      commenterId: user?._id,
     };
 
     // Update local state immediately
@@ -108,15 +147,15 @@ const MediaPost = () => {
       prevPosts.map((post) =>
         post._id === postId
           ? { ...post, comments: [...(post.comments || []), newComment] }
-          : post
-      )
+          : post,
+      ),
     );
     setCommentText((prev) => ({ ...prev, [postId]: "" }));
 
     try {
       await axios.post(
         `http://localhost:5000/api/posts/${userId}/${postId}/comment`,
-        newComment
+        newComment,
       );
     } catch (err) {
       console.error("Failed to add comment:", err);
@@ -142,9 +181,14 @@ const MediaPost = () => {
 
     if (diffInSeconds < 60) return "just now";
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    return postDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800)
+      return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    return postDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
   };
 
   if (loading) {
@@ -189,18 +233,31 @@ const MediaPost = () => {
             {/* Modal Content */}
             <div className="p-6 overflow-y-auto flex-1">
               {/* Post Header */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                  {selectedPost.profilePicture || selectedPost.username?.slice(0, 2).toUpperCase()}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
+                    {selectedPost.username?.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-left">
+                      {selectedPost.displayName}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      @{selectedPost.username} ·{" "}
+                      {formatTimeAgo(selectedPost.datePosted)}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-white">{selectedPost.displayName}</h3>
-                  <p className="text-gray-500 text-sm">@{selectedPost.username} · {formatTimeAgo(selectedPost.datePosted)}</p>
-                </div>
+                {selectedPost.userId !== user?._id && (
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 transition-all">
+                    <UserPlus className="w-4 h-4" />
+                    Follow
+                  </button>
+                )}
               </div>
 
               {/* Full Post Content */}
-              <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap break-words">
+              <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap break-words text-left p-2">
                 {selectedPost.content}
               </p>
 
@@ -219,65 +276,63 @@ const MediaPost = () => {
               <div className="flex items-center gap-6 py-3 border-t border-b border-slate-700 mb-4">
                 <div className="flex items-center gap-2">
                   <ThumbsUp className="w-4 h-4 text-emerald-400" />
-                  <span className="font-semibold text-white">{selectedPost.likes || 0}</span>
+                  <span className="font-semibold text-white">
+                    {selectedPost.likes || 0}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ThumbsDown className="w-4 h-4 text-red-400" />
-                  <span className="font-semibold text-white">{selectedPost.dislikes || 0}</span>
+                  <span className="font-semibold text-white">
+                    {selectedPost.dislikes || 0}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-4 h-4 text-blue-400" />
-                  <span className="font-semibold text-white">{selectedPost.comments?.length || 0}</span>
+                  <span className="font-semibold text-white">
+                    {selectedPost.comments?.length || 0}
+                  </span>
                 </div>
               </div>
 
               {/* Post Actions */}
-              <div className="flex items-center justify-around py-2">
+              <div className="flex items-center justify-start gap-2 py-2">
                 <button
-                  onClick={async () => {
-                    await handleLike(selectedPost.userId, selectedPost._id);
-                    const updatedPost = posts.find(p => p._id === selectedPost._id);
-                    if (updatedPost) setSelectedPost(updatedPost);
-                  }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  onClick={() =>
+                    handleLike(selectedPost.userId, selectedPost._id)
+                  }
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
                     likedPosts.has(selectedPost._id)
                       ? "text-emerald-500 bg-emerald-500/10"
                       : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
                   }`}
                 >
-                  <ThumbsUp className={`w-5 h-5 ${likedPosts.has(selectedPost._id) ? "fill-current" : ""}`} />
-                  <span className="text-sm font-medium">Like</span>
+                  <ThumbsUp
+                    className={`w-4 h-4 ${likedPosts.has(selectedPost._id) ? "fill-current" : ""}`}
+                  />
+                  <span className="text-xs font-medium">Like</span>
                 </button>
                 <button
-                  onClick={async () => {
-                    await handleDislike(selectedPost.userId, selectedPost._id);
-                    const updatedPost = posts.find(p => p._id === selectedPost._id);
-                    if (updatedPost) setSelectedPost(updatedPost);
-                  }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  onClick={() =>
+                    handleDislike(selectedPost.userId, selectedPost._id)
+                  }
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
                     dislikedPosts.has(selectedPost._id)
                       ? "text-red-500 bg-red-500/10"
                       : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
                   }`}
                 >
-                  <ThumbsDown className={`w-5 h-5 ${dislikedPosts.has(selectedPost._id) ? "fill-current" : ""}`} />
-                  <span className="text-sm font-medium">Dislike</span>
-                </button>
-                <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all">
-                  <MessageCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">Comment</span>
-                </button>
-                <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all">
-                  <Share2 className="w-5 h-5" />
-                  <span className="text-sm font-medium">Share</span>
+                  <ThumbsDown
+                    className={`w-4 h-4 ${dislikedPosts.has(selectedPost._id) ? "fill-current" : ""}`}
+                  />
+                  <span className="text-xs font-medium">Dislike</span>
                 </button>
               </div>
 
               {/* Comments Section */}
-              {selectedPost.comments?.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-slate-700">
-                  <h4 className="text-white font-semibold mb-3">Comments</h4>
-                  <div className="space-y-3">
+              <div className="mt-4 pt-4 border-t border-slate-700">
+                <h4 className="text-white font-semibold mb-3">Comments</h4>
+                {selectedPost.comments?.length > 0 ? (
+                  <div className="space-y-3 mb-4">
                     {selectedPost.comments.map((comment, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
@@ -285,16 +340,89 @@ const MediaPost = () => {
                         </div>
                         <div className="flex-1 bg-slate-700/30 rounded-lg p-3">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium text-white text-sm">@{comment.author}</span>
-                            <span className="text-gray-500 text-xs">{formatTimeAgo(comment.datePosted)}</span>
+                            <span className="font-medium text-white text-sm">
+                              @{comment.author}
+                            </span>
+                            <span className="text-gray-500 text-xs">
+                              {formatTimeAgo(comment.datePosted)}
+                            </span>
                           </div>
-                          <p className="text-gray-300 text-sm break-words">{comment.content}</p>
+                          <p className="text-gray-300 text-sm break-words text-left">
+                            {comment.content}
+                          </p>
                         </div>
                       </div>
                     ))}
                   </div>
+                ) : (
+                  <p className="text-gray-500 text-sm text-center py-2 mb-4">
+                    No comments yet. Be the first to comment!
+                  </p>
+                )}
+
+                {/* Comment Input */}
+                <div className="flex items-center gap-3 pt-3 border-t border-slate-700">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0">
+                    {user?.profilePicture &&
+                    user.profilePicture.length <= 4 &&
+                    !user.profilePicture.startsWith("data:")
+                      ? user.profilePicture
+                      : user?.username?.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div className="flex-1 flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Write a comment..."
+                      value={commentText[selectedPost._id] || ""}
+                      onChange={(e) =>
+                        setCommentText((prev) => ({
+                          ...prev,
+                          [selectedPost._id]: e.target.value,
+                        }))
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleComment(selectedPost.userId, selectedPost._id);
+                          // Update selectedPost with the new comment
+                          const newComment = {
+                            author: user?.username,
+                            content: commentText[selectedPost._id]?.trim(),
+                            datePosted: new Date(),
+                          };
+                          if (newComment.content) {
+                            setSelectedPost((prev) => ({
+                              ...prev,
+                              comments: [...(prev.comments || []), newComment],
+                            }));
+                          }
+                        }
+                      }}
+                      className="flex-1 bg-slate-700/50 text-white px-4 py-2 rounded-lg border border-slate-600 focus:border-amber-500 focus:outline-none text-sm"
+                    />
+                    <button
+                      onClick={() => {
+                        const content = commentText[selectedPost._id]?.trim();
+                        if (content) {
+                          handleComment(selectedPost.userId, selectedPost._id);
+                          // Update selectedPost with the new comment
+                          const newComment = {
+                            author: user?.username,
+                            content: content,
+                            datePosted: new Date(),
+                          };
+                          setSelectedPost((prev) => ({
+                            ...prev,
+                            comments: [...(prev.comments || []), newComment],
+                          }));
+                        }
+                      }}
+                      className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-medium rounded-lg text-sm transition-colors"
+                    >
+                      Comment
+                    </button>
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
@@ -310,21 +438,13 @@ const MediaPost = () => {
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                {post.profilePicture || post.username?.slice(0, 2).toUpperCase()}
+                {post.username?.slice(0, 2).toUpperCase()}
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-white text-sm">{post.displayName}</h3>
-                  {post.userId !== user?._id && (
-                    <button
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-amber-500 hover:text-amber-400 transition-colors"
-                    >
-                      <UserPlus className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                </div>
-                <p className="text-gray-500 text-xs">
+                <h3 className="font-semibold text-white text-sm text-left">
+                  {post.displayName}
+                </h3>
+                <p className="text-gray-500 text-xs text-left">
                   @{post.username} · {formatTimeAgo(post.datePosted)}
                 </p>
               </div>
@@ -338,7 +458,7 @@ const MediaPost = () => {
           </div>
 
           {/* Post Content - Truncated */}
-          <p className="text-gray-200 text-sm mb-3 leading-relaxed">
+          <p className="text-gray-200 text-sm mb-3 leading-relaxed text-left p-2">
             {truncateText(post.content, 150)}
           </p>
 
@@ -399,7 +519,9 @@ const MediaPost = () => {
               className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all group"
             >
               <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
-              <span className="text-xs font-medium">{post.comments?.length || 0}</span>
+              <span className="text-xs font-medium">
+                {post.comments?.length || 0}
+              </span>
             </button>
             <button
               onClick={(e) => e.stopPropagation()}
@@ -411,11 +533,18 @@ const MediaPost = () => {
 
           {/* Comments Section */}
           {expandedComments.has(post._id) && (
-            <div className="mt-4 pt-4 border-t border-slate-700" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="mt-4 pt-4 border-t border-slate-700"
+              onClick={(e) => e.stopPropagation()}
+            >
               {/* Add Comment */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900">
-                  {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
+                  {user?.profilePicture &&
+                  user.profilePicture.length <= 4 &&
+                  !user.profilePicture.startsWith("data:")
+                    ? user.profilePicture
+                    : user?.username?.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="flex-1 flex gap-2">
                   <input
@@ -424,10 +553,14 @@ const MediaPost = () => {
                     value={commentText[post._id] || ""}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) =>
-                      setCommentText((prev) => ({ ...prev, [post._id]: e.target.value }))
+                      setCommentText((prev) => ({
+                        ...prev,
+                        [post._id]: e.target.value,
+                      }))
                     }
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") handleComment(post.userId, post._id);
+                      if (e.key === "Enter")
+                        handleComment(post.userId, post._id);
                     }}
                     className="flex-1 bg-slate-700/50 text-white px-4 py-2 rounded-lg border border-slate-600 focus:border-amber-500 focus:outline-none text-sm"
                   />
@@ -460,7 +593,9 @@ const MediaPost = () => {
                             {formatTimeAgo(comment.datePosted)}
                           </span>
                         </div>
-                        <p className="text-gray-300 text-sm">{comment.content}</p>
+                        <p className="text-gray-300 text-sm text-left">
+                          {comment.content}
+                        </p>
                       </div>
                     </div>
                   ))}

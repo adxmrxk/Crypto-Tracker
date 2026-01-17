@@ -36,6 +36,13 @@ const userSocials = new mongoose.Schema({
           type: Date,
           default: Date.now,
         },
+        postId: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
+        postOwnerId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
   },

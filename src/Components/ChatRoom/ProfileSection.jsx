@@ -26,6 +26,9 @@ function ProfileSection() {
   const [selected, setSelected] = useState("Posts");
   const [editProfile, setEditProfile] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedCommentPost, setSelectedCommentPost] = useState(null);
+  const [postOwnerInfo, setPostOwnerInfo] = useState(null);
+  const [commentText, setCommentText] = useState({});
 
   // Get liked/disliked posts from user's data
   const likedPosts = new Set(
@@ -34,6 +37,37 @@ function ProfileSection() {
   const dislikedPosts = new Set(
     user?.socials?.dislikedPosts?.map((id) => id.toString()) || []
   );
+
+  // Fetch post when clicking on a comment
+  const handleCommentClick = async (comment) => {
+    if (!comment.postId || !comment.postOwnerId) return;
+
+    try {
+      // Fetch the post owner's data to get the post
+      const response = await axios.get(
+        `http://localhost:5000/api/users/${comment.postOwnerId}`
+      );
+      const postOwner = response.data;
+      setPostOwnerInfo(postOwner);
+
+      // Find the specific post
+      const post = postOwner.socials?.posts?.find(
+        (p) => p._id.toString() === comment.postId.toString()
+      );
+
+      if (post) {
+        setSelectedCommentPost({
+          ...post,
+          userId: postOwner._id,
+          displayName: postOwner.displayName,
+          username: postOwner.username,
+          profilePicture: postOwner.profilePicture,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch post:", err);
+    }
+  };
 
   const truncateText = (text, maxLength = 150) => {
     if (!text || text.length <= maxLength) return text;
@@ -106,6 +140,84 @@ function ProfileSection() {
     }
   };
 
+  // Like handler for comment post
+  const handleCommentPostLike = async (postOwnerId, postId) => {
+    if (likedPosts.has(postId)) return;
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/posts/${postOwnerId}/${postId}/like`,
+        { currentUserId: user._id }
+      );
+
+      setUser(response.data.currentUser);
+
+      if (selectedCommentPost?._id === postId) {
+        setSelectedCommentPost((prev) => ({
+          ...prev,
+          likes: response.data.post.likes,
+          dislikes: response.data.post.dislikes,
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to like post:", err);
+    }
+  };
+
+  // Dislike handler for comment post
+  const handleCommentPostDislike = async (postOwnerId, postId) => {
+    if (dislikedPosts.has(postId)) return;
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/posts/${postOwnerId}/${postId}/dislike`,
+        { currentUserId: user._id }
+      );
+
+      setUser(response.data.currentUser);
+
+      if (selectedCommentPost?._id === postId) {
+        setSelectedCommentPost((prev) => ({
+          ...prev,
+          likes: response.data.post.likes,
+          dislikes: response.data.post.dislikes,
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to dislike post:", err);
+    }
+  };
+
+  // Comment handler for comment post modal
+  const handleCommentPostComment = async (postOwnerId, postId) => {
+    const content = commentText[postId];
+    if (!content?.trim()) return;
+
+    const newComment = {
+      author: user?.username,
+      content: content.trim(),
+      datePosted: new Date(),
+      commenterId: user?._id,
+    };
+
+    setCommentText((prev) => ({ ...prev, [postId]: "" }));
+
+    try {
+      await axios.post(
+        `http://localhost:5000/api/posts/${postOwnerId}/${postId}/comment`,
+        newComment
+      );
+
+      // Update selectedCommentPost with the new comment
+      setSelectedCommentPost((prev) => ({
+        ...prev,
+        comments: [...(prev.comments || []), newComment],
+      }));
+    } catch (err) {
+      console.error("Failed to add comment:", err);
+    }
+  };
+
   const formatTimeAgo = (date) => {
     if (!date) return "";
     const now = new Date();
@@ -153,25 +265,25 @@ function ProfileSection() {
               {/* Modal Content */}
               <div className="p-6 overflow-y-auto flex-1">
                 {/* Post Header */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                    {user?.profilePicture !== ""
-                      ? user?.profilePicture
-                      : user?.username?.slice(0, 2).toUpperCase()}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">
-                      {user?.displayName}
-                    </h3>
-                    <p className="text-gray-500 text-sm">
-                      @{user?.username} ·{" "}
-                      {formatTimeAgo(selectedPost?.datePosted)}
-                    </p>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
+                      {user?.username?.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white text-left">
+                        {user?.displayName}
+                      </h3>
+                      <p className="text-gray-500 text-sm">
+                        @{user?.username} ·{" "}
+                        {formatTimeAgo(selectedPost?.datePosted)}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 {/* Full Post Content */}
-                <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap break-words">
+                <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap break-words text-left p-2">
                   {selectedPost?.content}
                 </p>
 
@@ -209,30 +321,48 @@ function ProfileSection() {
                 </div>
 
                 {/* Post Actions */}
-                <div className="flex items-center justify-around py-2">
-                  <div className="flex items-center gap-2 px-4 py-2 text-gray-400">
-                    <ThumbsUp className="w-5 h-5" />
-                    <span className="text-sm font-medium">Like</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-4 py-2 text-gray-400">
-                    <ThumbsDown className="w-5 h-5" />
-                    <span className="text-sm font-medium">Dislike</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-4 py-2 text-gray-400">
-                    <MessageSquare className="w-5 h-5" />
-                    <span className="text-sm font-medium">Comment</span>
-                  </div>
-                  <button className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all">
-                    <Share2 className="w-5 h-5" />
-                    <span className="text-sm font-medium">Share</span>
+                <div className="flex items-center justify-start gap-2 py-2">
+                  <button
+                    onClick={() => handleLike(selectedPost._id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                      likedPosts.has(selectedPost._id?.toString())
+                        ? "text-emerald-500 bg-emerald-500/10"
+                        : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                    }`}
+                  >
+                    <ThumbsUp
+                      className={`w-4 h-4 ${
+                        likedPosts.has(selectedPost._id?.toString())
+                          ? "fill-current"
+                          : ""
+                      }`}
+                    />
+                    <span className="text-xs font-medium">Like</span>
+                  </button>
+                  <button
+                    onClick={() => handleDislike(selectedPost._id)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                      dislikedPosts.has(selectedPost._id?.toString())
+                        ? "text-red-500 bg-red-500/10"
+                        : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                    }`}
+                  >
+                    <ThumbsDown
+                      className={`w-4 h-4 ${
+                        dislikedPosts.has(selectedPost._id?.toString())
+                          ? "fill-current"
+                          : ""
+                      }`}
+                    />
+                    <span className="text-xs font-medium">Dislike</span>
                   </button>
                 </div>
 
                 {/* Comments Section */}
-                {selectedPost?.comments?.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-slate-700">
-                    <h4 className="text-white font-semibold mb-3">Comments</h4>
-                    <div className="space-y-3">
+                <div className="mt-4 pt-4 border-t border-slate-700">
+                  <h4 className="text-white font-semibold mb-3">Comments</h4>
+                  {selectedPost?.comments?.length > 0 ? (
+                    <div className="space-y-3 mb-4">
                       {selectedPost.comments.map((comment, index) => (
                         <div key={index} className="flex items-start gap-3">
                           <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
@@ -247,15 +377,304 @@ function ProfileSection() {
                                 {formatTimeAgo(comment.datePosted)}
                               </span>
                             </div>
-                            <p className="text-gray-300 text-sm">
+                            <p className="text-gray-300 text-sm break-words text-left">
                               {comment.content}
                             </p>
                           </div>
                         </div>
                       ))}
                     </div>
+                  ) : (
+                    <p className="text-gray-500 text-sm text-center py-2 mb-4">
+                      No comments yet. Be the first to comment!
+                    </p>
+                  )}
+
+                  {/* Comment Input */}
+                  <div className="flex items-center gap-3 pt-3 border-t border-slate-700">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0">
+                      {user?.username?.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div className="flex-1 flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Write a comment..."
+                        value={commentText[selectedPost._id] || ""}
+                        onChange={(e) =>
+                          setCommentText((prev) => ({
+                            ...prev,
+                            [selectedPost._id]: e.target.value,
+                          }))
+                        }
+                        onKeyDown={async (e) => {
+                          if (e.key === "Enter") {
+                            const content = commentText[selectedPost._id]?.trim();
+                            if (!content) return;
+                            const newComment = {
+                              author: user?.username,
+                              content: content,
+                              datePosted: new Date(),
+                              commenterId: user?._id,
+                            };
+                            setCommentText((prev) => ({ ...prev, [selectedPost._id]: "" }));
+                            setSelectedPost((prev) => ({
+                              ...prev,
+                              comments: [...(prev.comments || []), newComment],
+                            }));
+                            try {
+                              await axios.post(
+                                `http://localhost:5000/api/posts/${user._id}/${selectedPost._id}/comment`,
+                                newComment
+                              );
+                            } catch (err) {
+                              console.error("Failed to add comment:", err);
+                            }
+                          }
+                        }}
+                        className="flex-1 bg-slate-700/50 text-white px-4 py-2 rounded-lg border border-slate-600 focus:border-amber-500 focus:outline-none text-sm"
+                      />
+                      <button
+                        onClick={async () => {
+                          const content = commentText[selectedPost._id]?.trim();
+                          if (!content) return;
+                          const newComment = {
+                            author: user?.username,
+                            content: content,
+                            datePosted: new Date(),
+                            commenterId: user?._id,
+                          };
+                          setCommentText((prev) => ({ ...prev, [selectedPost._id]: "" }));
+                          setSelectedPost((prev) => ({
+                            ...prev,
+                            comments: [...(prev.comments || []), newComment],
+                          }));
+                          try {
+                            await axios.post(
+                              `http://localhost:5000/api/posts/${user._id}/${selectedPost._id}/comment`,
+                              newComment
+                            );
+                          } catch (err) {
+                            console.error("Failed to add comment:", err);
+                          }
+                        }}
+                        className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-medium rounded-lg text-sm transition-colors"
+                      >
+                        Comment
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Comment Post Modal - Shows the post that the user commented on */}
+        {selectedCommentPost && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/60">
+            <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-700 overflow-hidden max-h-[90vh] flex flex-col">
+              {/* Modal Header */}
+              <div className="border-b border-slate-700 p-5 flex items-center justify-between flex-shrink-0">
+                <h1 className="text-xl font-bold text-white">Post</h1>
+                <button
+                  onClick={() => {
+                    setSelectedCommentPost(null);
+                    setPostOwnerInfo(null);
+                  }}
+                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 overflow-y-auto flex-1">
+                {/* Post Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
+                      {selectedCommentPost.username?.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white text-left">
+                        {selectedCommentPost.displayName}
+                      </h3>
+                      <p className="text-gray-500 text-sm">
+                        @{selectedCommentPost.username} ·{" "}
+                        {formatTimeAgo(selectedCommentPost.datePosted)}
+                      </p>
+                    </div>
+                  </div>
+                  {selectedCommentPost.userId !== user?._id && (
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 transition-all">
+                      <UserPlus className="w-4 h-4" />
+                      Follow
+                    </button>
+                  )}
+                </div>
+
+                {/* Full Post Content */}
+                <p className="text-gray-200 mb-4 leading-relaxed whitespace-pre-wrap break-words text-left p-2">
+                  {selectedCommentPost.content}
+                </p>
+
+                {/* Full Post Media */}
+                {selectedCommentPost.media && (
+                  <div className="mb-4">
+                    <img
+                      src={selectedCommentPost.media}
+                      alt="Post media"
+                      className="w-full max-h-[400px] rounded-lg border border-slate-600 object-contain"
+                    />
                   </div>
                 )}
+
+                {/* Post Stats */}
+                <div className="flex items-center gap-6 py-3 border-t border-b border-slate-700 mb-4">
+                  <div className="flex items-center gap-2">
+                    <ThumbsUp className="w-4 h-4 text-emerald-400" />
+                    <span className="font-semibold text-white">
+                      {selectedCommentPost.likes || 0}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ThumbsDown className="w-4 h-4 text-red-400" />
+                    <span className="font-semibold text-white">
+                      {selectedCommentPost.dislikes || 0}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4 text-blue-400" />
+                    <span className="font-semibold text-white">
+                      {selectedCommentPost.comments?.length || 0}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Post Actions */}
+                <div className="flex items-center justify-start gap-2 py-2">
+                  <button
+                    onClick={() =>
+                      handleCommentPostLike(
+                        selectedCommentPost.userId,
+                        selectedCommentPost._id
+                      )
+                    }
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                      likedPosts.has(selectedCommentPost._id?.toString())
+                        ? "text-emerald-500 bg-emerald-500/10"
+                        : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                    }`}
+                  >
+                    <ThumbsUp
+                      className={`w-4 h-4 ${
+                        likedPosts.has(selectedCommentPost._id?.toString())
+                          ? "fill-current"
+                          : ""
+                      }`}
+                    />
+                    <span className="text-xs font-medium">Like</span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleCommentPostDislike(
+                        selectedCommentPost.userId,
+                        selectedCommentPost._id
+                      )
+                    }
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                      dislikedPosts.has(selectedCommentPost._id?.toString())
+                        ? "text-red-500 bg-red-500/10"
+                        : "text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                    }`}
+                  >
+                    <ThumbsDown
+                      className={`w-4 h-4 ${
+                        dislikedPosts.has(selectedCommentPost._id?.toString())
+                          ? "fill-current"
+                          : ""
+                      }`}
+                    />
+                    <span className="text-xs font-medium">Dislike</span>
+                  </button>
+                </div>
+
+                {/* Comments Section */}
+                <div className="mt-4 pt-4 border-t border-slate-700">
+                  <h4 className="text-white font-semibold mb-3">Comments</h4>
+                  {selectedCommentPost.comments?.length > 0 ? (
+                    <div className="space-y-3 mb-4">
+                      {selectedCommentPost.comments.map((comment, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                            {comment.author?.slice(0, 2).toUpperCase()}
+                          </div>
+                          <div className={`flex-1 rounded-lg p-3 ${
+                            comment.author === user?.username
+                              ? "bg-amber-500/5 border border-amber-500/20"
+                              : "bg-slate-700/30"
+                          }`}>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium text-white text-sm">
+                                @{comment.author}
+                              </span>
+                              <span className="text-gray-500 text-xs">
+                                {formatTimeAgo(comment.datePosted)}
+                              </span>
+                            </div>
+                            <p className="text-gray-300 text-sm break-words text-left">
+                              {comment.content}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-sm text-center py-2 mb-4">
+                      No comments yet. Be the first to comment!
+                    </p>
+                  )}
+
+                  {/* Comment Input */}
+                  <div className="flex items-center gap-3 pt-3 border-t border-slate-700">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0">
+                      {user?.username?.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div className="flex-1 flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Write a comment..."
+                        value={commentText[selectedCommentPost._id] || ""}
+                        onChange={(e) =>
+                          setCommentText((prev) => ({
+                            ...prev,
+                            [selectedCommentPost._id]: e.target.value,
+                          }))
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleCommentPostComment(
+                              selectedCommentPost.userId,
+                              selectedCommentPost._id
+                            );
+                          }
+                        }}
+                        className="flex-1 bg-slate-700/50 text-white px-4 py-2 rounded-lg border border-slate-600 focus:border-amber-500 focus:outline-none text-sm"
+                      />
+                      <button
+                        onClick={() =>
+                          handleCommentPostComment(
+                            selectedCommentPost.userId,
+                            selectedCommentPost._id
+                          )
+                        }
+                        className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-medium rounded-lg text-sm transition-colors"
+                      >
+                        Comment
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -272,31 +691,26 @@ function ProfileSection() {
           <div className="px-6 pb-6 -mt-12 relative z-10">
             <div className="flex justify-between items-end mb-4">
               {/* Avatar */}
-              <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-2xl font-bold text-white shadow-xl">
-                  {user?.profilePicture !== ""
-                    ? user?.profilePicture
-                    : user?.username?.slice(0, 2).toUpperCase()}
-                </div>
-                <div className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-slate-800"></div>
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-2xl font-bold text-white shadow-xl">
+                {user?.username?.slice(0, 2).toUpperCase()}
               </div>
 
               {/* Edit Button */}
               <button
                 onClick={() => setEditProfile(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200"
+                className="flex items-center gap-2 px-4 py-2 bg-slate-800/60 border border-slate-600 rounded-lg hover:border-amber-500/50 hover:bg-slate-700/60 transition-all duration-200 cursor-pointer text-gray-300 hover:text-amber-400"
               >
                 <Edit3 className="w-4 h-4" />
-                Edit Profile
+                <span className="text-sm font-medium">Edit Profile</span>
               </button>
             </div>
 
             {/* Name & Username */}
             <div className="mb-4">
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-white text-left">
                 {user?.displayName}
               </h1>
-              <p className="text-gray-400">@{user?.username}</p>
+              <p className="text-gray-400 text-left">@{user?.username}</p>
             </div>
 
             {/* Bio */}
@@ -415,15 +829,15 @@ function ProfileSection() {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                          {user?.profilePicture !== ""
-                            ? user?.profilePicture
+                          {user?.profilePicture && user.profilePicture.length <= 4 && !user.profilePicture.startsWith("data:")
+                            ? user.profilePicture
                             : user?.username?.slice(0, 2).toUpperCase()}
                         </div>
                         <div className="">
-                          <h3 className="font-semibold text-white text-sm">
+                          <h3 className="font-semibold text-white text-sm text-left">
                             {user?.displayName}
                           </h3>
-                          <p className="text-gray-500 text-xs">
+                          <p className="text-gray-500 text-xs text-left">
                             @{user?.username} ·{" "}
                             {formatTimeAgo(post?.datePosted)}
                           </p>
@@ -438,7 +852,7 @@ function ProfileSection() {
                     </div>
 
                     {/* Post Content - Truncated */}
-                    <p className="text-gray-200 text-sm mb-3 leading-relaxed">
+                    <p className="text-gray-200 text-sm mb-3 leading-relaxed text-left p-2">
                       {truncateText(post?.content, 150)}
                     </p>
 
@@ -508,18 +922,82 @@ function ProfileSection() {
         {/* Comments Section */}
         {selected === "Comments" && (
           <div className="mt-6 w-[85%]">
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-10 text-center">
-              <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="w-8 h-8 text-gray-500" />
+            {user?.socials?.comments?.length > 0 ? (
+              <div className="space-y-4">
+                {user.socials.comments.map((comment, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleCommentClick(comment)}
+                    className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-5 hover:border-slate-600 transition-colors cursor-pointer"
+                  >
+                    {/* Comment Header */}
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+                        {user?.profilePicture && user.profilePicture.length <= 4 && !user.profilePicture.startsWith("data:")
+                          ? user.profilePicture
+                          : user?.username?.slice(0, 2).toUpperCase()}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold text-white text-sm text-left">
+                            {user?.displayName}
+                          </h3>
+                          <span className="text-gray-500 text-xs">
+                            @{user?.username}
+                          </span>
+                        </div>
+                        <p className="text-gray-500 text-xs text-left">
+                          {formatTimeAgo(comment?.datePosted)}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Comment Content */}
+                    <div className="bg-slate-700/30 rounded-lg p-4 mb-3">
+                      <p className="text-gray-200 text-sm leading-relaxed text-left">
+                        {comment?.content}
+                      </p>
+                    </div>
+
+                    {/* Comment Stats & View Post */}
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-700">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400">
+                          <ThumbsUp className="w-4 h-4 text-emerald-400" />
+                          <span className="text-xs font-medium">
+                            {comment?.likes || 0}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 text-gray-400">
+                          <ThumbsDown className="w-4 h-4 text-red-400" />
+                          <span className="text-xs font-medium">
+                            {comment?.dislikes || 0}
+                          </span>
+                        </div>
+                      </div>
+                      {comment.postId && (
+                        <span className="text-xs text-amber-500 font-medium">
+                          Click to view original post →
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                No Comments Yet
-              </h3>
-              <p className="text-gray-400 max-w-sm mx-auto">
-                Join the conversation! Your comments on other posts will appear
-                here.
-              </p>
-            </div>
+            ) : (
+              <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-10 text-center">
+                <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MessageCircle className="w-8 h-8 text-gray-500" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  No Comments Yet
+                </h3>
+                <p className="text-gray-400 max-w-sm mx-auto">
+                  Join the conversation! Your comments on other posts will appear
+                  here.
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -150,8 +150,7 @@ function EditProfile({ editProfile, setEditProfile }) {
                     />
                   ) : (
                     <span className="text-2xl font-bold text-white">
-                      {user?.profilePicture ||
-                        user?.username?.slice(0, 2).toUpperCase()}
+                      {user?.username?.slice(0, 2).toUpperCase()}
                     </span>
                   )}
                 </div>

@@ -22,7 +22,7 @@ function RecommendedAccounts() {
 
   const isFollowing = (targetUserId) => {
     return user?.socials?.following?.some(
-      (id) => id.toString() === targetUserId.toString()
+      (id) => id.toString() === targetUserId.toString(),
     );
   };
 
@@ -30,7 +30,7 @@ function RecommendedAccounts() {
     try {
       const response = await axios.patch(
         `http://localhost:5000/api/follow/${user._id}`,
-        { targetUserId }
+        { targetUserId },
       );
       setUser(response.data);
     } catch (error) {
@@ -64,51 +64,50 @@ function RecommendedAccounts() {
                 .filter((u) => u._id !== user?._id)
                 .slice(0, 5)
                 .map((userG) => (
-                <div
-                  key={userG._id}
-                  className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl hover:bg-slate-700/50 transition-all duration-200 cursor-pointer border border-slate-700/50 hover:border-amber-500/30 group"
-                >
-                  {/* User Info */}
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="flex-shrink-0">
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg">
-                        {userG?.profilePicture && userG.profilePicture !== ""
-                          ? userG.profilePicture
-                          : userG?.username?.slice(0, 2).toUpperCase()}
+                  <div
+                    key={userG._id}
+                    className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl hover:bg-slate-700/50 transition-all duration-200 cursor-pointer border border-slate-700/50 hover:border-amber-500/30 group"
+                  >
+                    {/* User Info */}
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className="flex-shrink-0">
+                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg">
+                          {userG?.profilePicture && userG.profilePicture !== ""
+                            ? userG.profilePicture
+                            : userG?.username?.slice(0, 2).toUpperCase()}
+                        </div>
+                      </div>
+
+                      <div className="flex-1 min-w-0 mr-2">
+                        <h3 className="font-semibold text-white truncate text-sm group-hover:text-amber-400 transition-colors text-left">
+                          {userG?.displayName}
+                        </h3>
+                        <p className="text-gray-500 text-xs truncate text-left">
+                          @{userG?.username}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-white truncate text-sm group-hover:text-amber-400 transition-colors">
-                        {userG?.displayName}
-                      </h3>
-                      <p className="text-gray-500 text-xs truncate">
-                        @{userG?.username}
-                      </p>
-                    </div>
+                    {/* Follow Button */}
+                    {isFollowing(userG._id) ? (
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 flex-shrink-0">
+                        <UserCheck className="w-3.5 h-3.5" />
+                        Following
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleFollow(userG._id)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg transition-all duration-200 cursor-pointer flex-shrink-0 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
+                      >
+                        <UserPlus className="w-3.5 h-3.5" />
+                        Follow
+                      </button>
+                    )}
                   </div>
-
-                  {/* Follow Button */}
-                  {isFollowing(userG._id) ? (
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 flex-shrink-0">
-                      <UserCheck className="w-3.5 h-3.5" />
-                      Following
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => handleFollow(userG._id)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg transition-all duration-200 cursor-pointer flex-shrink-0 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
-                    >
-                      <UserPlus className="w-3.5 h-3.5" />
-                      Follow
-                    </button>
-                  )}
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

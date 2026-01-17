@@ -33,7 +33,7 @@ const MediaFeed = () => {
             <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-5 mb-4">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white">
-                  {user?.profilePicture || user?.username?.slice(0, 2).toUpperCase()}
+                  {user?.username?.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-white truncate">{user?.displayName}</h3>
