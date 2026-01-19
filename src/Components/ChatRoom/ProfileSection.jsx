@@ -6,6 +6,7 @@ import {
   Calendar,
   Users,
   UserPlus,
+  UserCheck,
   MessageSquare,
   ThumbsUp,
   ThumbsDown,
@@ -16,6 +17,7 @@ import {
   MessageCircle,
   Sparkles,
   X,
+  Search,
 } from "lucide-react";
 import axios from "axios";
 import EditProfile from "./EditProfile";
@@ -29,6 +31,13 @@ function ProfileSection() {
   const [selectedCommentPost, setSelectedCommentPost] = useState(null);
   const [postOwnerInfo, setPostOwnerInfo] = useState(null);
   const [commentText, setCommentText] = useState({});
+
+  // User search state
+  const [searchInput, setSearchInput] = useState("");
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const [selectedUserProfile, setSelectedUserProfile] = useState(null);
 
   // Get liked/disliked posts from user's data
   const likedPosts = new Set(
@@ -89,6 +98,74 @@ function ProfileSection() {
     };
     fetchUserData();
   }, []);
+
+  // Fetch all users for search
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/users");
+        setAllUsers(response.data);
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
+      }
+    };
+    fetchAllUsers();
+  }, []);
+
+  // Handle user search input
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    if (value.length > 0 && allUsers.length > 0) {
+      const filtered = allUsers.filter(u =>
+        u._id !== user?._id && (
+          u.displayName?.toLowerCase().includes(value.toLowerCase()) ||
+          u.username?.toLowerCase().includes(value.toLowerCase())
+        )
+      ).slice(0, 6);
+      setSearchSuggestions(filtered);
+      setShowSearchSuggestions(true);
+    } else {
+      setSearchSuggestions([]);
+      setShowSearchSuggestions(false);
+    }
+  };
+
+  // Check if following a user
+  const isFollowingUser = (targetUserId) => {
+    return user?.socials?.following?.some(
+      (id) => id.toString() === targetUserId?.toString()
+    );
+  };
+
+  // Handle follow/unfollow
+  const handleFollowUser = async (targetUserId) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/follow/${user._id}`,
+        { targetUserId }
+      );
+      setUser(response.data);
+
+      // Update selectedUserProfile's followers count locally
+      setSelectedUserProfile((prev) => {
+        if (!prev) return prev;
+        const wasFollowing = isFollowingUser(targetUserId);
+        return {
+          ...prev,
+          socials: {
+            ...prev.socials,
+            followers: wasFollowing
+              ? prev.socials.followers.filter((id) => id.toString() !== user._id.toString())
+              : [...(prev.socials.followers || []), user._id],
+          },
+        };
+      });
+    } catch (error) {
+      console.error("Failed to follow user:", error);
+    }
+  };
 
   const handleLike = async (postId) => {
     if (likedPosts.has(postId)) return;
@@ -680,25 +757,71 @@ function ProfileSection() {
           </div>
         )}
 
+        {/* Search Users */}
+        <div className="mb-3 relative w-[35%]">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search for users..."
+              value={searchInput}
+              onChange={handleSearchChange}
+              onFocus={() => searchInput.length > 0 && setShowSearchSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSearchSuggestions(false), 200)}
+              className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
+            />
+          </div>
+          {showSearchSuggestions && searchSuggestions.length > 0 && (
+            <div className="absolute left-0 right-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
+              {searchSuggestions.map((userProfile) => (
+                <div
+                  key={userProfile._id}
+                  onClick={() => {
+                    setSelectedUserProfile(userProfile);
+                    setSearchInput("");
+                    setShowSearchSuggestions(false);
+                  }}
+                  className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-gray-100 transition-colors border-b border-slate-700 last:border-b-0"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                      {userProfile.username?.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className="font-medium text-white">{userProfile.displayName}</span>
+                      <span className="text-gray-500 text-sm ml-2">@{userProfile.username}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {showSearchSuggestions && searchInput.length > 0 && searchSuggestions.length === 0 && (
+            <div className="absolute left-0 right-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
+              <div className="px-4 py-3 text-gray-400 text-center">No users found</div>
+            </div>
+          )}
+        </div>
+
         {/* Profile Header Card */}
-        <div className="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-2xl border border-slate-700 overflow-hidden">
+        <div className="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-xl border border-slate-700 overflow-hidden">
           {/* Banner */}
-          <div className="h-32 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-blue-500/20 relative">
+          <div className="h-24 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-blue-500/20 relative">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-800/80"></div>
           </div>
 
           {/* Profile Info */}
-          <div className="px-6 pb-6 -mt-12 relative z-10">
-            <div className="flex justify-between items-end mb-4">
+          <div className="px-5 pb-5 pt-2 -mt-10 relative z-10">
+            <div className="flex justify-between items-end mb-3 pt-3">
               {/* Avatar */}
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-2xl font-bold text-white shadow-xl">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xl font-bold text-white shadow-xl">
                 {user?.username?.slice(0, 2).toUpperCase()}
               </div>
 
               {/* Edit Button */}
               <button
                 onClick={() => setEditProfile(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-800/60 border border-slate-600 rounded-lg hover:border-amber-500/50 hover:bg-slate-700/60 transition-all duration-200 cursor-pointer text-gray-300 hover:text-amber-400"
+                className="flex items-center gap-2 px-3 py-2 bg-slate-800/60 border border-slate-600 rounded-lg hover:border-amber-500/50 hover:bg-slate-700/60 transition-all duration-200 cursor-pointer text-gray-300 hover:text-amber-400"
               >
                 <Edit3 className="w-4 h-4" />
                 <span className="text-sm font-medium">Edit Profile</span>
@@ -706,8 +829,8 @@ function ProfileSection() {
             </div>
 
             {/* Name & Username */}
-            <div className="mb-4">
-              <h1 className="text-2xl font-bold text-white text-left">
+            <div className="mb-3">
+              <h1 className="text-xl font-bold text-white text-left">
                 {user?.displayName}
               </h1>
               <p className="text-gray-400 text-left">@{user?.username}</p>
@@ -715,11 +838,11 @@ function ProfileSection() {
 
             {/* Bio */}
             {user?.bio && (
-              <p className="text-gray-300 mb-4 leading-relaxed">{user.bio}</p>
+              <p className="text-gray-300 mb-3 leading-relaxed">{user.bio}</p>
             )}
 
             {/* Stats Row */}
-            <div className="flex items-center gap-6 mb-4">
+            <div className="flex items-center gap-5 mb-3">
               <div className="flex items-center gap-2 text-gray-300 hover:text-amber-400 cursor-pointer transition-colors">
                 <Users className="w-4 h-4" />
                 <span className="font-semibold text-white">
@@ -751,6 +874,67 @@ function ProfileSection() {
             </div>
           </div>
         </div>
+
+        {/* User Profile Modal */}
+        {selectedUserProfile && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/60">
+            <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-xs rounded-xl shadow-2xl border border-slate-700 overflow-hidden">
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedUserProfile(null)}
+                className="absolute top-2 right-2 p-1.5 hover:bg-slate-700 rounded-lg transition-colors z-10"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+
+              {/* Profile Content */}
+              <div className="p-4 pt-8 text-center">
+                {/* Avatar */}
+                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white shadow-lg mb-3">
+                  {selectedUserProfile.username?.slice(0, 2).toUpperCase()}
+                </div>
+
+                {/* Name & Username */}
+                <h2 className="text-lg font-bold text-white">{selectedUserProfile.displayName}</h2>
+                <p className="text-gray-400 text-sm mb-3">@{selectedUserProfile.username}</p>
+
+                {/* Stats Row */}
+                <div className="flex justify-center gap-4 text-sm mb-4">
+                  <div>
+                    <span className="text-white font-semibold">{selectedUserProfile.socials?.followers?.length || 0}</span>
+                    <span className="text-gray-500 ml-1">followers</span>
+                  </div>
+                  <div>
+                    <span className="text-white font-semibold">{selectedUserProfile.socials?.following?.length || 0}</span>
+                    <span className="text-gray-500 ml-1">following</span>
+                  </div>
+                </div>
+
+                {/* Follow/Unfollow Button */}
+                <button
+                  onClick={() => handleFollowUser(selectedUserProfile._id)}
+                  className={`w-full py-2 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                    isFollowingUser(selectedUserProfile._id)
+                      ? "bg-slate-700 text-white hover:bg-red-500/20 hover:text-red-400 border border-slate-600"
+                      : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
+                  }`}
+                >
+                  {isFollowingUser(selectedUserProfile._id) ? (
+                    <>
+                      <UserCheck className="w-4 h-4" />
+                      Following
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="w-4 h-4" />
+                      Follow
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Watchlist CTA */}
         {(!user?.watchList || user?.watchList?.length === 0) && (

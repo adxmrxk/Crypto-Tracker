@@ -14,7 +14,7 @@ import { Navigate } from "react-router-dom";
 import CURRENCIES_FRONTEND from "../utils/currenciesFrontEnd";
 import CONTENT_LANGUAGES_FRONT_END from "../utils/contentLanguagesFrontEnd";
 import FakeChart from "../Components/Landing/FakeChart";
-import { comment } from "postcss";
+import SocialShowcase from "../Components/Landing/SocialShowcase";
 
 const LandingPage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -143,6 +143,24 @@ const LandingPage = () => {
               investment decisions with data-driven tools.
             </p>
           </div>
+        </div>
+
+        {/* Social/Community Section */}
+        <div className="grid grid-cols-2 items-stretch mt-20">
+          <div
+            className="flex flex-col items-center justify-center"
+            data-aos="fade-right"
+            data-aos-offset="200"
+          >
+            <h1 className="text-3xl font-bold font-roboto bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              Connect with the Crypto Community
+            </h1>
+            <p className="mt-7 text-lg font-roboto w-[500px] text-gray-200">
+              Share insights, discuss market trends, and engage with fellow
+              traders in our vibrant community forum.
+            </p>
+          </div>
+          <SocialShowcase />
         </div>
       </div>
     </>
