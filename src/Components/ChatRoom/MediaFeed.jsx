@@ -36,8 +36,8 @@ const MediaFeed = () => {
                   {user?.username?.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-white truncate">{user?.displayName}</h3>
-                  <p className="text-gray-500 text-sm truncate">@{user?.username}</p>
+                  <h3 className="font-semibold text-white truncate text-left">{user?.displayName}</h3>
+                  <p className="text-gray-500 text-sm truncate text-left">@{user?.username}</p>
                 </div>
               </div>
               <div className="flex justify-between text-center">

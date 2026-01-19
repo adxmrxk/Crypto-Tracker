@@ -798,7 +798,10 @@ function ProfileSection() {
           )}
           {showSearchSuggestions && searchInput.length > 0 && searchSuggestions.length === 0 && (
             <div className="absolute left-0 right-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
-              <div className="px-4 py-3 text-gray-400 text-center">No users found</div>
+              <div className="px-4 py-4 text-center">
+                <p className="text-gray-400 text-sm">No users found matching "{searchInput}"</p>
+                <p className="text-gray-500 text-xs mt-1">Try a different search term</p>
+              </div>
             </div>
           )}
         </div>

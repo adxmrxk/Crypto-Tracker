@@ -9,6 +9,7 @@ const SearchCryptoSection = () => {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [noResults, setNoResults] = useState(false);
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
@@ -19,6 +20,7 @@ const SearchCryptoSection = () => {
   const handleChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
+    setNoResults(false);
 
     if (value.length > 0 && coinsList) {
       const filtered = coinsList.filter(coin =>
@@ -27,9 +29,11 @@ const SearchCryptoSection = () => {
       ).slice(0, 8); // Limit to 8 suggestions
       setSuggestions(filtered);
       setShowSuggestions(true);
+      setNoResults(filtered.length === 0);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+      setNoResults(false);
     }
   };
 
@@ -46,7 +50,7 @@ const SearchCryptoSection = () => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    if (!coinsList) return;
+    if (!coinsList || !inputValue.trim()) return;
 
     // Try to find exact match or partial match from API data
     const exactMatch = coinsList.find(coin =>
@@ -67,8 +71,10 @@ const SearchCryptoSection = () => {
       setInputValue('');
       setSuggestions([]);
       setShowSuggestions(false);
+      setNoResults(false);
     } else {
-      alert('Coin not found. Please select from the suggestions.');
+      setNoResults(true);
+      setShowSuggestions(true);
     }
   };
 
@@ -93,6 +99,7 @@ const SearchCryptoSection = () => {
   const handleBackToAll = () => {
     setSubmitedSearch(false);
     setSearchedCoin('');
+    setNoResults(false);
   };
 
   return (
@@ -111,7 +118,7 @@ const SearchCryptoSection = () => {
                   onChange={handleChange}
                   onFocus={() => inputValue.length > 0 && setShowSuggestions(true)}
                   placeholder="Search A Crypto Currency"
-                  className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-400 rounded-md text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+                  className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-400 rounded-md text-gray-100 placeholder-gray-400 focus:outline-none focus:border-amber-500 transition-colors"
                 />
               </div>
             </form>
@@ -133,6 +140,19 @@ const SearchCryptoSection = () => {
                     <span className="text-gray-400 text-sm">{coin.symbol.toUpperCase()}</span>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {/* No Results Message */}
+            {showSuggestions && noResults && inputValue.length > 0 && (
+              <div
+                ref={suggestionsRef}
+                className="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden"
+              >
+                <div className="px-4 py-4 text-center">
+                  <p className="text-gray-400 text-sm">No coins found matching "{inputValue}"</p>
+                  <p className="text-gray-500 text-xs mt-1">Try a different search term</p>
+                </div>
               </div>
             )}
           </div>

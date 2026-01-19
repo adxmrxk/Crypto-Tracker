@@ -225,8 +225,9 @@ function SearchPosts() {
           ref={suggestionsRef}
           className="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden"
         >
-          <div className="px-4 py-3 text-gray-400 text-center">
-            No posts found matching "{inputValue}"
+          <div className="px-4 py-4 text-center">
+            <p className="text-gray-400 text-sm">No posts found matching "{inputValue}"</p>
+            <p className="text-gray-500 text-xs mt-1">Try a different search term</p>
           </div>
         </div>
       )}
