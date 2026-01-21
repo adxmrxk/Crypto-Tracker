@@ -6,9 +6,14 @@ const CONTENT_LANGUAGES = require('../enums/contentLanguages.js');
 const FONT_SIZES = require('../enums/fontSizes.js');
 
 const userSettings = new mongoose.Schema({
-     connectedWithGoogle: {
+        connectedWithGoogle: {
             type: Boolean,
             default: false
+        },
+
+        googleEmail: {
+            type: String,
+            default: ""
         },
 
         connectedWithApple: {
@@ -32,19 +37,23 @@ const userSettings = new mongoose.Schema({
             type: String,
             default: DISPLAY_LANGUAGES.CANADA,
             enum: Object.values(DISPLAY_LANGUAGES)
-
         },
 
         contentLanguage: {
             type: String,
             default: CONTENT_LANGUAGES.CANADA,
             enum: Object.values(CONTENT_LANGUAGES)
-        }, 
+        },
 
         fontSize: {
             type: String,
             default: FONT_SIZES.MD,
             enum: Object.values(FONT_SIZES)
+        },
+
+        screenReaderSupport: {
+            type: Boolean,
+            default: false
         },
 
         darkMode: {
@@ -60,6 +69,21 @@ const userSettings = new mongoose.Schema({
         twoFactorAuthentication: {
             type: Boolean,
             default: false
+        },
+
+        loginAlerts: {
+            type: Boolean,
+            default: true
+        },
+
+        directMessages: {
+            type: Boolean,
+            default: true
+        },
+
+        trendingCoins: {
+            type: Boolean,
+            default: true
         },
 
         recoveryEmail: {

@@ -1,17 +1,14 @@
-import React, { Fragment } from 'react'
-import { Link, Outlet } from 'react-router-dom';
-import SettingsNavigationBar from '../Components/SettingsNavigationBar';
-
+import React from "react";
+import { Outlet } from "react-router-dom";
+import SettingsNavigationBar from "../Components/SettingsNavigationBar";
 
 const SettingsPage = () => {
   return (
-
     <div>
-      <SettingsNavigationBar></SettingsNavigationBar>
+      <SettingsNavigationBar />
       <Outlet />
     </div>
-    
-  )
-}
+  );
+};
 
-export default SettingsPage
+export default SettingsPage;
