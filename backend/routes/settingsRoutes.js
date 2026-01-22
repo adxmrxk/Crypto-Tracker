@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const User = require("../models/users.js");
 const userSettings = require("../models/userSettings.js");
-const { useParams } = require("react-router");
+const { sendRecoveryEmailConfirmation } = require("../utils/emailService.js");
 
 router.patch("/api/settings/changeEmail/:id", async (req, res) => {
   const userId = req.params.id;
@@ -244,7 +244,19 @@ router.patch("/api/settings/changeRecoveryEmail/:id", async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(updatedUser);
+
+    // Send confirmation email to the recovery email address
+    const emailResult = await sendRecoveryEmailConfirmation(
+      recoveryEmail,
+      updatedUser.username || updatedUser.displayName || "User"
+    );
+
+    if (!emailResult.success) {
+      console.error("Failed to send recovery email confirmation:", emailResult.error);
+      // Still return success since the email was saved, just log the email error
+    }
+
+    res.json({ ...updatedUser.toObject(), emailSent: emailResult.success });
   } catch (error) {
     return res.status(500).json({ message: "Server Error" });
   }
@@ -348,6 +360,115 @@ router.patch("/api/settings/changeDisplayLanguage/:id", async (req, res) => {
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// Notification Preferences Routes
+router.patch("/api/settings/changeNotifyMentions/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const { notifyMentions } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.notifyMentions": notifyMentions },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.patch("/api/settings/changeNotifyCoinAlerts/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const { notifyCoinAlerts } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.notifyCoinAlerts": notifyCoinAlerts },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.patch("/api/settings/changeNotifyComments/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const { notifyComments } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.notifyComments": notifyComments },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.patch("/api/settings/changeNotifyUpvotes/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const { notifyUpvotes } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.notifyUpvotes": notifyUpvotes },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.patch("/api/settings/changeNotifyFollowers/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const { notifyFollowers } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.notifyFollowers": notifyFollowers },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
+router.patch("/api/settings/changeNotifyReplies/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const { notifyReplies } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.notifyReplies": notifyReplies },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
   }
 });
 

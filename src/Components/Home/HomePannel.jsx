@@ -17,6 +17,7 @@ import useCryptoCurrency from "../../hooks/useCryptoCurrency";
 import useCoinsOnce from "../../hooks/useCoinsOnce";
 import { useNavigate } from "react-router-dom";
 import TopWinners from "../Portfolio/TopWinners";
+import NotificationBell from "../NotificationBell";
 
 const HomePannel = () => {
   const { user } = useContext(UserContext);
@@ -103,13 +104,16 @@ const HomePannel = () => {
             </h1>
             <p className="text-gray-400">Track your investments and explore the crypto market</p>
           </div>
-          <button
-            onClick={() => navigate('/explore')}
-            className="flex items-center gap-2 px-5 py-3 bg-slate-800 border border-slate-700 rounded-xl text-gray-300 hover:bg-slate-700 hover:border-slate-600 transition-all"
-          >
-            <Search className="w-4 h-4" />
-            Search coins...
-          </button>
+          <div className="flex items-center gap-4">
+            <NotificationBell />
+            <button
+              onClick={() => navigate('/explore')}
+              className="flex items-center gap-2 px-5 py-3 bg-slate-800 border border-slate-700 rounded-xl text-gray-300 hover:bg-slate-700 hover:border-slate-600 transition-all"
+            >
+              <Search className="w-4 h-4" />
+              Search coins...
+            </button>
+          </div>
         </div>
 
         {/* Stats Row */}

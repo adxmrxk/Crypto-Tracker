@@ -60,7 +60,28 @@ const userSocials = new mongoose.Schema({
   },
 
   blockList: {
-    type: [String],
+    type: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        username: {
+          type: String,
+        },
+        displayName: {
+          type: String,
+        },
+        profilePicture: {
+          type: String,
+          default: "",
+        },
+        blockedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     default: [],
   },
 

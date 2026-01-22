@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -14,6 +15,7 @@ const serverListsRoutes = require("./routes/serverListsRoutes");
 const watchListRoutes = require("./routes/watchListsRoutes");
 const postsRoutes = require("./routes/postsRoutes");
 const transactionsRoutes = require("./routes/transactionsRoutes");
+const notificationsRoutes = require("./routes/notificationsRoutes");
 
 app.use("/", usersRoutes);
 app.use("/", settingsRoutes);
@@ -21,6 +23,7 @@ app.use("/", serverListsRoutes);
 app.use("/", watchListRoutes);
 app.use("/", postsRoutes);
 app.use("/", transactionsRoutes);
+app.use("/", notificationsRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello from the backend");

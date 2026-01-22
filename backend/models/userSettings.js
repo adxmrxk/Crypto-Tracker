@@ -91,6 +91,37 @@ const userSettings = new mongoose.Schema({
             minlength: 5,
             maxlength: 254,
             unique: false
+        },
+
+        // Notification Preferences
+        notifyMentions: {
+            type: Boolean,
+            default: true
+        },
+
+        notifyCoinAlerts: {
+            type: Boolean,
+            default: true
+        },
+
+        notifyComments: {
+            type: Boolean,
+            default: true
+        },
+
+        notifyUpvotes: {
+            type: Boolean,
+            default: true
+        },
+
+        notifyFollowers: {
+            type: Boolean,
+            default: true
+        },
+
+        notifyReplies: {
+            type: Boolean,
+            default: true
         }
 });
 

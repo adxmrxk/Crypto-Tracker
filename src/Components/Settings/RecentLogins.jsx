@@ -5,39 +5,18 @@ import { UserContext } from "../../Pages/SkeletonPage";
 const RecentLogins = ({ clickRecentLogins, setClickRecentLogins }) => {
   const { user } = useContext(UserContext);
 
-  // Mock data for recent logins - in a real app, this would come from the backend
-  const recentLogins = [
-    {
-      id: 1,
-      device: "Windows PC",
-      deviceType: "desktop",
-      browser: "Chrome",
-      location: "Toronto, Canada",
-      ip: "192.168.1.***",
-      time: new Date().toISOString(),
-      current: true
-    },
-    {
-      id: 2,
-      device: "iPhone 14",
-      deviceType: "mobile",
-      browser: "Safari",
-      location: "Toronto, Canada",
-      ip: "192.168.1.***",
-      time: new Date(Date.now() - 86400000).toISOString(),
-      current: false
-    },
-    {
-      id: 3,
-      device: "iPad Pro",
-      deviceType: "tablet",
-      browser: "Safari",
-      location: "Toronto, Canada",
-      ip: "192.168.1.***",
-      time: new Date(Date.now() - 172800000).toISOString(),
-      current: false
-    }
-  ];
+  // Get login history from user data
+  const currentSessionId = localStorage.getItem("cryptoSessionId");
+  const recentLogins = (user?.loginHistory || []).map((login, index) => ({
+    id: login._id || index,
+    device: login.device || "Unknown Device",
+    deviceType: login.deviceType || "desktop",
+    browser: login.browser || "Unknown Browser",
+    location: login.location || "Unknown Location",
+    ip: login.ip || "Unknown",
+    time: login.time,
+    current: login.sessionId === currentSessionId,
+  }));
 
   const getDeviceIcon = (type) => {
     switch (type) {
@@ -82,35 +61,41 @@ const RecentLogins = ({ clickRecentLogins, setClickRecentLogins }) => {
         </p>
 
         <div className="space-y-3 max-h-80 overflow-y-auto">
-          {recentLogins.map((login) => (
-            <div
-              key={login.id}
-              className={`p-4 rounded-lg ${
-                login.current
-                  ? "bg-green-500/10 border border-green-500/30"
-                  : "bg-slate-500/30 border border-gray-600"
-              }`}
-            >
-              <div className="flex items-start gap-3">
-                <div className="mt-1">{getDeviceIcon(login.deviceType)}</div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-100 font-medium">{login.device}</span>
-                    {login.current && (
-                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
-                        Current
-                      </span>
-                    )}
+          {recentLogins.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-400">No login history available yet.</p>
+            </div>
+          ) : (
+            recentLogins.map((login) => (
+              <div
+                key={login.id}
+                className={`p-4 rounded-lg ${
+                  login.current
+                    ? "bg-green-500/10 border border-green-500/30"
+                    : "bg-slate-500/30 border border-gray-600"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="mt-1">{getDeviceIcon(login.deviceType)}</div>
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-2">
+                      <span className="text-left text-gray-100 font-medium">{login.device}</span>
+                      {login.current && (
+                        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
+                          Current
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-left text-gray-400 text-sm">{login.browser}</p>
+                    <p className="text-left text-gray-400 text-sm">
+                      {login.location} • IP: {login.ip}
+                    </p>
+                    <p className="text-left text-gray-500 text-xs mt-1">{formatDate(login.time)}</p>
                   </div>
-                  <p className="text-gray-400 text-sm">{login.browser}</p>
-                  <p className="text-gray-400 text-sm">
-                    {login.location} • IP: {login.ip}
-                  </p>
-                  <p className="text-gray-500 text-xs mt-1">{formatDate(login.time)}</p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="flex justify-end gap-3 mt-6">

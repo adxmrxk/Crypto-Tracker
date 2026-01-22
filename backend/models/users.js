@@ -118,6 +118,42 @@ const User = mongoose.model(
       minlength: 5,
       maxlength: 64,
     },
+
+    loginHistory: {
+      type: [
+        {
+          device: {
+            type: String,
+            default: "Unknown Device",
+          },
+          deviceType: {
+            type: String,
+            enum: ["desktop", "mobile", "tablet"],
+            default: "desktop",
+          },
+          browser: {
+            type: String,
+            default: "Unknown Browser",
+          },
+          location: {
+            type: String,
+            default: "Unknown Location",
+          },
+          ip: {
+            type: String,
+            default: "Unknown",
+          },
+          time: {
+            type: Date,
+            default: Date.now,
+          },
+          sessionId: {
+            type: String,
+          },
+        },
+      ],
+      default: [],
+    },
   })
 );
 

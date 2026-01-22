@@ -10,24 +10,87 @@ import axios from "axios";
 const NotificationsPage = () => {
   const { user, setUser } = useContext(UserContext);
 
-  // Local state for notification toggles
-  const [chatMessages, setChatMessages] = useState(true);
-  const [mentionUsername, setMentionUsername] = useState(true);
-  const [coinAlerts, setCoinAlerts] = useState(true);
-  const [commentsOnPosts, setCommentsOnPosts] = useState(true);
-  const [upvotesOnPosts, setUpvotesOnPosts] = useState(true);
-  const [newFollowers, setNewFollowers] = useState(true);
-  const [repliesToComments, setRepliesToComments] = useState(true);
+  const handleMentionsChange = async (checked) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/settings/changeNotifyMentions/${user._id}`,
+        { notifyMentions: checked }
+      );
+      setUser(res.data);
+    } catch (error) {
+      console.error("Failed to update mentions setting");
+    }
+  };
+
+  const handleCoinAlertsChange = async (checked) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/settings/changeNotifyCoinAlerts/${user._id}`,
+        { notifyCoinAlerts: checked }
+      );
+      setUser(res.data);
+    } catch (error) {
+      console.error("Failed to update coin alerts setting");
+    }
+  };
 
   const handleTrendingCoinsChange = async (checked) => {
     try {
       const res = await axios.patch(
         `http://localhost:5000/api/settings/changeTrendingCoins/${user._id}`,
-        { trendingCoins: checked },
+        { trendingCoins: checked }
       );
       setUser(res.data);
     } catch (error) {
       console.error("Failed to update trending coins setting");
+    }
+  };
+
+  const handleCommentsChange = async (checked) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/settings/changeNotifyComments/${user._id}`,
+        { notifyComments: checked }
+      );
+      setUser(res.data);
+    } catch (error) {
+      console.error("Failed to update comments setting");
+    }
+  };
+
+  const handleUpvotesChange = async (checked) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/settings/changeNotifyUpvotes/${user._id}`,
+        { notifyUpvotes: checked }
+      );
+      setUser(res.data);
+    } catch (error) {
+      console.error("Failed to update upvotes setting");
+    }
+  };
+
+  const handleFollowersChange = async (checked) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/settings/changeNotifyFollowers/${user._id}`,
+        { notifyFollowers: checked }
+      );
+      setUser(res.data);
+    } catch (error) {
+      console.error("Failed to update followers setting");
+    }
+  };
+
+  const handleRepliesChange = async (checked) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/api/settings/changeNotifyReplies/${user._id}`,
+        { notifyReplies: checked }
+      );
+      setUser(res.data);
+    } catch (error) {
+      console.error("Failed to update replies setting");
     }
   };
 
@@ -44,8 +107,8 @@ const NotificationsPage = () => {
           </h2>
           <div className="pr-24">
             <ControlledSwitches
-              checked={mentionUsername}
-              onChange={(checked) => setMentionUsername(checked)}
+              checked={user?.settings?.notifyMentions ?? true}
+              onChange={handleMentionsChange}
             />
           </div>
         </div>
@@ -65,8 +128,8 @@ const NotificationsPage = () => {
           </h2>
           <div className="pr-24">
             <ControlledSwitches
-              checked={coinAlerts}
-              onChange={(checked) => setCoinAlerts(checked)}
+              checked={user?.settings?.notifyCoinAlerts ?? true}
+              onChange={handleCoinAlertsChange}
             />
           </div>
         </div>
@@ -106,8 +169,8 @@ const NotificationsPage = () => {
           </h2>
           <div className="pr-24">
             <ControlledSwitches
-              checked={commentsOnPosts}
-              onChange={(checked) => setCommentsOnPosts(checked)}
+              checked={user?.settings?.notifyComments ?? true}
+              onChange={handleCommentsChange}
             />
           </div>
         </div>
@@ -124,8 +187,8 @@ const NotificationsPage = () => {
           </h2>
           <div className="pr-24">
             <ControlledSwitches
-              checked={upvotesOnPosts}
-              onChange={(checked) => setUpvotesOnPosts(checked)}
+              checked={user?.settings?.notifyUpvotes ?? true}
+              onChange={handleUpvotesChange}
             />
           </div>
         </div>
@@ -142,8 +205,8 @@ const NotificationsPage = () => {
           </h2>
           <div className="pr-24">
             <ControlledSwitches
-              checked={newFollowers}
-              onChange={(checked) => setNewFollowers(checked)}
+              checked={user?.settings?.notifyFollowers ?? true}
+              onChange={handleFollowersChange}
             />
           </div>
         </div>
@@ -160,8 +223,8 @@ const NotificationsPage = () => {
           </h2>
           <div className="pr-24">
             <ControlledSwitches
-              checked={repliesToComments}
-              onChange={(checked) => setRepliesToComments(checked)}
+              checked={user?.settings?.notifyReplies ?? true}
+              onChange={handleRepliesChange}
             />
           </div>
         </div>

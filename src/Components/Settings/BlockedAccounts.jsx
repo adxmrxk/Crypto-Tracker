@@ -1,19 +1,35 @@
 import React, { useContext, useState } from "react";
 import { X, UserX } from "lucide-react";
 import { UserContext } from "../../Pages/SkeletonPage";
+import axios from "axios";
 
 const BlockedAccounts = ({ clickBlockedAccounts, setClickBlockedAccounts }) => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const [isUnblocking, setIsUnblocking] = useState(null);
 
-  // Mock data - in a real app, this would come from user.socials.blocked
-  const [blockedAccounts, setBlockedAccounts] = useState([
-    { id: "1", username: "spammer123", displayName: "Spam Account", blockedAt: new Date().toISOString() },
-    { id: "2", username: "troll_user", displayName: "Troll User", blockedAt: new Date(Date.now() - 86400000).toISOString() }
-  ]);
+  // Get blocked accounts from user data
+  const blockedAccounts = (user?.socials?.blockList || []).map((blocked) => ({
+    id: blocked.userId || blocked._id,
+    username: blocked.username,
+    displayName: blocked.displayName || blocked.username,
+    profilePicture: blocked.profilePicture || "",
+    blockedAt: blocked.blockedAt,
+  }));
 
-  const handleUnblock = (accountId) => {
-    // In a real app, this would call the backend
-    setBlockedAccounts(blockedAccounts.filter((acc) => acc.id !== accountId));
+  const handleUnblock = async (accountId) => {
+    setIsUnblocking(accountId);
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/unblock/${user._id}`,
+        { targetUserId: accountId }
+      );
+      setUser(response.data);
+    } catch (error) {
+      console.error("Failed to unblock user:", error);
+      alert("Failed to unblock user. Please try again.");
+    } finally {
+      setIsUnblocking(null);
+    }
   };
 
   const formatDate = (dateString) => {
@@ -48,8 +64,8 @@ const BlockedAccounts = ({ clickBlockedAccounts, setClickBlockedAccounts }) => {
         {blockedAccounts.length === 0 ? (
           <div className="text-center py-8">
             <UserX size={40} className="mx-auto text-gray-500 mb-3" />
-            <p className="text-gray-400">No blocked accounts</p>
-            <p className="text-gray-500 text-sm">Accounts you block will appear here</p>
+            <p className="text-center text-gray-400">No blocked accounts</p>
+            <p className="text-center text-gray-500 text-sm">Accounts you block will appear here</p>
           </div>
         ) : (
           <div className="space-y-3 max-h-80 overflow-y-auto">
@@ -59,22 +75,31 @@ const BlockedAccounts = ({ clickBlockedAccounts, setClickBlockedAccounts }) => {
                 className="flex items-center justify-between p-3 bg-slate-500/30 rounded-lg border border-gray-600"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center">
-                    <span className="text-gray-300 font-medium">
-                      {account.displayName.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-gray-100 font-medium">{account.displayName}</p>
-                    <p className="text-gray-400 text-sm">@{account.username}</p>
-                    <p className="text-gray-500 text-xs">Blocked {formatDate(account.blockedAt)}</p>
+                  {account.profilePicture ? (
+                    <img
+                      src={account.profilePicture}
+                      alt={account.displayName}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center">
+                      <span className="text-gray-300 font-medium">
+                        {account.displayName?.charAt(0).toUpperCase() || "?"}
+                      </span>
+                    </div>
+                  )}
+                  <div className="text-left">
+                    <p className="text-left text-gray-100 font-medium">{account.displayName}</p>
+                    <p className="text-left text-gray-400 text-sm">@{account.username}</p>
+                    <p className="text-left text-gray-500 text-xs">Blocked {formatDate(account.blockedAt)}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => handleUnblock(account.id)}
-                  className="px-3 py-1 text-sm bg-slate-500/40 hover:bg-slate-500/60 text-gray-200 rounded-full transition"
+                  disabled={isUnblocking === account.id}
+                  className="px-3 py-1 text-sm bg-slate-500/40 hover:bg-slate-500/60 text-gray-200 rounded-full transition disabled:opacity-50 cursor-pointer"
                 >
-                  Unblock
+                  {isUnblocking === account.id ? "..." : "Unblock"}
                 </button>
               </div>
             ))}

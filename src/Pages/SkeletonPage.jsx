@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 import Skeleton2, { SkeletonTheme } from 'react-loading-skeleton';
 import axios from 'axios';
+import getDeviceInfo from '../utils/loginTracker';
 
 export const UserContext = createContext();
 
@@ -20,6 +21,7 @@ const SkeletonPage = () => {
     const restoreSession = async () => {
       const savedUserId = localStorage.getItem('cryptoUserId');
       const loginTimestamp = localStorage.getItem('cryptoLoginTime');
+      const savedSessionId = localStorage.getItem('cryptoSessionId');
 
       // Check if session is expired (5 minutes in milliseconds)
       const FIVE_MINUTES = 5 * 60 * 1000;
@@ -33,12 +35,14 @@ const SkeletonPage = () => {
           // If user not found, clear localStorage
           localStorage.removeItem('cryptoUserId');
           localStorage.removeItem('cryptoLoginTime');
+          localStorage.removeItem('cryptoSessionId');
           setUser(null);
         }
       } else if (isExpired && savedUserId) {
         // Session expired, clear localStorage
         localStorage.removeItem('cryptoUserId');
         localStorage.removeItem('cryptoLoginTime');
+        localStorage.removeItem('cryptoSessionId');
         setUser(null);
       }
       setIsLoading(false);
@@ -57,9 +61,18 @@ const SkeletonPage = () => {
     if (userData && userData._id) {
       localStorage.setItem('cryptoUserId', userData._id);
       localStorage.setItem('cryptoLoginTime', Date.now().toString());
+
+      // Generate and save session ID if not exists
+      let sessionId = localStorage.getItem('cryptoSessionId');
+      if (!sessionId) {
+        const loginInfo = getDeviceInfo();
+        sessionId = loginInfo.sessionId;
+        localStorage.setItem('cryptoSessionId', sessionId);
+      }
     } else {
       localStorage.removeItem('cryptoUserId');
       localStorage.removeItem('cryptoLoginTime');
+      localStorage.removeItem('cryptoSessionId');
     }
     setUser(userData);
   };

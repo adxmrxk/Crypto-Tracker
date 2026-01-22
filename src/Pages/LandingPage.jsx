@@ -15,6 +15,7 @@ import CURRENCIES_FRONTEND from "../utils/currenciesFrontEnd";
 import CONTENT_LANGUAGES_FRONT_END from "../utils/contentLanguagesFrontEnd";
 import FakeChart from "../Components/Landing/FakeChart";
 import SocialShowcase from "../Components/Landing/SocialShowcase";
+import getDeviceInfo from "../utils/loginTracker";
 
 const LandingPage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -61,7 +62,19 @@ const LandingPage = () => {
       userObject
     );
     const createdUser = response.data;
-    setUser(createdUser);
+
+    // Record the initial login
+    const loginInfo = getDeviceInfo();
+    loginInfo.location = userCountry || "Unknown Location";
+    try {
+      const loginResponse = await axios.post(
+        `http://localhost:5000/api/recordLogin/${createdUser._id}`,
+        { loginInfo }
+      );
+      setUser(loginResponse.data);
+    } catch (err) {
+      setUser(createdUser);
+    }
   };
 
   if (user && user.username) {

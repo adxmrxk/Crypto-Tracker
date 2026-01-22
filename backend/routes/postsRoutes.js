@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/users.js");
+const Notification = require("../models/userNotifications.js");
 
 // Shuffle array helper function (Fisher-Yates algorithm)
 const shuffleArray = (array) => {
@@ -111,6 +112,22 @@ router.patch("/api/posts/:userId/:postId/like", async (req, res) => {
     currentUser.socials.likedPosts.push(postId);
     await currentUser.save();
 
+    // Create notification for the post owner (if not liking own post)
+    if (userId !== currentUserId && postOwner.settings?.notifyUpvotes !== false) {
+      const notification = new Notification({
+        userId: userId,
+        type: "upvote",
+        title: "Post Liked",
+        message: `${currentUser.displayName || currentUser.username} liked your post`,
+        fromUser: currentUserId,
+        fromUsername: currentUser.username,
+        fromProfilePicture: currentUser.profilePicture || "",
+        relatedId: postId,
+        relatedType: "post",
+      });
+      await notification.save();
+    }
+
     const updatedPost = postOwner.socials.posts.find(p => p._id.toString() === postId);
     return res.status(200).json({ post: updatedPost, currentUser });
   } catch (err) {
@@ -205,7 +222,7 @@ router.post("/api/posts/:userId/:postId/comment", async (req, res) => {
 
     // Also save comment to the commenter's socials.comments array
     if (commenterId) {
-      await User.findByIdAndUpdate(
+      const commenter = await User.findByIdAndUpdate(
         commenterId,
         {
           $push: {
@@ -215,8 +232,25 @@ router.post("/api/posts/:userId/:postId/comment", async (req, res) => {
               postOwnerId: userId,
             },
           },
-        }
+        },
+        { new: true }
       );
+
+      // Create notification for the post owner (if not commenting on own post)
+      if (userId !== commenterId && user.settings?.notifyComments !== false) {
+        const notification = new Notification({
+          userId: userId,
+          type: "comment",
+          title: "New Comment",
+          message: `${commenter?.displayName || author} commented on your post`,
+          fromUser: commenterId,
+          fromUsername: commenter?.username || author,
+          fromProfilePicture: commenter?.profilePicture || "",
+          relatedId: postId,
+          relatedType: "post",
+        });
+        await notification.save();
+      }
     }
 
     const updatedPost = user.socials.posts.find(p => p._id.toString() === postId);

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { FiSearch } from "react-icons/fi";
-import { X, UserPlus, UserCheck, Users, Calendar, FileText, MessageSquare } from "lucide-react";
+import { X, UserPlus, UserCheck, Users, Calendar, FileText, MessageSquare, Clock } from "lucide-react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import axios from "axios";
 
@@ -116,6 +116,34 @@ function SearchProfiles() {
     });
   };
 
+  const formatMemberDuration = (date) => {
+    if (!date) return "Unknown";
+    const created = new Date(date);
+    const now = new Date();
+    const diffMs = now - created;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 1) return "Less than a day";
+    if (diffDays === 1) return "1 day";
+    if (diffDays < 7) return `${diffDays} days`;
+    if (diffDays < 30) {
+      const weeks = Math.floor(diffDays / 7);
+      return weeks === 1 ? "1 week" : `${weeks} weeks`;
+    }
+    if (diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      return months === 1 ? "1 month" : `${months} months`;
+    }
+    const years = Math.floor(diffDays / 365);
+    const remainingMonths = Math.floor((diffDays % 365) / 30);
+    if (remainingMonths === 0) {
+      return years === 1 ? "1 year" : `${years} years`;
+    }
+    return years === 1
+      ? `1 year, ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`
+      : `${years} years, ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+  };
+
   return (
     <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-xs h-[75px] w-[890px] py-3 px-4 ml-71 flex items-center relative">
       <form className="w-full" onSubmit={(e) => e.preventDefault()}>
@@ -187,87 +215,92 @@ function SearchProfiles() {
       {/* User Profile Modal */}
       {selectedUser && (
         <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/60">
-          <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-md rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+          <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-lg rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
             {/* Modal Header */}
             <div className="border-b border-slate-700 p-4 flex items-center justify-between">
               <h1 className="text-lg font-bold text-white">Profile</h1>
               <button
                 onClick={() => setSelectedUser(null)}
-                className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
 
             {/* Profile Content */}
-            <div className="p-6">
+            <div className="p-8">
               {/* Banner */}
-              <div className="h-20 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-blue-500/20 rounded-xl -mx-2 -mt-2 mb-4"></div>
+              <div className="h-24 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-blue-500/20 rounded-xl -mx-2 -mt-2 mb-4"></div>
 
               {/* Avatar */}
-              <div className="flex justify-center -mt-14 mb-4">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-2xl font-bold text-white border-4 border-slate-800 shadow-lg">
+              <div className="flex justify-center -mt-16 mb-5">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-3xl font-bold text-white border-4 border-slate-800 shadow-lg">
                   {selectedUser.profilePicture && selectedUser.profilePicture !== ""
-                    ? selectedUser.profilePicture
+                    ? <img src={selectedUser.profilePicture} alt="" className="w-full h-full rounded-full object-cover" />
                     : selectedUser.username?.slice(0, 2).toUpperCase()}
                 </div>
               </div>
 
               {/* Name & Username */}
-              <div className="text-center mb-4">
-                <h2 className="text-xl font-bold text-white">{selectedUser.displayName}</h2>
-                <p className="text-gray-400">@{selectedUser.username}</p>
+              <div className="text-center mb-5">
+                <h2 className="text-2xl font-bold text-white">{selectedUser.displayName}</h2>
+                <p className="text-gray-400 text-lg">@{selectedUser.username}</p>
               </div>
 
               {/* Bio */}
               {selectedUser.bio && (
-                <p className="text-gray-300 text-center mb-4 px-4">{selectedUser.bio}</p>
+                <p className="text-gray-300 text-center mb-5 px-4 text-base">{selectedUser.bio}</p>
               )}
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-slate-700/30 rounded-xl p-3 text-center">
-                  <div className="flex items-center justify-center gap-1 text-blue-400 mb-1">
-                    <Users className="w-4 h-4" />
+              <div className="grid grid-cols-4 gap-3 mb-6">
+                <div className="bg-slate-700/30 rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center gap-1 text-blue-400 mb-2">
+                    <Users className="w-5 h-5" />
                   </div>
-                  <p className="text-white font-bold">{selectedUser.socials?.followers?.length || 0}</p>
+                  <p className="text-white font-bold text-xl">{selectedUser.socials?.followers?.length || 0}</p>
                   <p className="text-gray-500 text-xs">Followers</p>
                 </div>
-                <div className="bg-slate-700/30 rounded-xl p-3 text-center">
-                  <div className="flex items-center justify-center gap-1 text-purple-400 mb-1">
-                    <Users className="w-4 h-4" />
+                <div className="bg-slate-700/30 rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center gap-1 text-purple-400 mb-2">
+                    <Users className="w-5 h-5" />
                   </div>
-                  <p className="text-white font-bold">{selectedUser.socials?.following?.length || 0}</p>
+                  <p className="text-white font-bold text-xl">{selectedUser.socials?.following?.length || 0}</p>
                   <p className="text-gray-500 text-xs">Following</p>
                 </div>
-                <div className="bg-slate-700/30 rounded-xl p-3 text-center">
-                  <div className="flex items-center justify-center gap-1 text-amber-400 mb-1">
-                    <FileText className="w-4 h-4" />
+                <div className="bg-slate-700/30 rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center gap-1 text-amber-400 mb-2">
+                    <FileText className="w-5 h-5" />
                   </div>
-                  <p className="text-white font-bold">{selectedUser.socials?.posts?.length || 0}</p>
+                  <p className="text-white font-bold text-xl">{selectedUser.socials?.posts?.length || 0}</p>
                   <p className="text-gray-500 text-xs">Posts</p>
+                </div>
+                <div className="bg-slate-700/30 rounded-xl p-4 text-center">
+                  <div className="flex items-center justify-center gap-1 text-green-400 mb-2">
+                    <MessageSquare className="w-5 h-5" />
+                  </div>
+                  <p className="text-white font-bold text-xl">{selectedUser.socials?.comments?.length || 0}</p>
+                  <p className="text-gray-500 text-xs">Comments</p>
                 </div>
               </div>
 
               {/* Additional Info */}
-              <div className="space-y-2 mb-6">
-                <div className="flex items-center gap-2 text-gray-400 text-sm">
-                  <Calendar className="w-4 h-4" />
-                  <span>Joined {formatDate(selectedUser.createdAt)}</span>
+              <div className="bg-slate-700/20 rounded-xl p-4 mb-6 space-y-3">
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Calendar className="w-5 h-5 text-blue-400" />
+                  <span className="text-left">Joined {formatDate(selectedUser.createdAt)}</span>
                 </div>
-                {selectedUser.socials?.comments?.length > 0 && (
-                  <div className="flex items-center gap-2 text-gray-400 text-sm">
-                    <MessageSquare className="w-4 h-4" />
-                    <span>{selectedUser.socials.comments.length} comments</span>
-                  </div>
-                )}
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Clock className="w-5 h-5 text-amber-400" />
+                  <span className="text-left">Member for {formatMemberDuration(selectedUser.createdAt)}</span>
+                </div>
               </div>
 
               {/* Follow/Unfollow Button */}
               {selectedUser._id !== user?._id && (
                 <button
                   onClick={() => handleFollow(selectedUser._id)}
-                  className={`w-full py-3 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
+                  className={`w-full py-3.5 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-lg ${
                     isFollowing(selectedUser._id)
                       ? "bg-slate-700 text-white hover:bg-red-500/20 hover:text-red-400 border border-slate-600"
                       : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
@@ -289,7 +322,7 @@ function SearchProfiles() {
 
               {/* If viewing own profile */}
               {selectedUser._id === user?._id && (
-                <div className="text-center text-gray-500 text-sm">
+                <div className="text-center text-gray-500 text-base py-2">
                   This is your profile
                 </div>
               )}
