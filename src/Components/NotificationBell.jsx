@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { Bell, X, Check, Trash2, UserPlus, MessageSquare, ThumbsUp, AtSign, TrendingUp, AlertCircle } from "lucide-react";
 import axios from "axios";
 import { UserContext } from "../Pages/SkeletonPage";
+import { useNavigate } from "react-router-dom";
 
 const NotificationBell = () => {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -111,6 +113,40 @@ const NotificationBell = () => {
     }
   };
 
+  // Handle notification click - mark as read and navigate
+  const handleNotificationClick = async (notification) => {
+    // Mark as read if unread
+    if (!notification.read) {
+      await markAsRead(notification._id);
+    }
+
+    // Close dropdown
+    setIsOpen(false);
+
+    // Navigate based on notification type
+    switch (notification.type) {
+      case "follow":
+        // Navigate to the user's profile who followed you
+        if (notification.fromUsername) {
+          navigate(`/chatroom/${notification.fromUsername}`);
+        }
+        break;
+      case "comment":
+      case "upvote":
+      case "mention":
+        // Navigate to the chatroom/social area
+        navigate("/chatroom");
+        break;
+      case "coin_alert":
+      case "trending":
+        // Navigate to explore page for coin-related notifications
+        navigate("/explore");
+        break;
+      default:
+        break;
+    }
+  };
+
   // Clear all notifications
   const clearAllNotifications = async () => {
     if (!user?._id) return;
@@ -164,9 +200,9 @@ const NotificationBell = () => {
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full hover:bg-slate-700/50 transition cursor-pointer"
+        className="relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-red-500/20 transition-all duration-300 cursor-pointer"
       >
-        <Bell size={24} className="text-gray-300 hover:text-white transition" />
+        <Bell size={20} className="text-gray-400 hover:text-red-400 transition-colors" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             {unreadCount > 9 ? "9+" : unreadCount}
@@ -176,15 +212,15 @@ const NotificationBell = () => {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 rounded-xl shadow-2xl ring-1 ring-gray-600/50 z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 bg-gradient-to-br from-[#1e293b] via-[#152033] to-[#0f172a] backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-white/10 z-50 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-600/50">
-            <h3 className="text-white font-semibold">Notifications</h3>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between p-4 border-b border-white/10">
+            <h3 className="text-white font-bold">Notifications</h3>
+            <div className="flex items-center gap-3">
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-xs text-blue-400 hover:text-blue-300 transition cursor-pointer"
+                  className="text-xs text-amber-400 hover:text-amber-300 font-medium transition cursor-pointer"
                 >
                   Mark all read
                 </button>
@@ -192,7 +228,7 @@ const NotificationBell = () => {
               {notifications.length > 0 && (
                 <button
                   onClick={clearAllNotifications}
-                  className="p-1 hover:bg-slate-600/50 rounded transition cursor-pointer"
+                  className="p-1.5 hover:bg-red-500/20 rounded-lg transition cursor-pointer"
                   title="Clear all"
                 >
                   <Trash2 size={14} className="text-gray-400 hover:text-red-400" />
@@ -216,8 +252,8 @@ const NotificationBell = () => {
               notifications.map((notification) => (
                 <div
                   key={notification._id}
-                  onClick={() => !notification.read && markAsRead(notification._id)}
-                  className={`flex items-start gap-3 p-3 border-b border-gray-700/30 hover:bg-slate-600/30 transition cursor-pointer ${
+                  onClick={() => handleNotificationClick(notification)}
+                  className={`group flex items-start gap-3 p-3 border-b border-gray-700/30 hover:bg-slate-600/30 transition cursor-pointer ${
                     !notification.read ? "bg-slate-600/20" : ""
                   }`}
                 >
@@ -250,13 +286,13 @@ const NotificationBell = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-2">
                     {!notification.read && (
-                      <div className="w-2 h-2 rounded-full bg-blue-500" />
+                      <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                     )}
                     <button
                       onClick={(e) => deleteNotification(notification._id, e)}
-                      className="p-1 hover:bg-slate-500/50 rounded transition opacity-0 group-hover:opacity-100 cursor-pointer"
+                      className="p-1.5 hover:bg-red-500/20 rounded-lg transition opacity-0 group-hover:opacity-100 cursor-pointer"
                     >
                       <X size={14} className="text-gray-400 hover:text-red-400" />
                     </button>

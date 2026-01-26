@@ -39,7 +39,8 @@ function RecommendedAccounts() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
+      <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/15 via-pink-500/15 to-amber-500/15 rounded-2xl blur-lg -z-10"></div>
       <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 overflow-hidden">
         {/* Header */}
         <div className="p-5 border-b border-slate-700">

@@ -30,7 +30,9 @@ const MediaFeed = () => {
         <div className="w-[250px] flex-shrink-0">
           <div className="sticky top-6">
             {/* User Quick Info */}
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-5 mb-4">
+            <div className="relative mb-4">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-amber-500/20 rounded-2xl blur-lg -z-10"></div>
+              <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-5">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white">
                   {user?.username?.slice(0, 2).toUpperCase()}
@@ -54,6 +56,7 @@ const MediaFeed = () => {
                   <p className="text-gray-500 text-xs">Posts</p>
                 </div>
               </div>
+              </div>
             </div>
 
             {/* Navigation */}
@@ -63,18 +66,22 @@ const MediaFeed = () => {
                   const Icon = item.icon;
                   const isActive = sectionSelected === item.id;
                   return (
-                    <button
-                      key={item.id}
-                      onClick={() => setSectionSelected(item.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 cursor-pointer ${
-                        isActive
-                          ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900"
-                          : "text-gray-400 hover:text-white hover:bg-slate-700/50"
-                      }`}
-                    >
-                      <Icon className="w-5 h-5" />
-                      {item.label}
-                    </button>
+                    <div key={item.id} className="relative">
+                      {isActive && (
+                        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/30 to-orange-500/30 rounded-xl blur-md"></div>
+                      )}
+                      <button
+                        onClick={() => setSectionSelected(item.id)}
+                        className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 cursor-pointer ${
+                          isActive
+                            ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 shadow-lg shadow-amber-500/25"
+                            : "text-gray-400 hover:text-white hover:bg-slate-700/50"
+                        }`}
+                      >
+                        <Icon className="w-5 h-5" />
+                        {item.label}
+                      </button>
+                    </div>
                   );
                 })}
               </nav>

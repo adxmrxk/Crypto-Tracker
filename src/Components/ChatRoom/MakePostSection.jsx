@@ -84,7 +84,9 @@ const MakePostSection = ({ onPostCreated }) => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-5">
+    <div className="relative">
+      <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-rose-500/15 rounded-2xl blur-lg -z-10"></div>
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-5">
       <div className="flex gap-4">
         {/* Avatar */}
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex-shrink-0 flex items-center justify-center text-lg font-bold text-white">
@@ -232,6 +234,7 @@ const MakePostSection = ({ onPostCreated }) => {
             </div>
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

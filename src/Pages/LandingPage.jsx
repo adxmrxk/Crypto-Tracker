@@ -134,11 +134,14 @@ const LandingPage = () => {
                 Sign Up
               </SignInButton>
             </div>
-            <img
-              src={CryptoCurrency}
-              alt="Crypto"
-              className="w-128 h-128 rounded-md object-cover"
-            />
+            <div className="relative flex-shrink-0">
+              <div className="absolute -inset-6 bg-gradient-to-r from-blue-500/25 via-cyan-500/20 to-purple-500/25 rounded-3xl blur-2xl -z-10"></div>
+              <img
+                src={CryptoCurrency}
+                alt="Crypto"
+                className="w-128 h-128 rounded-md object-cover"
+              />
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-2 items-center mt-5">

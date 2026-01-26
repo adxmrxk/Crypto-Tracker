@@ -432,8 +432,9 @@ const MediaPost = () => {
         <div
           key={post._id}
           onClick={() => setSelectedPost(post)}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-5 hover:border-slate-600 transition-all duration-200 cursor-pointer"
+          className="group relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-5 hover:border-amber-500/30 transition-all duration-300 cursor-pointer"
         >
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/0 via-orange-500/0 to-rose-500/0 group-hover:from-amber-500/10 group-hover:via-orange-500/10 group-hover:to-rose-500/10 rounded-xl blur-sm transition-all duration-300 -z-10"></div>
           {/* Post Header */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">

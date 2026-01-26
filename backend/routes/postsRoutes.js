@@ -3,6 +3,50 @@ const router = express.Router();
 const User = require("../models/users.js");
 const Notification = require("../models/userNotifications.js");
 
+// Helper function to extract @mentions from text
+const extractMentions = (text) => {
+  if (!text) return [];
+  const mentionRegex = /@(\w+)/g;
+  const mentions = [];
+  let match;
+  while ((match = mentionRegex.exec(text)) !== null) {
+    mentions.push(match[1].toLowerCase());
+  }
+  return [...new Set(mentions)]; // Remove duplicates
+};
+
+// Helper function to create mention notifications
+const createMentionNotifications = async (text, authorId, authorUser, relatedId, relatedType) => {
+  const mentionedUsernames = extractMentions(text);
+  if (mentionedUsernames.length === 0) return;
+
+  // Find all mentioned users
+  const mentionedUsers = await User.find({
+    username: { $in: mentionedUsernames.map(u => new RegExp(`^${u}$`, 'i')) }
+  });
+
+  for (const mentionedUser of mentionedUsers) {
+    // Don't notify yourself
+    if (mentionedUser._id.toString() === authorId.toString()) continue;
+
+    // Check if user wants mention notifications
+    if (mentionedUser.settings?.notifyMentions === false) continue;
+
+    const notification = new Notification({
+      userId: mentionedUser._id,
+      type: "mention",
+      title: "You were mentioned",
+      message: `${authorUser.displayName || authorUser.username} mentioned you in a ${relatedType}`,
+      fromUser: authorId,
+      fromUsername: authorUser.username,
+      fromProfilePicture: authorUser.profilePicture || "",
+      relatedId: relatedId,
+      relatedType: relatedType,
+    });
+    await notification.save();
+  }
+};
+
 // Shuffle array helper function (Fisher-Yates algorithm)
 const shuffleArray = (array) => {
   const shuffled = [...array];
@@ -55,12 +99,36 @@ router.get("/api/posts", async (req, res) => {
 
 // Create a new post for a user
 router.post("/api/posts/:id", async (req, res) => {
-  const userId = req.params.id;
-  const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.json(updatedUser);
+  try {
+    const userId = req.params.id;
+    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Get the newly created post (last one in the array)
+    const newPost = updatedUser.socials.posts[updatedUser.socials.posts.length - 1];
+
+    // Check for @mentions in the post content and create notifications
+    if (newPost?.content) {
+      await createMentionNotifications(
+        newPost.content,
+        userId,
+        updatedUser,
+        newPost._id,
+        "post"
+      );
+    }
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to create post" });
+  }
 });
 
 // Like a post
@@ -250,6 +318,17 @@ router.post("/api/posts/:userId/:postId/comment", async (req, res) => {
           relatedType: "post",
         });
         await notification.save();
+      }
+
+      // Check for @mentions in the comment and create notifications
+      if (content && commenter) {
+        await createMentionNotifications(
+          content,
+          commenterId,
+          commenter,
+          postId,
+          "comment"
+        );
       }
     }
 

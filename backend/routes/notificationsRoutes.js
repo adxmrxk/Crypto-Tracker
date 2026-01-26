@@ -3,19 +3,7 @@ const router = express.Router();
 const Notification = require("../models/userNotifications.js");
 const User = require("../models/users.js");
 
-// Get all notifications for a user
-router.get("/api/notifications/:userId", async (req, res) => {
-  try {
-    const notifications = await Notification.find({ userId: req.params.userId })
-      .sort({ createdAt: -1 })
-      .limit(50);
-    res.json(notifications);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to fetch notifications" });
-  }
-});
-
-// Get unread notification count
+// Get unread notification count (must be before :userId route)
 router.get("/api/notifications/unread/:userId", async (req, res) => {
   try {
     const count = await Notification.countDocuments({
@@ -25,6 +13,18 @@ router.get("/api/notifications/unread/:userId", async (req, res) => {
     res.json({ unreadCount: count });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch unread count" });
+  }
+});
+
+// Get all notifications for a user
+router.get("/api/notifications/:userId", async (req, res) => {
+  try {
+    const notifications = await Notification.find({ userId: req.params.userId })
+      .sort({ createdAt: -1 })
+      .limit(50);
+    res.json(notifications);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch notifications" });
   }
 });
 
@@ -105,6 +105,19 @@ router.post("/api/notifications", async (req, res) => {
   }
 });
 
+// Mark all notifications as read for a user (must be before read/:notificationId)
+router.patch("/api/notifications/readAll/:userId", async (req, res) => {
+  try {
+    await Notification.updateMany(
+      { userId: req.params.userId, read: false },
+      { read: true }
+    );
+    res.json({ message: "All notifications marked as read" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to mark notifications as read" });
+  }
+});
+
 // Mark a single notification as read
 router.patch("/api/notifications/read/:notificationId", async (req, res) => {
   try {
@@ -122,16 +135,13 @@ router.patch("/api/notifications/read/:notificationId", async (req, res) => {
   }
 });
 
-// Mark all notifications as read for a user
-router.patch("/api/notifications/readAll/:userId", async (req, res) => {
+// Delete all notifications for a user (must be before :notificationId route)
+router.delete("/api/notifications/all/:userId", async (req, res) => {
   try {
-    await Notification.updateMany(
-      { userId: req.params.userId, read: false },
-      { read: true }
-    );
-    res.json({ message: "All notifications marked as read" });
+    await Notification.deleteMany({ userId: req.params.userId });
+    res.json({ message: "All notifications deleted" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to mark notifications as read" });
+    res.status(500).json({ message: "Failed to delete notifications" });
   }
 });
 
@@ -147,16 +157,6 @@ router.delete("/api/notifications/:notificationId", async (req, res) => {
     res.json({ message: "Notification deleted" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete notification" });
-  }
-});
-
-// Delete all notifications for a user
-router.delete("/api/notifications/all/:userId", async (req, res) => {
-  try {
-    await Notification.deleteMany({ userId: req.params.userId });
-    res.json({ message: "All notifications deleted" });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to delete notifications" });
   }
 });
 

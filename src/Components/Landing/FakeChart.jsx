@@ -82,55 +82,60 @@ const FakeChart = () => {
 
   return (
     <div data-aos="fade-right" data-aos-offset="275">
-      <div className='flex flex-col absolute translate-x-3 translate-y-18'>
-        <h1 className='font-bold text-4xl translate-x-8 translate-y-5 text-gray-100'>$57,456</h1>
-        <p className='font-semibold text-lg translate-x-7.5 translate-y-5 bg-emerald-500/30 text-emerald-400 rounded-md w-fit px-3 py-0.5 ml-4 mt-2'>+3.64%</p>
-      </div>
-      <div className='w-[550px] h-[450px] flex items-center mt-15'>
-        <Line
-          data={chartData}
-          plugins={[priceLabel]}
-          options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: {
-                      display: false
-                  },
-                  tooltip: {
-                      enabled: false,
-                  }
-              },
-              scales: {
-                  x: {
-                    display: true,
-                    grid: {
-                      color: 'rgba(100, 116, 139, 0.08)',
-                      drawTicks: false,
+      <div className="relative w-[550px]">
+        {/* Gradient Glow Effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-rose-500/15 to-purple-500/20 rounded-2xl blur-xl -z-10 scale-105"></div>
+
+        <div className='flex flex-col absolute translate-x-3 translate-y-18'>
+          <h1 className='font-bold text-4xl translate-x-8 translate-y-5 text-gray-100'>$57,456</h1>
+          <p className='font-semibold text-lg translate-x-7.5 translate-y-5 bg-emerald-500/30 text-emerald-400 rounded-md w-fit px-3 py-0.5 ml-4 mt-2'>+3.64%</p>
+        </div>
+        <div className='w-[550px] h-[450px] flex items-center mt-15'>
+          <Line
+            data={chartData}
+            plugins={[priceLabel]}
+            options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
                     },
-                    ticks: {
-                      display: false
-                    },
-                    border: {
-                      display: false
+                    tooltip: {
+                        enabled: false,
                     }
-                  },
-                  y: {
-                    display: true,
-                    grid: {
-                      color: 'rgba(100, 116, 139, 0.08)',
-                      drawTicks: false,
+                },
+                scales: {
+                    x: {
+                      display: true,
+                      grid: {
+                        color: 'rgba(100, 116, 139, 0.08)',
+                        drawTicks: false,
+                      },
+                      ticks: {
+                        display: false
+                      },
+                      border: {
+                        display: false
+                      }
                     },
-                    ticks: {
-                      display: false
-                    },
-                    border: {
-                      display: false
+                    y: {
+                      display: true,
+                      grid: {
+                        color: 'rgba(100, 116, 139, 0.08)',
+                        drawTicks: false,
+                      },
+                      ticks: {
+                        display: false
+                      },
+                      border: {
+                        display: false
+                      }
                     }
-                  }
-              }
-          }}
-        />
+                }
+            }}
+          />
+        </div>
       </div>
     </div>
   );
