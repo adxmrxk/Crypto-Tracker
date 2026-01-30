@@ -822,13 +822,16 @@ function ProfileSection() {
               </div>
 
               {/* Edit Button */}
-              <button
-                onClick={() => setEditProfile(true)}
-                className="flex items-center gap-2 px-3 py-2 bg-slate-800/60 border border-slate-600 rounded-lg hover:border-amber-500/50 hover:bg-slate-700/60 transition-all duration-200 cursor-pointer text-gray-300 hover:text-amber-400"
-              >
-                <Edit3 className="w-4 h-4" />
-                <span className="text-sm font-medium">Edit Profile</span>
-              </button>
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/25 to-orange-500/25 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                <button
+                  onClick={() => setEditProfile(true)}
+                  className="relative flex items-center gap-2 px-3 py-2 bg-slate-800/60 border border-slate-600 rounded-lg hover:border-amber-500/50 hover:bg-slate-700/60 transition-all duration-200 cursor-pointer text-gray-300 hover:text-amber-400"
+                >
+                  <Edit3 className="w-4 h-4" />
+                  <span className="text-sm font-medium">Edit Profile</span>
+                </button>
+              </div>
             </div>
 
             {/* Name & Username */}
@@ -941,7 +944,10 @@ function ProfileSection() {
 
         {/* Watchlist CTA */}
         {(!user?.watchList || user?.watchList?.length === 0) && (
-          <div className="mt-6 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-xl border border-amber-500/20 p-5">
+          <div className="relative mt-6">
+            {/* Glow Effect */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 rounded-xl blur-md"></div>
+            <div className="relative bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-xl border border-amber-500/20 p-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-amber-500/20 rounded-lg">
@@ -956,20 +962,24 @@ function ProfileSection() {
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  navigate("/PortfolioPage");
-                  setTimeout(() => {
-                    document
-                      .getElementById("search-crypto")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }, 100);
-                }}
-                className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200 cursor-pointer"
-              >
-                Get Started
-              </button>
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/25 to-orange-500/25 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                <button
+                  onClick={() => {
+                    navigate("/PortfolioPage");
+                    setTimeout(() => {
+                      document
+                        .getElementById("search-crypto")
+                        ?.scrollIntoView({ behavior: "smooth" });
+                    }, 100);
+                  }}
+                  className="relative px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200 cursor-pointer"
+                >
+                  Get Started
+                </button>
+              </div>
             </div>
+          </div>
           </div>
         )}
 
@@ -1097,10 +1107,13 @@ function ProfileSection() {
                   Share your thoughts, insights, and crypto journey with the
                   community!
                 </p>
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200">
-                  <Plus className="w-4 h-4" />
-                  Create Your First Post
-                </button>
+                <div className="relative group inline-block">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/25 to-orange-500/25 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                  <button className="relative inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900 font-semibold rounded-xl transition-all duration-200 cursor-pointer">
+                    <Plus className="w-4 h-4" />
+                    Create Your First Post
+                  </button>
+                </div>
               </div>
             )}
           </div>

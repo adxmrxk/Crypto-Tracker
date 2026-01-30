@@ -196,7 +196,7 @@ const NotificationBell = () => {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <>
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -210,100 +210,114 @@ const NotificationBell = () => {
         )}
       </button>
 
-      {/* Dropdown */}
+      {/* Modal Overlay */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-gradient-to-br from-[#1e293b] via-[#152033] to-[#0f172a] backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-white/10 z-50 overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/10">
-            <h3 className="text-white font-bold">Notifications</h3>
-            <div className="flex items-center gap-3">
-              {unreadCount > 0 && (
+        <div className="fixed inset-0 flex items-center justify-center z-[100] px-4 backdrop-blur-sm bg-black/60">
+          <div ref={dropdownRef} className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-700 overflow-hidden max-h-[85vh] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-5 border-b border-slate-700 flex-shrink-0">
+              <h3 className="text-xl font-bold text-white">Notifications</h3>
+              <div className="flex items-center gap-3">
+                {unreadCount > 0 && (
+                  <button
+                    onClick={markAllAsRead}
+                    className="text-sm text-amber-400 hover:text-amber-300 font-medium transition cursor-pointer"
+                  >
+                    Mark all read
+                  </button>
+                )}
+                {notifications.length > 0 && (
+                  <button
+                    onClick={clearAllNotifications}
+                    className="p-2 hover:bg-red-500/20 rounded-lg transition cursor-pointer"
+                    title="Clear all"
+                  >
+                    <Trash2 size={16} className="text-gray-400 hover:text-red-400" />
+                  </button>
+                )}
                 <button
-                  onClick={markAllAsRead}
-                  className="text-xs text-amber-400 hover:text-amber-300 font-medium transition cursor-pointer"
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
                 >
-                  Mark all read
+                  <X className="w-5 h-5 text-gray-400" />
                 </button>
-              )}
-              {notifications.length > 0 && (
-                <button
-                  onClick={clearAllNotifications}
-                  className="p-1.5 hover:bg-red-500/20 rounded-lg transition cursor-pointer"
-                  title="Clear all"
-                >
-                  <Trash2 size={14} className="text-gray-400 hover:text-red-400" />
-                </button>
+              </div>
+            </div>
+
+            {/* Notifications List */}
+            <div className="flex-1 overflow-y-auto">
+              {isLoading ? (
+                <div className="p-12 text-center">
+                  <div className="w-8 h-8 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mx-auto mb-3"></div>
+                  <p className="text-gray-400">Loading notifications...</p>
+                </div>
+              ) : notifications.length === 0 ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Bell size={32} className="text-gray-500" />
+                  </div>
+                  <p className="text-white font-medium mb-1">No notifications yet</p>
+                  <p className="text-gray-500 text-sm">We'll notify you when something happens</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-slate-700/50">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification._id}
+                      onClick={() => handleNotificationClick(notification)}
+                      className={`group flex items-start gap-4 p-5 hover:bg-slate-700/30 transition cursor-pointer ${
+                        !notification.read ? "bg-slate-700/20" : ""
+                      }`}
+                    >
+                      {/* Icon or Profile Picture */}
+                      <div className="flex-shrink-0">
+                        {notification.fromProfilePicture ? (
+                          <img
+                            src={notification.fromProfilePicture}
+                            alt=""
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center">
+                            {getNotificationIcon(notification.type)}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base text-white font-medium text-left">
+                          {notification.title}
+                        </p>
+                        <p className="text-sm text-gray-400 text-left mt-1">
+                          {notification.message}
+                        </p>
+                        <p className="text-xs text-gray-500 text-left mt-2">
+                          {formatTimeAgo(notification.createdAt)}
+                        </p>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {!notification.read && (
+                          <div className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                        )}
+                        <button
+                          onClick={(e) => deleteNotification(notification._id, e)}
+                          className="p-2 hover:bg-red-500/20 rounded-lg transition opacity-0 group-hover:opacity-100 cursor-pointer"
+                        >
+                          <X size={16} className="text-gray-400 hover:text-red-400" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
-
-          {/* Notifications List */}
-          <div className="max-h-96 overflow-y-auto">
-            {isLoading ? (
-              <div className="p-8 text-center">
-                <p className="text-gray-400">Loading...</p>
-              </div>
-            ) : notifications.length === 0 ? (
-              <div className="p-8 text-center">
-                <Bell size={32} className="mx-auto text-gray-500 mb-2" />
-                <p className="text-gray-400">No notifications yet</p>
-              </div>
-            ) : (
-              notifications.map((notification) => (
-                <div
-                  key={notification._id}
-                  onClick={() => handleNotificationClick(notification)}
-                  className={`group flex items-start gap-3 p-3 border-b border-gray-700/30 hover:bg-slate-600/30 transition cursor-pointer ${
-                    !notification.read ? "bg-slate-600/20" : ""
-                  }`}
-                >
-                  {/* Icon or Profile Picture */}
-                  <div className="flex-shrink-0 mt-1">
-                    {notification.fromProfilePicture ? (
-                      <img
-                        src={notification.fromProfilePicture}
-                        alt=""
-                        className="w-8 h-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center">
-                        {getNotificationIcon(notification.type)}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white font-medium text-left">
-                      {notification.title}
-                    </p>
-                    <p className="text-xs text-gray-400 text-left truncate">
-                      {notification.message}
-                    </p>
-                    <p className="text-xs text-gray-500 text-left mt-1">
-                      {formatTimeAgo(notification.createdAt)}
-                    </p>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    {!notification.read && (
-                      <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                    )}
-                    <button
-                      onClick={(e) => deleteNotification(notification._id, e)}
-                      className="p-1.5 hover:bg-red-500/20 rounded-lg transition opacity-0 group-hover:opacity-100 cursor-pointer"
-                    >
-                      <X size={14} className="text-gray-400 hover:text-red-400" />
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

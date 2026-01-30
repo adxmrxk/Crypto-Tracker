@@ -20,14 +20,14 @@ const Analytics = () => {
   return (
     <div>
       <div className="mb-10">
-        <h1 className="text-3xl font-semibold pt-5 bg-gradient-to-br from-orange-400 via-rose-500 to-purple-700 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold pt-5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent">
           Investment Overview
         </h1>
-        <p1 className="text-lg mb-15 bg-gradient-to-br from-purple-500 to-purple-700 bg-clip-text text-transparent">
+        <p className="text-lg mb-15 text-gray-400">
           Your portfolio at a glance — track, analyze, and optimize your
           investments.
-        </p1>
-        <hr className="border-gray-500 my-1 w-[50%] mx-auto mt-5"></hr>
+        </p>
+        <hr className="border-slate-600 my-1 w-[40%] mx-auto mt-5"></hr>
       </div>
       <div className="flex flex-row justify-center ">
         <WalletValue cryptoData={cryptoData} isLoading={showLoading} isFetching={isFetching} />

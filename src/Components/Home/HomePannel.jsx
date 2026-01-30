@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   TrendingUp,
   TrendingDown,
@@ -16,13 +16,15 @@ import {
   PenSquare,
   Plus,
   ShoppingCart,
-  Users,
 } from "lucide-react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import useCryptoCurrency from "../../hooks/useCryptoCurrency";
 import useCoinsOnce from "../../hooks/useCoinsOnce";
 import { useNavigate } from "react-router-dom";
 import NotificationBell from "../NotificationBell";
+import CreatePostModal from "./CreatePostModal";
+import BuyCoinModal from "./BuyCoinModal";
+import SearchModal from "./SearchModal";
 
 // Mini sparkline component for visual flair
 const MiniSparkline = ({ trend, color }) => {
@@ -50,6 +52,11 @@ const HomePannel = () => {
   const coinNames = user?.watchList?.map((element) => element.coin) || [];
   const { data: userCoins, isLoading: userCoinsLoading } = useCryptoCurrency(coinNames);
   const { data: allCoins, isLoading: allCoinsLoading } = useCoinsOnce();
+
+  // Modal states
+  const [showCreatePost, setShowCreatePost] = useState(false);
+  const [showBuyCoin, setShowBuyCoin] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   // Calculate portfolio value
   const totalPortfolioValue = userCoins?.reduce((total, coin) => {
@@ -116,32 +123,25 @@ const HomePannel = () => {
           {/* Quick Action Buttons */}
           <div className="flex items-center gap-1.5 p-1.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
             <button
-              onClick={() => navigate('/chatroom')}
-              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-amber-500/20 transition-all duration-300"
+              onClick={() => setShowCreatePost(true)}
+              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-amber-500/20 transition-all duration-300 cursor-pointer"
               title="Create Post"
             >
               <PenSquare className="w-5 h-5 text-gray-400 group-hover:text-amber-400 transition-colors" />
             </button>
             <button
-              onClick={() => navigate('/explore')}
-              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-emerald-500/20 transition-all duration-300"
+              onClick={() => setShowBuyCoin(true)}
+              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-emerald-500/20 transition-all duration-300 cursor-pointer"
               title="Buy Crypto"
             >
               <ShoppingCart className="w-5 h-5 text-gray-400 group-hover:text-emerald-400 transition-colors" />
             </button>
             <button
-              onClick={() => navigate('/explore')}
-              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-blue-500/20 transition-all duration-300"
+              onClick={() => setShowSearch(true)}
+              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-blue-500/20 transition-all duration-300 cursor-pointer"
               title="Search"
             >
               <Search className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
-            </button>
-            <button
-              onClick={() => navigate('/chatroom')}
-              className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-purple-500/20 transition-all duration-300"
-              title="Community"
-            >
-              <Users className="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" />
             </button>
             <NotificationBell />
           </div>
@@ -460,6 +460,17 @@ const HomePannel = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {showCreatePost && (
+        <CreatePostModal onClose={() => setShowCreatePost(false)} />
+      )}
+      {showBuyCoin && (
+        <BuyCoinModal onClose={() => setShowBuyCoin(false)} />
+      )}
+      {showSearch && (
+        <SearchModal onClose={() => setShowSearch(false)} />
+      )}
     </div>
   );
 };

@@ -95,19 +95,19 @@ const WalletValueChartSchema = ({ timeRange }) => {
         fill: true,
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-          gradient.addColorStop(0, "rgba(245, 158, 11, 0.5)");
-          gradient.addColorStop(0.5, "rgba(251, 191, 36, 0.3)");
-          gradient.addColorStop(1, "rgba(252, 211, 77, 0.15)");
+          const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+          gradient.addColorStop(0, "rgba(245, 158, 11, 0.35)");
+          gradient.addColorStop(0.5, "rgba(251, 191, 36, 0.15)");
+          gradient.addColorStop(1, "rgba(252, 211, 77, 0.02)");
           return gradient;
         },
         tension: 0.4,
-        borderWidth: 2,
+        borderWidth: 2.5,
         pointRadius: 0,
-        pointHoverRadius: 6,
+        pointHoverRadius: 8,
         pointHoverBackgroundColor: "#f59e0b",
-        pointHoverBorderColor: "#fff",
-        pointHoverBorderWidth: 2,
+        pointHoverBorderColor: "#1e293b",
+        pointHoverBorderWidth: 3,
       },
     ],
   };
@@ -115,7 +115,7 @@ const WalletValueChartSchema = ({ timeRange }) => {
   // Empty state
   if (coins.length === 0) {
     return (
-      <div className="w-[800px] h-[500px] flex flex-col items-center justify-center">
+      <div className="w-full h-full flex flex-col items-center justify-center">
         <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
           <span className="text-3xl grayscale opacity-60">📈</span>
         </div>
@@ -128,14 +128,17 @@ const WalletValueChartSchema = ({ timeRange }) => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="w-[800px] h-[500px] flex items-center justify-center">
-        <p className="text-gray-400">Loading chart data...</p>
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin"></div>
+          <p className="text-gray-400 text-sm">Loading chart data...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-[800px] h-[500px]">
+    <div className="w-full h-full">
       <Line
         style={{ height: "100%", width: "100%" }}
         data={chartData}
@@ -152,12 +155,22 @@ const WalletValueChartSchema = ({ timeRange }) => {
             },
             tooltip: {
               enabled: true,
-              backgroundColor: "#1e293b",
-              titleColor: "#fff",
-              bodyColor: "#e2e8f0",
-              padding: 12,
-              cornerRadius: 8,
+              backgroundColor: "rgba(15, 23, 42, 0.95)",
+              titleColor: "#f59e0b",
+              titleFont: {
+                size: 12,
+                weight: "500",
+              },
+              bodyColor: "#fff",
+              bodyFont: {
+                size: 14,
+                weight: "600",
+              },
+              padding: 14,
+              cornerRadius: 12,
               displayColors: false,
+              borderColor: "rgba(245, 158, 11, 0.2)",
+              borderWidth: 1,
               callbacks: {
                 label: function (context) {
                   return `$${context.parsed.y.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -171,18 +184,34 @@ const WalletValueChartSchema = ({ timeRange }) => {
               grid: {
                 display: false,
               },
+              border: {
+                display: false,
+              },
               ticks: {
-                color: "#9ca3af",
+                color: "#64748b",
                 maxTicksLimit: 8,
+                font: {
+                  size: 11,
+                },
+                padding: 8,
               },
             },
             y: {
               display: true,
+              position: "right",
               grid: {
-                color: "rgba(107, 114, 128, 0.2)",
+                color: "rgba(71, 85, 105, 0.3)",
+                drawBorder: false,
+              },
+              border: {
+                display: false,
               },
               ticks: {
-                color: "#9ca3af",
+                color: "#64748b",
+                font: {
+                  size: 11,
+                },
+                padding: 12,
                 callback: function (value) {
                   return "$" + value.toLocaleString();
                 },
