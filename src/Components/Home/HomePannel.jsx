@@ -157,27 +157,31 @@ const HomePannel = () => {
 
             <div className="relative flex items-start justify-between">
               <div className="flex-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full mb-4">
-                  <Wallet className="w-4 h-4 text-amber-400" />
-                  <span className="text-gray-300 text-sm font-medium">Portfolio Value</span>
+                <div className="flex justify-start mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full">
+                    <Wallet className="w-4 h-4 text-amber-400" />
+                    <span className="text-gray-300 text-sm font-medium">Portfolio Value</span>
+                  </div>
                 </div>
 
                 <div className="mb-4">
-                  <h2 className="text-5xl font-bold text-white mb-2 tracking-tight">
+                  <h2 className="text-5xl font-bold text-white mb-2 tracking-tight text-left">
                     {userCoinsLoading ? (
                       <span className="inline-block w-48 h-12 bg-white/10 rounded-lg animate-pulse" />
                     ) : (
                       `$${totalPortfolioValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                     )}
                   </h2>
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold ${
-                    totalChange24h >= 0
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                  }`}>
-                    {totalChange24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                    <span>{totalChange24h >= 0 ? '+' : ''}{changePercent.toFixed(2)}%</span>
-                    <span className="text-white/50">24h</span>
+                  <div className="flex justify-start">
+                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold ${
+                      totalChange24h >= 0
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                    }`}>
+                      {totalChange24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                      <span>{totalChange24h >= 0 ? '+' : ''}{changePercent.toFixed(2)}%</span>
+                      <span className="text-white/50">24h</span>
+                    </div>
                   </div>
                 </div>
 
@@ -450,8 +454,8 @@ const HomePannel = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl translate-x-10 -translate-y-10" />
             <div className="relative flex items-center justify-between">
               <div>
-                <h3 className="text-white font-bold text-xl mb-1">Start a Discussion</h3>
-                <p className="text-white/70">Share your thoughts with the community</p>
+                <h3 className="text-white font-bold text-xl mb-1 text-left">Start a Discussion</h3>
+                <p className="text-white/70 text-left">Share your thoughts with the community</p>
               </div>
               <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all">
                 <MessageCircle className="w-6 h-6 text-white" />
