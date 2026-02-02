@@ -1,115 +1,42 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import Typography from "@mui/material/Typography";
 import CryptoCurrency from "../assets/CryptoCurrency2.jpg";
-import ClickableChips from "./../Components/ClickableChips";
-import { motion } from "framer-motion";
 import SignInButton from "./../Components/SignInButton";
-import CryptoCard from "../Components/CryptoCard";
 import AuthForm from "../Components/Landing/AuthForm";
-import { useState, createContext } from "react";
-import { createRoot } from "react-dom/client";
 import { UserContext } from "./SkeletonPage";
-import axios from "axios";
 import { Navigate } from "react-router-dom";
-import CURRENCIES_FRONTEND from "../utils/currenciesFrontEnd";
-import CONTENT_LANGUAGES_FRONT_END from "../utils/contentLanguagesFrontEnd";
 import FakeChart from "../Components/Landing/FakeChart";
 import SocialShowcase from "../Components/Landing/SocialShowcase";
-import getDeviceInfo from "../utils/loginTracker";
 
 const LandingPage = () => {
   const { user, setUser } = useContext(UserContext);
-
   const [signUpClicked, setSignUpClicked] = useState(false);
 
   const handleClick = () => {
-    console.log("Sign in to cryptoscope");
     setSignUpClicked(true);
   };
 
-  const handleExit_ = () => {
-    setSignUpClicked(!signUpClicked);
+  const handleExit = () => {
+    setSignUpClicked(false);
   };
 
-  const [isLoginMode, setIsLoginMode] = useState(true);
-  const [userEmail, setUserEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [userCountry, setUserCountry] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-
-  const handleSubmit_ = async (event) => {
-    event.preventDefault();
-
-    const countryMapping = userCountry.toUpperCase();
-
-    const userObject = {
-      email: userEmail,
-      username: username,
-      gender: null,
-      settings: {
-        country: userCountry,
-        currency: CURRENCIES_FRONTEND[countryMapping],
-        displayLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
-        contentLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
-      },
-      socials: {},
-
-      password: userPassword,
-    };
-
-    const response = await axios.post(
-      "http://localhost:5000/api/users",
-      userObject
-    );
-    const createdUser = response.data;
-
-    // Record the initial login
-    const loginInfo = getDeviceInfo();
-    loginInfo.location = userCountry || "Unknown Location";
-    try {
-      const loginResponse = await axios.post(
-        `http://localhost:5000/api/recordLogin/${createdUser._id}`,
-        { loginInfo }
-      );
-      setUser(loginResponse.data);
-    } catch (err) {
-      setUser(createdUser);
-    }
+  const handleAuthSuccess = (userData) => {
+    setUser(userData);
   };
 
   if (user && user.username) {
     return <Navigate to="/HomePage" replace />;
   }
 
-  const handleEmail_ = (event) => {
-    setUserEmail(event.target.value);
-  };
-
-  const handleUsername_ = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handleCountry_ = (event) => {
-    setUserCountry(event.target.value);
-  };
-
-  const handlePassword_ = (event) => {
-    setUserPassword(event.target.value);
-  };
-
   return (
     <>
       <div className="fixed top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-black/70 via-black/80 to-black/90 "></div>
-      {signUpClicked ? (
+      {signUpClicked && (
         <AuthForm
-          handleEmail={handleEmail_}
-          handleUsername={handleUsername_}
-          handleCountry={handleCountry_}
-          handlePassword={handlePassword_}
-          handleSubmit={handleSubmit_}
-          handleExit={handleExit_}
-        ></AuthForm>
-      ) : null}
+          handleExit={handleExit}
+          onAuthSuccess={handleAuthSuccess}
+        />
+      )}
       <div className={`relative z-10 flex-1 ${signUpClicked ? "blur-xs" : ""}`}>
         <div data-aos="fade-up">
           <div className="relative rounded-lg flex justify-start items-center p-6 flex-1 mt-15">

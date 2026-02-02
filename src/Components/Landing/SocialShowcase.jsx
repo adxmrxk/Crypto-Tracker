@@ -78,32 +78,35 @@ const SocialShowcase = () => {
     <div data-aos="fade-left" data-aos-offset="200" className="flex justify-center items-center">
       {/* Phone Frame */}
       <div className="relative">
-        {/* Phone Outer Frame */}
-        <div className="relative bg-gradient-to-b from-gray-800 via-gray-900 to-black rounded-[50px] p-3 shadow-2xl shadow-black/50">
-          {/* Phone Inner Bezel */}
-          <div className="relative bg-black rounded-[40px] overflow-hidden">
-            {/* Notch / Dynamic Island */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
-              <div className="w-28 h-7 bg-black rounded-b-2xl flex items-center justify-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-gray-800 ring-1 ring-gray-700"></div>
-                <div className="w-12 h-3 rounded-full bg-gray-800"></div>
-              </div>
-            </div>
+        {/* Phone Outer Frame - Titanium/Metal Look */}
+        <div className="relative rounded-[55px] p-[3px] bg-gradient-to-b from-[#2a2a2e] via-[#1a1a1c] to-[#0d0d0e] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.05)]">
+          {/* Metal Edge Highlight */}
+          <div className="absolute inset-0 rounded-[55px] bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none"></div>
 
-            {/* Status Bar */}
-            <div className="relative z-10 flex items-center justify-between px-8 pt-3 pb-2 bg-gradient-to-b from-slate-900 to-transparent">
-              <span className="text-white text-xs font-semibold">9:41</span>
-              <div className="flex items-center gap-1.5">
-                <Signal className="w-3.5 h-3.5 text-white" />
-                <Wifi className="w-3.5 h-3.5 text-white" />
-                <Battery className="w-5 h-3.5 text-white" />
-              </div>
-            </div>
+          {/* Inner Metal Frame */}
+          <div className="relative rounded-[52px] p-[10px] bg-gradient-to-b from-[#1c1c1e] to-[#0c0c0d]">
+            {/* Inner Edge Shadow */}
+            <div className="absolute inset-[3px] rounded-[49px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] pointer-events-none z-10"></div>
 
-            {/* Phone Screen Content */}
-            <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 w-[320px] h-[620px] overflow-hidden flex flex-col">
-              {/* Scrollable Content Area */}
-              <div className="flex-1 overflow-y-auto scrollbar-hide p-4 pb-2">
+            {/* Screen Bezel */}
+            <div className="relative bg-black rounded-[42px] overflow-hidden ring-1 ring-black/50">
+              {/* Glass Reflection Effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] via-transparent to-transparent pointer-events-none z-30"></div>
+
+              {/* Status Bar */}
+              <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-8 pt-4 pb-2 bg-gradient-to-b from-slate-900/80 to-transparent">
+                <span className="text-white text-xs font-semibold">9:41</span>
+                <div className="flex items-center gap-1.5">
+                  <Signal className="w-3.5 h-3.5 text-white" />
+                  <Wifi className="w-3.5 h-3.5 text-white" />
+                  <Battery className="w-5 h-3.5 text-white" />
+                </div>
+              </div>
+
+              {/* Phone Screen Content */}
+              <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 w-[320px] h-[620px] overflow-hidden flex flex-col pt-8">
+              {/* Content Area - No Scroll */}
+              <div className="flex-1 overflow-hidden p-4 pb-2">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2.5">
@@ -295,18 +298,25 @@ const SocialShowcase = () => {
               <div className="bg-[#D1D3D9] pb-1.5 pt-1 flex justify-center">
                 <div className="w-24 h-1 bg-black/30 rounded-full"></div>
               </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Phone Reflection/Glow Effect */}
-        <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-cyan-500/20 rounded-[60px] blur-2xl -z-10"></div>
+        {/* Ambient Glow Effect */}
+        <div className="absolute -inset-8 bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-cyan-500/10 rounded-[70px] blur-3xl -z-10"></div>
+        <div className="absolute -inset-2 bg-gradient-to-b from-white/5 to-transparent rounded-[60px] blur-xl -z-10"></div>
 
-        {/* Side Buttons */}
-        <div className="absolute left-0 top-28 w-1 h-8 bg-gray-700 rounded-l-lg"></div>
-        <div className="absolute left-0 top-44 w-1 h-12 bg-gray-700 rounded-l-lg"></div>
-        <div className="absolute left-0 top-60 w-1 h-12 bg-gray-700 rounded-l-lg"></div>
-        <div className="absolute right-0 top-36 w-1 h-16 bg-gray-700 rounded-r-lg"></div>
+        {/* Side Buttons - Left Side */}
+        {/* Silent/Ring Switch */}
+        <div className="absolute -left-[2px] top-[120px] w-[3px] h-8 bg-gradient-to-b from-[#3a3a3c] via-[#2a2a2c] to-[#1a1a1c] rounded-l-sm shadow-[-2px_0_4px_rgba(0,0,0,0.3)]"></div>
+        {/* Volume Up */}
+        <div className="absolute -left-[2px] top-[170px] w-[3px] h-14 bg-gradient-to-b from-[#3a3a3c] via-[#2a2a2c] to-[#1a1a1c] rounded-l-sm shadow-[-2px_0_4px_rgba(0,0,0,0.3)]"></div>
+        {/* Volume Down */}
+        <div className="absolute -left-[2px] top-[240px] w-[3px] h-14 bg-gradient-to-b from-[#3a3a3c] via-[#2a2a2c] to-[#1a1a1c] rounded-l-sm shadow-[-2px_0_4px_rgba(0,0,0,0.3)]"></div>
+
+        {/* Side Button - Right Side (Power) */}
+        <div className="absolute -right-[2px] top-[180px] w-[3px] h-20 bg-gradient-to-b from-[#3a3a3c] via-[#2a2a2c] to-[#1a1a1c] rounded-r-sm shadow-[2px_0_4px_rgba(0,0,0,0.3)]"></div>
       </div>
     </div>
   );
