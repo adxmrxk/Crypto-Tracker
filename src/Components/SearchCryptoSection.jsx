@@ -10,6 +10,7 @@ const SearchCryptoSection = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [noResults, setNoResults] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
@@ -110,16 +111,23 @@ const SearchCryptoSection = () => {
           <div className="w-[500px] pt-5 mb-10 relative">
             <form onSubmit={onSubmit}>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={inputValue}
-                  onChange={handleChange}
-                  onFocus={() => inputValue.length > 0 && setShowSuggestions(true)}
-                  placeholder="Search A Crypto Currency"
-                  className="w-full pl-10 pr-4 py-3 bg-transparent border border-gray-400 rounded-md text-gray-100 placeholder-gray-400 focus:outline-none focus:border-amber-500 transition-colors"
-                />
+                <div className={`absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/20 rounded-lg blur-md transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
+                <div className="relative">
+                  <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isFocused ? 'text-amber-400' : 'text-gray-400'}`} />
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputValue}
+                    onChange={handleChange}
+                    onFocus={() => {
+                      setIsFocused(true);
+                      inputValue.length > 0 && setShowSuggestions(true);
+                    }}
+                    onBlur={() => setIsFocused(false)}
+                    placeholder="Search A Crypto Currency"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-gray-400 rounded-md text-gray-100 placeholder-gray-400 focus:outline-none focus:border-amber-500 transition-colors"
+                  />
+                </div>
               </div>
             </form>
 

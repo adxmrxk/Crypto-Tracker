@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Compass, Users, User } from "lucide-react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import MediaPost from "./MediaPost";
@@ -10,8 +11,22 @@ import RecommendedAccounts from "./RecommendedAccounts";
 
 const MediaFeed = () => {
   const { user } = useContext(UserContext);
-  const [sectionSelected, setSectionSelected] = useState("Explore");
+  const location = useLocation();
+  const [sectionSelected, setSectionSelected] = useState(() => {
+    return location.state?.tab || "Explore";
+  });
   const [refreshKey, setRefreshKey] = useState(0);
+
+  // Handle tab changes from navigation state
+  useEffect(() => {
+    if (location.state?.tab) {
+      setSectionSelected(location.state.tab);
+      // Scroll to the top to show the Make Post section
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
+  }, [location.key]);
 
   const navItems = [
     { id: "Explore", label: "Explore", icon: Compass },

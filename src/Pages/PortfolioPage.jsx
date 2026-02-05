@@ -1,4 +1,5 @@
-import { React, useContext, useState, createContext } from "react";
+import { React, useContext, useState, createContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { UserContext } from "./SkeletonPage";
 import { FaCirclePlus, FaPlus } from "react-icons/fa6";
 import { createRoot } from "react-dom/client";
@@ -14,7 +15,19 @@ import Analytics from "../Components/Portfolio/Analytics";
 const Dashboard = () => {
   const { user, setUser } = useContext(UserContext);
   const [addCrypto, setAddCrypto] = useState(false);
-  //const { data } = useCryptoCurrency(user.watchList);
+  const location = useLocation();
+
+  // Scroll to search section if navigated with state
+  useEffect(() => {
+    if (location.state?.scrollToSearch) {
+      setTimeout(() => {
+        const searchSection = document.getElementById('search-crypto');
+        if (searchSection) {
+          searchSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    }
+  }, [location.state]);
 
   return (
     <div className="">

@@ -11,6 +11,7 @@ function SearchPosts() {
   const [allPosts, setAllPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
@@ -171,16 +172,23 @@ function SearchPosts() {
   return (
     <div className="w-full relative">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Search posts..."
-          value={inputValue}
-          onChange={handleChange}
-          onFocus={() => inputValue.length > 0 && setShowSuggestions(true)}
-          className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
-        />
+        <div className={`absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/20 rounded-xl blur-md transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
+        <div className="relative">
+          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isFocused ? 'text-amber-400' : 'text-gray-400'}`} />
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search posts..."
+            value={inputValue}
+            onChange={handleChange}
+            onFocus={() => {
+              setIsFocused(true);
+              inputValue.length > 0 && setShowSuggestions(true);
+            }}
+            onBlur={() => setIsFocused(false)}
+            className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
+          />
+        </div>
       </div>
 
       {/* Suggestions Dropdown */}

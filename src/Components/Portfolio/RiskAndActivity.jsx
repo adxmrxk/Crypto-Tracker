@@ -28,32 +28,40 @@ const RiskAndActivity = ({ onViewAllClick }) => {
   // EMPTY STATE
   if (!hasTransactions) {
     return (
-      <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 h-[500px] flex flex-col items-center justify-center text-gray-400 rounded-lg">
-        <h1 className="text-xl font-bold mb-4 text-gray-200">Transactions</h1>
-        <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
-          <span className="text-3xl grayscale opacity-60">💸</span>
+      <div className="relative h-[500px]">
+        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 rounded-xl blur-md"></div>
+        <div className="relative bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 h-full flex flex-col items-center justify-center text-gray-400 rounded-lg border border-amber-500/20">
+          <h1 className="text-xl font-bold mb-4 text-gray-200">Transactions</h1>
+          <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+            <span className="text-3xl grayscale opacity-60">💸</span>
+          </div>
+          <p className="text-sm text-center mb-1">No transactions yet</p>
+          <p className="text-gray-500 text-xs">Your buy/sell history will appear here</p>
         </div>
-        <p className="text-sm text-center mb-1">No transactions yet</p>
-        <p className="text-gray-500 text-xs">Your buy/sell history will appear here</p>
       </div>
     );
   }
 
   // NORMAL STATE
   return (
-    <div className="bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 h-[500px] flex flex-col rounded-lg">
+    <div className="relative h-[500px]">
+      <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-amber-500/10 rounded-xl blur-lg"></div>
+      <div className="relative bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 h-full flex flex-col rounded-lg border border-slate-600/50">
       <div className="mt-7 flex flex-col flex-1">
         {/* Header */}
         <div className="flex flex-row justify-between items-center mb-3">
           <h1 className="text-left text-lg font-semibold text-gray-200">
             Transactions
           </h1>
-          <button
-            onClick={onViewAllClick}
-            className="text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
-          >
-            View All
-          </button>
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+            <button
+              onClick={onViewAllClick}
+              className="relative text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer px-2 py-1"
+            >
+              View All
+            </button>
+          </div>
         </div>
 
         {/* Transactions Grid */}
@@ -110,6 +118,7 @@ const RiskAndActivity = ({ onViewAllClick }) => {
             +{transactions.length - 9} more transactions
           </p>
         )}
+      </div>
       </div>
     </div>
   );

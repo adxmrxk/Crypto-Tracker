@@ -120,49 +120,58 @@ const WalletValue = ({ cryptoData, isLoading, isFetching }) => {
 
         {hasCoins && (
           <div className="flex flex-row gap-4 pt-4">
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-xl w-[180px] py-5 px-4 hover:border-slate-600 transition-colors">
-              <h1 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">Total Holdings</h1>
-              <h2 className="text-xl font-bold text-gray-100">
-                {coins.length} <span className="text-sm font-normal text-gray-400">{coins.length === 1 ? "Coin" : "Coins"}</span>
-              </h2>
+            <div className="group relative">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/0 to-orange-500/0 group-hover:from-amber-500/20 group-hover:to-orange-500/20 rounded-xl blur-sm transition-all duration-300"></div>
+              <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-xl w-[180px] py-5 px-4 hover:border-amber-500/30 transition-all duration-300">
+                <h1 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">Total Holdings</h1>
+                <h2 className="text-xl font-bold text-gray-100">
+                  {coins.length} <span className="text-sm font-normal text-gray-400">{coins.length === 1 ? "Coin" : "Coins"}</span>
+                </h2>
+              </div>
             </div>
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-xl w-[180px] py-5 px-4 hover:border-slate-600 transition-colors">
-              <h1 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">24h Change</h1>
-              <h2
-                className={`text-xl font-bold ${
-                  totalChange24h >= 0 ? "text-emerald-400" : "text-red-400"
-                }`}
-              >
-                {isLoading
-                  ? "..."
-                  : `${totalChange24h >= 0 ? "+" : ""}$${Math.abs(
-                      totalChange24h
-                    ).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`}
-              </h2>
+            <div className="group relative">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/0 to-orange-500/0 group-hover:from-amber-500/20 group-hover:to-orange-500/20 rounded-xl blur-sm transition-all duration-300"></div>
+              <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-xl w-[180px] py-5 px-4 hover:border-amber-500/30 transition-all duration-300">
+                <h1 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">24h Change</h1>
+                <h2
+                  className={`text-xl font-bold ${
+                    totalChange24h >= 0 ? "text-emerald-400" : "text-red-400"
+                  }`}
+                >
+                  {isLoading
+                    ? "..."
+                    : `${totalChange24h >= 0 ? "+" : ""}$${Math.abs(
+                        totalChange24h
+                      ).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`}
+                </h2>
+              </div>
             </div>
-            <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-xl w-[180px] py-5 px-4 hover:border-slate-600 transition-colors">
-              <h1 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">Best Performer</h1>
-              <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
-                {isLoading
-                  ? "..."
-                  : data?.length > 0
-                  ? `${
-                      data
-                        .reduce(
-                          (best, coin) =>
-                            (coin.price_change_percentage_24h || 0) >
-                            (best.price_change_percentage_24h || 0)
-                              ? coin
-                              : best,
-                          data[0]
-                        )
-                        ?.symbol?.toUpperCase() || "-"
-                    }`
-                  : "-"}
-              </h2>
+            <div className="group relative">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/0 to-orange-500/0 group-hover:from-amber-500/20 group-hover:to-orange-500/20 rounded-xl blur-sm transition-all duration-300"></div>
+              <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-xl w-[180px] py-5 px-4 hover:border-amber-500/30 transition-all duration-300">
+                <h1 className="text-xs text-gray-500 mb-2 uppercase tracking-wide">Best Performer</h1>
+                <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+                  {isLoading
+                    ? "..."
+                    : data?.length > 0
+                    ? `${
+                        data
+                          .reduce(
+                            (best, coin) =>
+                              (coin.price_change_percentage_24h || 0) >
+                              (best.price_change_percentage_24h || 0)
+                                ? coin
+                                : best,
+                            data[0]
+                          )
+                          ?.symbol?.toUpperCase() || "-"
+                      }`
+                    : "-"}
+                </h2>
+              </div>
             </div>
           </div>
         )}

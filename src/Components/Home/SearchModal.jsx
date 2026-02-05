@@ -14,6 +14,7 @@ const SearchModal = ({ onClose }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
 
   // Get liked/disliked posts from user's data
@@ -225,16 +226,21 @@ const SearchModal = ({ onClose }) => {
         {/* Search Input */}
         <div className="p-4 border-b border-slate-700 flex-shrink-0">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Search..."
-              value={inputValue}
-              onChange={handleChange}
-              className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
-              autoFocus
-            />
+            <div className={`absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/20 rounded-xl blur-md transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
+            <div className="relative">
+              <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isFocused ? 'text-amber-400' : 'text-gray-400'}`} />
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Search..."
+                value={inputValue}
+                onChange={handleChange}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
+                autoFocus
+              />
+            </div>
           </div>
           <p className="text-gray-500 text-xs mt-2">Tip: Use @ to search for users by username</p>
         </div>

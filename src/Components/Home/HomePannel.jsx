@@ -25,6 +25,7 @@ import NotificationBell from "../NotificationBell";
 import CreatePostModal from "./CreatePostModal";
 import BuyCoinModal from "./BuyCoinModal";
 import SearchModal from "./SearchModal";
+import CryptoNews from "./CryptoNews";
 
 // Mini sparkline component for visual flair
 const MiniSparkline = ({ trend, color }) => {
@@ -429,10 +430,15 @@ const HomePannel = () => {
           </div>
         </div>
 
+        {/* Crypto News Section */}
+        <div className="mb-6">
+          <CryptoNews />
+        </div>
+
         {/* Quick Actions Footer */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
-            onClick={() => navigate('/explore')}
+            onClick={() => navigate('/PortfolioPage', { state: { scrollToSearch: true } })}
             className="group relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl p-6 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-amber-500/25"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl translate-x-10 -translate-y-10" />
@@ -448,7 +454,7 @@ const HomePannel = () => {
           </div>
 
           <div
-            onClick={() => navigate('/chatroom')}
+            onClick={() => navigate('/ChatRoomPage', { state: { tab: 'Explore' } })}
             className="group relative overflow-hidden bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl p-6 cursor-pointer transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/25"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl translate-x-10 -translate-y-10" />

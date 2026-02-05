@@ -34,15 +34,18 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
 
   if (coins.length === 0) {
     return (
-      <div className="w-[800px] h-[400px] flex flex-col items-center justify-center text-gray-400 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 rounded-lg">
-        <h1 className="text-xl font-bold mb-4 text-gray-200">
-          Wallet Breakdown
-        </h1>
-        <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
-          <span className="text-3xl grayscale opacity-60">📊</span>
+      <div className="relative w-[800px] h-[400px]">
+        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 rounded-xl blur-md"></div>
+        <div className="relative w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 rounded-lg border border-amber-500/20">
+          <h1 className="text-xl font-bold mb-4 text-gray-200">
+            Wallet Breakdown
+          </h1>
+          <div className="w-16 h-16 mb-4 rounded-full bg-slate-800/60 flex items-center justify-center">
+            <span className="text-3xl grayscale opacity-60">📊</span>
+          </div>
+          <p className="text-sm mb-1">No assets in portfolio</p>
+          <p className="text-gray-500 text-xs">Add coins to see your wallet breakdown</p>
         </div>
-        <p className="text-sm mb-1">No assets in portfolio</p>
-        <p className="text-gray-500 text-xs">Add coins to see your wallet breakdown</p>
       </div>
     );
   }
@@ -69,7 +72,9 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
   }) || [];
 
   return (
-    <div className="w-[800px] h-[400px] bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 rounded-lg overflow-hidden">
+    <div className="relative w-[800px] h-[400px]">
+      <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-amber-500/10 rounded-xl blur-lg"></div>
+      <div className="relative w-full h-full bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 p-3 rounded-lg overflow-hidden border border-slate-600/50">
       <div className="flex items-center gap-2 mb-5">
         <h1 className="text-left text-xl font-bold text-gray-200">
           Wallet Breakdown
@@ -141,6 +146,7 @@ const PortfolioTable = ({ cryptoData, isLoading, isFetching }) => {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

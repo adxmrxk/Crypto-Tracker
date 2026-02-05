@@ -91,18 +91,24 @@ function RecommendedAccounts() {
 
                     {/* Follow Button */}
                     {isFollowing(userG._id) ? (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 flex-shrink-0">
-                        <UserCheck className="w-3.5 h-3.5" />
-                        Following
+                      <div className="relative group/btn flex-shrink-0">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/25 to-orange-500/25 rounded-lg blur opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                        <div className="relative flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900">
+                          <UserCheck className="w-3.5 h-3.5" />
+                          Following
+                        </div>
                       </div>
                     ) : (
-                      <button
-                        onClick={() => handleFollow(userG._id)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg transition-all duration-200 cursor-pointer flex-shrink-0 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
-                      >
-                        <UserPlus className="w-3.5 h-3.5" />
-                        Follow
-                      </button>
+                      <div className="relative group/btn flex-shrink-0">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/25 to-orange-500/25 rounded-lg blur opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 ease-in-out"></div>
+                        <button
+                          onClick={() => handleFollow(userG._id)}
+                          className="relative flex items-center gap-1.5 px-3 py-1.5 font-semibold text-sm rounded-lg transition-all duration-200 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
+                        >
+                          <UserPlus className="w-3.5 h-3.5" />
+                          Follow
+                        </button>
+                      </div>
                     )}
                   </div>
                 ))}

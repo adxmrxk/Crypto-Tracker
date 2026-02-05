@@ -201,14 +201,17 @@ const MediaPost = () => {
 
   if (posts.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-slate-700 p-10 text-center">
-        <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
-          <MessageCircle className="w-8 h-8 text-gray-500" />
+      <div className="relative">
+        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 rounded-xl blur-md"></div>
+        <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl border border-amber-500/20 p-10 text-center">
+          <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <MessageCircle className="w-8 h-8 text-gray-500" />
+          </div>
+          <h3 className="text-xl font-semibold text-white mb-2">No Posts Yet</h3>
+          <p className="text-gray-400 max-w-sm mx-auto">
+            Be the first to share your thoughts with the community!
+          </p>
         </div>
-        <h3 className="text-xl font-semibold text-white mb-2">No Posts Yet</h3>
-        <p className="text-gray-400 max-w-sm mx-auto">
-          Be the first to share your thoughts with the community!
-        </p>
       </div>
     );
   }

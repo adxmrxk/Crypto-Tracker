@@ -38,6 +38,7 @@ function ProfileSection() {
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUserProfile, setSelectedUserProfile] = useState(null);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   // Get liked/disliked posts from user's data
   const likedPosts = new Set(
@@ -760,16 +761,25 @@ function ProfileSection() {
         {/* Search Users */}
         <div className="mb-3 relative w-[35%]">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search for users..."
-              value={searchInput}
-              onChange={handleSearchChange}
-              onFocus={() => searchInput.length > 0 && setShowSearchSuggestions(true)}
-              onBlur={() => setTimeout(() => setShowSearchSuggestions(false), 200)}
-              className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
-            />
+            <div className={`absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/20 rounded-xl blur-md transition-opacity duration-300 ${isSearchFocused ? 'opacity-100' : 'opacity-0'}`}></div>
+            <div className="relative">
+              <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isSearchFocused ? 'text-amber-400' : 'text-gray-400'}`} />
+              <input
+                type="text"
+                placeholder="Search for users..."
+                value={searchInput}
+                onChange={handleSearchChange}
+                onFocus={() => {
+                  setIsSearchFocused(true);
+                  searchInput.length > 0 && setShowSearchSuggestions(true);
+                }}
+                onBlur={() => {
+                  setIsSearchFocused(false);
+                  setTimeout(() => setShowSearchSuggestions(false), 200);
+                }}
+                className="w-full bg-slate-700/50 text-white pl-12 pr-4 py-3 rounded-xl border border-slate-600 focus:border-amber-500 focus:outline-none placeholder-gray-400"
+              />
+            </div>
           </div>
           {showSearchSuggestions && searchSuggestions.length > 0 && (
             <div className="absolute left-0 right-0 mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">

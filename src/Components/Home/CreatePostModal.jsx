@@ -81,7 +81,9 @@ const CreatePostModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[100] px-4 backdrop-blur-sm bg-black/60">
-      <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+      <div className="relative w-full max-w-4xl">
+        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/20 via-orange-500/15 to-amber-500/20 rounded-2xl blur-lg"></div>
+        <div className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full rounded-2xl shadow-2xl border border-amber-500/20 overflow-hidden">
         {/* Header */}
         <div className="border-b border-slate-700 p-5 flex items-center justify-between">
           <h1 className="text-xl font-bold text-white">Create Post</h1>
@@ -253,6 +255,7 @@ const CreatePostModal = ({ onClose }) => {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
