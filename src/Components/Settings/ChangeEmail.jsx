@@ -31,7 +31,7 @@ const ChangeEmail = ({ clickChangeEmail, setClickChangeEmail }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 px-4 backdrop-blur-sm bg-black/40">
       <div className="relative bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 w-full max-w-md rounded-xl p-6 shadow-2xl ring-1 ring-gray-500/40 transition-transform duration-200 scale-100 hover:scale-[1.01]">
-        
+
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-semibold text-xl text-gray-100 tracking-wide">
             Change your email address

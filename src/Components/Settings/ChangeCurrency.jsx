@@ -51,7 +51,7 @@ const ChangeCurrency = ({ clickChangeCurrency, setClickChangeCurrency }) => {
     const newCurrencyValue = e.target.elements.newCurrency.value; 
 
 
-    const res = await axios.patch(`http://localhost:5000/api/settings/changeCurrency/${user._id}`, {settings: {currency: newCurrencyValue}});
+    const res = await axios.patch(`http://localhost:5000/api/settings/changeCurrency/${user._id}`, { currency: newCurrencyValue });
     const updatedUser = res.data;
     setUser(updatedUser);
     setClickChangeCurrency(!clickChangeCurrency);

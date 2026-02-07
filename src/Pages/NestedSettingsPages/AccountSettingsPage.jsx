@@ -10,8 +10,6 @@ import ChangeGender from "../../Components/Settings/ChangeGender";
 import ChangeDisplayName from "../../Components/Settings/ChangeDisplayName";
 import ChangeProfilePicture from "../../Components/Settings/ChangeProfilePicture";
 import DeleteAccount from "../../Components/Settings/DeleteAccount";
-import ConnectGoogle from "../../Components/Settings/ConnectGoogle";
-import ClickableChips from "../../Components/ClickableChips";
 
 function AccountSettingsPage() {
   const { user, setUser } = useContext(UserContext);
@@ -21,7 +19,6 @@ function AccountSettingsPage() {
   const [clickChangeProfilePicture, setClickChangeProfilePicture] = useState(false);
   const [clickChangeGender, setClickChangeGender] = useState(false);
   const [clickDeleteAccount, setClickDeleteAccount] = useState(false);
-  const [clickConnectGoogle, setClickConnectGoogle] = useState(false);
 
   return (
     <div>
@@ -61,16 +58,10 @@ function AccountSettingsPage() {
           setClickDeleteAccount={setClickDeleteAccount}
         />
       )}
-      {clickConnectGoogle && (
-        <ConnectGoogle
-          clickConnectGoogle={clickConnectGoogle}
-          setClickConnectGoogle={setClickConnectGoogle}
-        />
-      )}
 
       <div className="rounded-md w-[100%] h-auto relative top-4 p-3">
-        <h1 className="font-roboto font-bold text-xl my-5 text-sky-200">General</h1>
-        <hr className="border-sky-400 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
+        <h1 className="font-roboto font-bold text-xl my-5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">General</h1>
+        <hr className="border-amber-500/30 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
 
         {/* Email */}
         <div className="flex justify-between items-center m-5 mt-10 mb-10">
@@ -79,8 +70,8 @@ function AccountSettingsPage() {
             className="flex items-center gap-[8px] mr-22 cursor-pointer group"
             onClick={() => setClickChangeEmail(!clickChangeEmail)}
           >
-            <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.email}</p>
-            <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+            <p className="font-normal text-amber-400 group-hover:text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-colors">{user?.email}</p>
+            <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
           </div>
         </div>
 
@@ -92,11 +83,11 @@ function AccountSettingsPage() {
           >
             <div>
               <h2 className="font-roboto font-normal w-[60px] pl-25 text-gray-100">Username</h2>
-              <p className="font-roboto text-sm w-fit ml-25 text-gray-300">Your unique identifier used for mentions and your profile URL.</p>
+              <p className="font-roboto text-sm w-fit ml-25 text-gray-400">Your unique identifier used for mentions and your profile URL.</p>
             </div>
             <div className="flex items-center gap-[8px] mr-22 group">
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.username}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-colors">{user?.username}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
         </div>
@@ -109,11 +100,11 @@ function AccountSettingsPage() {
           >
             <div>
               <h2 className="font-roboto font-normal w-[60px] pl-25 text-nowrap text-gray-100">Display Name</h2>
-              <p className="font-roboto text-sm w-fit ml-25 text-gray-300">The name shown on your profile and posts. Can be different from your username.</p>
+              <p className="font-roboto text-sm w-fit ml-25 text-gray-400">The name shown on your profile and posts. Can be different from your username.</p>
             </div>
             <div className="flex items-center gap-[8px] mr-22 group">
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.displayName || user?.username}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-colors">{user?.displayName || user?.username}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
         </div>
@@ -128,9 +119,9 @@ function AccountSettingsPage() {
             {user?.profilePicture ? (
               <img src={user.profilePicture} alt="Profile" className="w-8 h-8 rounded-full object-cover" />
             ) : (
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">Not set</p>
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-colors">Not set</p>
             )}
-            <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+            <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
           </div>
         </div>
 
@@ -141,34 +132,15 @@ function AccountSettingsPage() {
         >
           <h2 className="font-roboto font-normal w-[60px] pl-25 text-gray-100">Gender</h2>
           <div className="flex items-center gap-[8px] mr-22 group">
-            <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">
+            <p className="font-normal text-amber-400 group-hover:text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-colors">
               {user?.gender ? user.gender : "Not specified"}
             </p>
-            <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+            <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
           </div>
         </div>
 
-        <h1 className="font-roboto font-bold text-xl my-5 text-sky-200">Account Authorization</h1>
-        <hr className="border-sky-400 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
-
-        {/* Google */}
-        <div className="mb-10">
-          <div className="flex justify-between items-center m-5 mt-10">
-            <h2 className="font-roboto font-normal w-[60px] pl-25 text-gray-100">Google</h2>
-            <div className="pr-24" onClick={() => setClickConnectGoogle(true)}>
-              <ClickableChips
-                text="Connect"
-                varientType="outlined"
-              ></ClickableChips>
-            </div>
-          </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-6 text-gray-300">
-            Connect to log in to CryptoScope with your Google account
-          </p>
-        </div>
-
-        <h1 className="font-roboto font-bold text-xl my-5 text-sky-200">Advanced</h1>
-        <hr className="border-sky-400 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
+        <h1 className="font-roboto font-bold text-xl my-5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">Advanced</h1>
+        <hr className="border-amber-500/30 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
 
         {/* Delete Account */}
         <div>
@@ -178,11 +150,11 @@ function AccountSettingsPage() {
           >
             <h2 className="font-roboto font-normal w-fit ml-25 text-gray-100">Delete Account</h2>
             <div className="flex items-center gap-[8px] mr-22 group">
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">Delete</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-colors">Delete</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Permanently remove your account and all data.
           </p>
         </div>

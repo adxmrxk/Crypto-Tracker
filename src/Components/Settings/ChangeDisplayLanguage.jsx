@@ -59,7 +59,7 @@ const ChangedisplayLanguage = ({ clickChangedisplayLanguage, setClickChangedispl
     const newdisplayLanguageValue = e.target.elements.newdisplayLanguage.value; 
 
 
-    const res = await axios.patch(`http://localhost:5000/api/settings/changedisplayLanguage/${user._id}`, {settings: {displayLanguage: newdisplayLanguageValue}});
+    const res = await axios.patch(`http://localhost:5000/api/settings/changeDisplayLanguage/${user._id}`, { displayLanguage: newdisplayLanguageValue });
     const updatedUser = res.data;
     setUser(updatedUser);
     setClickChangedisplayLanguage(!clickChangedisplayLanguage);

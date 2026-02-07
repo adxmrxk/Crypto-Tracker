@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const User = require("../models/users.js");
 const userSettings = require("../models/userSettings.js");
-const { sendRecoveryEmailConfirmation } = require("../utils/emailService.js");
 
 router.patch("/api/settings/changeEmail/:id", async (req, res) => {
   const userId = req.params.id;
@@ -85,27 +84,6 @@ router.patch("/api/settings/changeDisplayName/:id", async (req, res) => {
   }
 });
 
-router.patch("/api/settings/connectGoogle/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { googleEmail, connectedWithGoogle } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        "settings.connectedWithGoogle": connectedWithGoogle,
-        "settings.googleEmail": googleEmail,
-      },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
 router.patch("/api/settings/changeFontSize/:id", async (req, res) => {
   const userId = req.params.id;
   try {
@@ -178,90 +156,6 @@ router.patch("/api/settings/changeContentLanguage/:id", async (req, res) => {
   }
 });
 
-router.patch("/api/settings/changeTwoFactor/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { twoFactorAuthentication } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { "settings.twoFactorAuthentication": twoFactorAuthentication },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
-router.patch("/api/settings/changeLoginAlerts/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { loginAlerts } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { "settings.loginAlerts": loginAlerts },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
-router.patch("/api/settings/changeDirectMessages/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { directMessages } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { "settings.directMessages": directMessages },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
-router.patch("/api/settings/changeRecoveryEmail/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { recoveryEmail } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { "settings.recoveryEmail": recoveryEmail },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Send confirmation email to the recovery email address
-    const emailResult = await sendRecoveryEmailConfirmation(
-      recoveryEmail,
-      updatedUser.username || updatedUser.displayName || "User"
-    );
-
-    if (!emailResult.success) {
-      console.error("Failed to send recovery email confirmation:", emailResult.error);
-      // Still return success since the email was saved, just log the email error
-    }
-
-    res.json({ ...updatedUser.toObject(), emailSent: emailResult.success });
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
 router.patch("/api/settings/changePassword/:id", async (req, res) => {
   const userId = req.params.id;
   const bcrypt = require("bcrypt");
@@ -312,10 +206,12 @@ router.patch("/api/settings/changeTrendingCoins/:id", async (req, res) => {
 router.patch("/api/settings/changeCountry/:id", async (req, res) => {
   const userId = req.params.id;
   try {
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const { country } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.country": country },
+      { new: true, runValidators: true }
+    );
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -330,10 +226,12 @@ router.patch("/api/settings/changeCountry/:id", async (req, res) => {
 router.patch("/api/settings/changeCurrency/:id", async (req, res) => {
   const userId = req.params.id;
   try {
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const { currency } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.currency": currency },
+      { new: true, runValidators: true }
+    );
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -348,10 +246,12 @@ router.patch("/api/settings/changeDisplayLanguage/:id", async (req, res) => {
   const userId = req.params.id;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const { displayLanguage } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { "settings.displayLanguage": displayLanguage },
+      { new: true, runValidators: true }
+    );
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });

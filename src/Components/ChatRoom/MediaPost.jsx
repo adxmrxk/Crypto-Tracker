@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import axios from "axios";
 import {
@@ -9,6 +9,9 @@ import {
   MoreHorizontal,
   Loader2,
   UserPlus,
+  UserCheck,
+  Ban,
+  Link,
   X,
 } from "lucide-react";
 
@@ -19,6 +22,78 @@ const MediaPost = () => {
   const [expandedComments, setExpandedComments] = useState(new Set());
   const [commentText, setCommentText] = useState({});
   const [selectedPost, setSelectedPost] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [copiedPostId, setCopiedPostId] = useState(null);
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Check if current user is following target user
+  const isFollowing = (targetUserId) => {
+    return user?.socials?.following?.some(
+      (id) => id.toString() === targetUserId?.toString()
+    );
+  };
+
+  // Check if current user has blocked target user
+  const isBlocked = (targetUserId) => {
+    return user?.socials?.blockList?.some(
+      (blocked) => blocked.userId?.toString() === targetUserId?.toString()
+    );
+  };
+
+  // Handle follow/unfollow
+  const handleFollowUser = async (targetUserId) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/follow/${user._id}`,
+        { targetUserId }
+      );
+      setUser(response.data);
+      setOpenMenuId(null);
+    } catch (error) {
+      console.error("Failed to follow user:", error);
+    }
+  };
+
+  // Handle block
+  const handleBlockUser = async (targetUserId) => {
+    try {
+      const blocked = isBlocked(targetUserId);
+      const endpoint = blocked ? "unblock" : "block";
+      const response = await axios.post(
+        `http://localhost:5000/api/${endpoint}/${user._id}`,
+        { targetUserId }
+      );
+      setUser(response.data);
+      setOpenMenuId(null);
+    } catch (error) {
+      console.error("Failed to block/unblock user:", error);
+    }
+  };
+
+  // Handle share (copy link)
+  const handleSharePost = (postId) => {
+    const postUrl = `${window.location.origin}/post/${postId}`;
+    navigator.clipboard.writeText(postUrl);
+    setCopiedPostId(postId);
+    setTimeout(() => setCopiedPostId(null), 2000);
+    setOpenMenuId(null);
+  };
+
+  // Get blocked user IDs
+  const blockedUserIds = new Set(
+    user?.socials?.blockList?.map((blocked) => blocked.userId?.toString()) || []
+  );
 
   // Get liked/disliked posts from user's data
   const likedPosts = new Set(
@@ -26,6 +101,11 @@ const MediaPost = () => {
   );
   const dislikedPosts = new Set(
     user?.socials?.dislikedPosts?.map((id) => id.toString()) || [],
+  );
+
+  // Filter out posts from blocked users
+  const filteredPosts = posts.filter(
+    (post) => !blockedUserIds.has(post.userId?.toString())
   );
 
   const truncateText = (text, maxLength = 150) => {
@@ -199,7 +279,7 @@ const MediaPost = () => {
     );
   }
 
-  if (posts.length === 0) {
+  if (filteredPosts.length === 0) {
     return (
       <div className="relative">
         <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 rounded-xl blur-md"></div>
@@ -431,7 +511,7 @@ const MediaPost = () => {
         </div>
       )}
 
-      {posts.map((post) => (
+      {filteredPosts.map((post) => (
         <div
           key={post._id}
           onClick={() => setSelectedPost(post)}
@@ -453,12 +533,65 @@ const MediaPost = () => {
                 </p>
               </div>
             </div>
-            <button
-              onClick={(e) => e.stopPropagation()}
-              className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors"
-            >
-              <MoreHorizontal className="w-4 h-4 text-gray-400" />
-            </button>
+            <div className="relative" ref={openMenuId === post._id ? menuRef : null}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenuId(openMenuId === post._id ? null : post._id);
+                }}
+                className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                <MoreHorizontal className="w-4 h-4 text-gray-400" />
+              </button>
+
+              {/* Dropdown Menu */}
+              {openMenuId === post._id && (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute right-0 top-8 w-48 bg-slate-800 border border-slate-600 rounded-lg shadow-xl z-50 overflow-hidden"
+                >
+                  {/* Follow/Unfollow - only show if not own post */}
+                  {post.userId !== user?._id && (
+                    <button
+                      onClick={() => handleFollowUser(post.userId)}
+                      className="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-slate-700 transition-colors text-gray-200"
+                    >
+                      {isFollowing(post.userId) ? (
+                        <>
+                          <UserCheck className="w-4 h-4 text-amber-400" />
+                          <span>Unfollow</span>
+                        </>
+                      ) : (
+                        <>
+                          <UserPlus className="w-4 h-4 text-emerald-400" />
+                          <span>Follow</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+
+                  {/* Block - only show if not own post */}
+                  {post.userId !== user?._id && (
+                    <button
+                      onClick={() => handleBlockUser(post.userId)}
+                      className="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-slate-700 transition-colors text-gray-200"
+                    >
+                      <Ban className="w-4 h-4 text-red-400" />
+                      <span>{isBlocked(post.userId) ? "Unblock" : "Block"}</span>
+                    </button>
+                  )}
+
+                  {/* Share */}
+                  <button
+                    onClick={() => handleSharePost(post._id)}
+                    className="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-slate-700 transition-colors text-gray-200"
+                  >
+                    <Link className="w-4 h-4 text-blue-400" />
+                    <span>{copiedPostId === post._id ? "Copied!" : "Share post"}</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Post Content - Truncated */}

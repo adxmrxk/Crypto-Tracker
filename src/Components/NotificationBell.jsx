@@ -200,9 +200,10 @@ const NotificationBell = () => {
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-red-500/20 transition-all duration-300 cursor-pointer"
+        className="group relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-red-500/20 transition-all duration-300 cursor-pointer"
+        title="Notifications"
       >
-        <Bell size={20} className="text-gray-400 hover:text-red-400 transition-colors" />
+        <Bell className="w-5 h-5 text-gray-400 group-hover:text-red-400 transition-colors" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             {unreadCount > 9 ? "9+" : unreadCount}

@@ -23,14 +23,16 @@ const SkeletonPage = () => {
       const loginTimestamp = localStorage.getItem('cryptoLoginTime');
       const savedSessionId = localStorage.getItem('cryptoSessionId');
 
-      // Check if session is expired (5 minutes in milliseconds)
-      const FIVE_MINUTES = 5 * 60 * 1000;
-      const isExpired = !loginTimestamp || (Date.now() - parseInt(loginTimestamp)) > FIVE_MINUTES;
+      // Check if session is expired (5 days in milliseconds)
+      const FIVE_DAYS = 5 * 24 * 60 * 60 * 1000;
+      const isExpired = !loginTimestamp || (Date.now() - parseInt(loginTimestamp)) > FIVE_DAYS;
 
       if (savedUserId && !isExpired) {
         try {
           const response = await axios.get(`http://localhost:5000/api/users/${savedUserId}`);
           setUser(response.data);
+          // Refresh the login timestamp (sliding window - resets the 5 day timer)
+          localStorage.setItem('cryptoLoginTime', Date.now().toString());
         } catch (err) {
           // If user not found, clear localStorage
           localStorage.removeItem('cryptoUserId');
@@ -76,6 +78,15 @@ const SkeletonPage = () => {
     }
     setUser(userData);
   };
+
+  // Apply font size to document when user settings change
+  useEffect(() => {
+    if (user?.settings?.fontSize) {
+      document.documentElement.style.fontSize = user.settings.fontSize;
+    } else {
+      document.documentElement.style.fontSize = '1rem'; // Default
+    }
+  }, [user?.settings?.fontSize]);
 
   // Show loading while restoring session
   if (isLoading) {

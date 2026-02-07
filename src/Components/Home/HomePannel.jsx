@@ -194,13 +194,6 @@ const HomePannel = () => {
                     View Portfolio
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
-                  <button
-                    onClick={() => navigate('/explore')}
-                    className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl transition-all border border-white/10 hover:border-white/20"
-                  >
-                    <Compass className="w-4 h-4" />
-                    Explore
-                  </button>
                 </div>
               </div>
 
@@ -222,9 +215,9 @@ const HomePannel = () => {
                   <div>
                     <p className="text-gray-500 text-xs font-medium mb-0.5">Best Performer</p>
                     <p className="text-xl font-bold text-white">
-                      {userCoins?.length > 0 ? userCoins.reduce((best, coin) =>
+                      {user?.watchList?.length > 0 && userCoins?.length > 0 ? userCoins.reduce((best, coin) =>
                         (coin.price_change_percentage_24h || 0) > (best.price_change_percentage_24h || 0) ? coin : best
-                      , userCoins[0])?.symbol?.toUpperCase() : '-'}
+                      , userCoins[0])?.symbol?.toUpperCase() : 'N/A'}
                     </p>
                   </div>
                 </div>
@@ -252,9 +245,9 @@ const HomePannel = () => {
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-4 text-center">
             <Award className="w-5 h-5 text-emerald-400 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">
-              {userCoins?.length > 0 ? userCoins.reduce((best, coin) =>
+              {user?.watchList?.length > 0 && userCoins?.length > 0 ? userCoins.reduce((best, coin) =>
                 (coin.price_change_percentage_24h || 0) > (best.price_change_percentage_24h || 0) ? coin : best
-              , userCoins[0])?.symbol?.toUpperCase() : '-'}
+              , userCoins[0])?.symbol?.toUpperCase() : 'N/A'}
             </p>
             <p className="text-gray-500 text-xs">Top</p>
           </div>
@@ -283,7 +276,7 @@ const HomePannel = () => {
             </button>
           </div>
 
-          {userCoins?.length > 0 ? (
+          {user?.watchList?.length > 0 && userCoins?.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {userCoins.slice(0, 6).map((coin, idx) => {
                 const userCoin = user?.watchList?.find((item) => item.coin === coin.id);
@@ -328,11 +321,11 @@ const HomePannel = () => {
               <p className="text-white font-medium mb-1">No holdings yet</p>
               <p className="text-gray-500 text-sm mb-3">Start tracking your favorite coins</p>
               <button
-                onClick={() => navigate('/explore')}
+                onClick={() => navigate('/PortfolioPage', { state: { scrollToSearch: true } })}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold rounded-xl transition-colors text-sm"
               >
-                <Compass className="w-4 h-4" />
-                Explore Coins
+                <Search className="w-4 h-4" />
+                Search Coins
               </button>
             </div>
           )}
@@ -342,33 +335,25 @@ const HomePannel = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {/* Trending */}
           <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-bold flex items-center gap-2">
-                <div className="p-1.5 bg-amber-500/20 rounded-lg">
-                  <Zap className="w-4 h-4 text-amber-400" />
-                </div>
-                Trending
-              </h3>
-              <button
-                onClick={() => navigate('/explore')}
-                className="text-xs text-amber-400 hover:text-amber-300 font-medium"
-              >
-                See all
-              </button>
-            </div>
+            <h3 className="text-white font-bold flex items-center gap-2 mb-4">
+              <div className="p-1.5 bg-amber-500/20 rounded-lg">
+                <Zap className="w-4 h-4 text-amber-400" />
+              </div>
+              Trending
+            </h3>
             <div className="space-y-2">
               {trendingCoins.slice(0, 4).map((coin, idx) => (
                 <div
                   key={coin.id}
                   onClick={() => navigate(`/explore/${coin.id}`)}
-                  className="group flex items-center justify-between p-2.5 hover:bg-white/5 rounded-xl transition-all cursor-pointer"
+                  className="group flex items-center justify-between p-2.5 bg-amber-500/5 hover:bg-amber-500/10 rounded-xl transition-all cursor-pointer border border-amber-500/10"
                 >
                   <div className="flex items-center gap-2.5">
                     <span className="text-gray-600 text-xs font-bold w-3">{idx + 1}</span>
                     <img src={coin.image} alt={coin.name} className="w-8 h-8 rounded-lg" />
                     <div>
-                      <p className="text-white font-medium text-sm group-hover:text-amber-400 transition-colors">{coin.symbol?.toUpperCase()}</p>
-                      <p className="text-gray-600 text-xs">${coin.current_price?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
+                      <p className="text-white font-medium text-sm text-left group-hover:text-amber-400 transition-colors">{coin.symbol?.toUpperCase()}</p>
+                      <p className="text-gray-600 text-xs text-left">${coin.current_price?.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
                     </div>
                   </div>
                   <div className={`text-xs font-semibold ${coin.price_change_percentage_24h >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
@@ -396,7 +381,7 @@ const HomePannel = () => {
                 >
                   <div className="flex items-center gap-2">
                     <img src={coin.image} alt={coin.name} className="w-7 h-7 rounded-lg" />
-                    <span className="text-white text-sm font-medium">{coin.symbol?.toUpperCase()}</span>
+                    <span className="text-white text-sm font-medium text-left">{coin.symbol?.toUpperCase()}</span>
                   </div>
                   <span className="text-emerald-400 text-xs font-bold">+{coin.price_change_percentage_24h?.toFixed(1)}%</span>
                 </div>
@@ -421,7 +406,7 @@ const HomePannel = () => {
                 >
                   <div className="flex items-center gap-2">
                     <img src={coin.image} alt={coin.name} className="w-7 h-7 rounded-lg" />
-                    <span className="text-white text-sm font-medium">{coin.symbol?.toUpperCase()}</span>
+                    <span className="text-white text-sm font-medium text-left">{coin.symbol?.toUpperCase()}</span>
                   </div>
                   <span className="text-red-400 text-xs font-bold">{coin.price_change_percentage_24h?.toFixed(1)}%</span>
                 </div>

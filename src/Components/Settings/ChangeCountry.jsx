@@ -58,7 +58,7 @@ const ChangeCountry = ({ clickChangeCountry, setClickChangeCountry }) => {
     const newCountryValue = e.target.elements.newCountry.value; 
 
 
-    const res = await axios.patch(`http://localhost:5000/api/settings/changeCountry/${user._id}`, {settings: {country: newCountryValue}});
+    const res = await axios.patch(`http://localhost:5000/api/settings/changeCountry/${user._id}`, { country: newCountryValue });
     const updatedUser = res.data;
     setUser(updatedUser);
     setClickChangeCountry(!clickChangeCountry);

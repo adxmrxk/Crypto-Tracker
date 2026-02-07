@@ -23,6 +23,11 @@ function SearchPosts() {
     user?.socials?.dislikedPosts?.map((id) => id.toString()) || []
   );
 
+  // Get blocked user IDs
+  const blockedUserIds = new Set(
+    user?.socials?.blockList?.map((blocked) => blocked.userId?.toString()) || []
+  );
+
   // Fetch all posts on mount
   useEffect(() => {
     const fetchPosts = async () => {
@@ -43,9 +48,11 @@ function SearchPosts() {
 
     if (value.length > 0 && allPosts.length > 0) {
       const filtered = allPosts.filter(post =>
-        post.content?.toLowerCase().includes(value.toLowerCase()) ||
+        // Exclude posts from blocked users
+        !blockedUserIds.has(post.userId?.toString()) &&
+        (post.content?.toLowerCase().includes(value.toLowerCase()) ||
         post.displayName?.toLowerCase().includes(value.toLowerCase()) ||
-        post.username?.toLowerCase().includes(value.toLowerCase())
+        post.username?.toLowerCase().includes(value.toLowerCase()))
       ).slice(0, 8);
       setSuggestions(filtered);
       setShowSuggestions(true);

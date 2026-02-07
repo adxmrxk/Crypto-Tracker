@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { FiSearch } from "react-icons/fi";
-import { X, UserPlus, UserCheck, Users, Calendar, FileText, MessageSquare, Clock } from "lucide-react";
+import { X, UserPlus, UserCheck, Users, Calendar, FileText, MessageSquare, Clock, Ban } from "lucide-react";
 import { UserContext } from "../../Pages/SkeletonPage";
 import axios from "axios";
 
@@ -34,6 +34,13 @@ function SearchProfiles() {
     );
   };
 
+  // Check if current user has blocked target user
+  const isBlocked = (targetUserId) => {
+    return user?.socials?.blockList?.some(
+      (blocked) => blocked.userId?.toString() === targetUserId?.toString()
+    );
+  };
+
   // Handle follow/unfollow
   const handleFollow = async (targetUserId) => {
     try {
@@ -62,6 +69,26 @@ function SearchProfiles() {
     }
   };
 
+  // Handle block/unblock
+  const handleBlock = async (targetUserId) => {
+    try {
+      const blocked = isBlocked(targetUserId);
+      const endpoint = blocked ? "unblock" : "block";
+      const response = await axios.post(
+        `http://localhost:5000/api/${endpoint}/${user._id}`,
+        { targetUserId }
+      );
+      setUser(response.data);
+
+      // Close modal after blocking
+      if (!blocked) {
+        setSelectedUser(null);
+      }
+    } catch (error) {
+      console.error("Failed to block/unblock user:", error);
+    }
+  };
+
   // Filter suggestions based on input
   const handleChange = (event) => {
     const value = event.target.value;
@@ -69,7 +96,9 @@ function SearchProfiles() {
 
     if (value.length > 0 && allUsers.length > 0) {
       const filtered = allUsers.filter(u =>
-        u._id !== user?._id && (
+        u._id !== user?._id &&
+        // Exclude blocked users from search results
+        !isBlocked(u._id) && (
           u.displayName?.toLowerCase().includes(value.toLowerCase()) ||
           u.username?.toLowerCase().includes(value.toLowerCase()) ||
           u.bio?.toLowerCase().includes(value.toLowerCase())
@@ -298,26 +327,39 @@ function SearchProfiles() {
 
               {/* Follow/Unfollow Button */}
               {selectedUser._id !== user?._id && (
-                <button
-                  onClick={() => handleFollow(selectedUser._id)}
-                  className={`w-full py-3.5 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-lg ${
-                    isFollowing(selectedUser._id)
-                      ? "bg-slate-700 text-white hover:bg-red-500/20 hover:text-red-400 border border-slate-600"
-                      : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
-                  }`}
-                >
-                  {isFollowing(selectedUser._id) ? (
-                    <>
-                      <UserCheck className="w-5 h-5" />
-                      Following
-                    </>
-                  ) : (
-                    <>
-                      <UserPlus className="w-5 h-5" />
-                      Follow
-                    </>
-                  )}
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleFollow(selectedUser._id)}
+                    className={`flex-1 py-3.5 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-lg ${
+                      isFollowing(selectedUser._id)
+                        ? "bg-slate-700 text-white hover:bg-red-500/20 hover:text-red-400 border border-slate-600"
+                        : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-900"
+                    }`}
+                  >
+                    {isFollowing(selectedUser._id) ? (
+                      <>
+                        <UserCheck className="w-5 h-5" />
+                        Following
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="w-5 h-5" />
+                        Follow
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => handleBlock(selectedUser._id)}
+                    className={`px-5 py-3.5 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer text-lg ${
+                      isBlocked(selectedUser._id)
+                        ? "bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30"
+                        : "bg-slate-700 text-gray-300 border border-slate-600 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30"
+                    }`}
+                  >
+                    <Ban className="w-5 h-5" />
+                    {isBlocked(selectedUser._id) ? "Unblock" : "Block"}
+                  </button>
+                </div>
               )}
 
               {/* If viewing own profile */}

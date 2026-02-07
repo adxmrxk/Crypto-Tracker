@@ -93,8 +93,8 @@ const DisplayAndThemePage = () => {
       )}
 
       <div className="rounded-md w-[100%] h-auto relative top-4 p-3">
-        <h1 className="font-roboto font-bold text-xl my-5 pl-9 text-sky-200">Region</h1>
-        <hr className="border-sky-400 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
+        <h1 className="font-roboto font-bold text-xl my-5 pl-9 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">Region</h1>
+        <hr className="border-amber-500/30 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
 
         {/* Country */}
         <div>
@@ -104,11 +104,11 @@ const DisplayAndThemePage = () => {
               className="flex items-center gap-[8px] mr-22 cursor-pointer group"
               onClick={() => setClickChangeCountry(!clickChangeCountry)}
             >
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.settings?.country}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{user?.settings?.country}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Set your location for regional content and services.
           </p>
         </div>
@@ -121,11 +121,11 @@ const DisplayAndThemePage = () => {
               className="flex items-center gap-[8px] mr-22 cursor-pointer group"
               onClick={() => setClickChangeCurrency(!clickChangeCurrency)}
             >
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.settings?.currency}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{user?.settings?.currency}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Choose how prices and values are displayed.
           </p>
         </div>
@@ -140,11 +140,11 @@ const DisplayAndThemePage = () => {
               className="flex items-center gap-[8px] mr-22 cursor-pointer group"
               onClick={() => setClickChangedisplayLanguage(!clickChangedisplayLanguage)}
             >
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.settings?.displayLanguage}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{user?.settings?.displayLanguage}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Defines the language used on CryptoScope's interface.
           </p>
         </div>
@@ -159,17 +159,17 @@ const DisplayAndThemePage = () => {
               className="flex items-center gap-[8px] mr-22 cursor-pointer group"
               onClick={() => setClickChangeContentLanguage(!clickChangeContentLanguage)}
             >
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{user?.settings?.contentLanguage}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{user?.settings?.contentLanguage}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Controls the language of outside content such as articles.
           </p>
         </div>
 
-        <h1 className="font-roboto font-bold text-xl pl-9 my-5 text-sky-200">Accessibility</h1>
-        <hr className="border-sky-400 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
+        <h1 className="font-roboto font-bold text-xl pl-9 my-5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">Accessibility</h1>
+        <hr className="border-amber-500/30 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
 
         {/* Font Size */}
         <div>
@@ -181,11 +181,11 @@ const DisplayAndThemePage = () => {
               className="flex items-center gap-[8px] mr-22 cursor-pointer group"
               onClick={() => setClickChangeFontSize(!clickChangeFontSize)}
             >
-              <p className="font-normal text-amber-400/70 group-hover:text-amber-400 transition-colors">{getFontSizeLabel(user?.settings?.fontSize)}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 rounded-2xl transition-colors" />
+              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{getFontSizeLabel(user?.settings?.fontSize)}</p>
+              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Controls the size of the font across pages.
           </p>
         </div>
@@ -203,13 +203,13 @@ const DisplayAndThemePage = () => {
               </div>
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Adds extra descriptions for compatibility with screen readers.
           </p>
         </div>
 
-        <h1 className="font-roboto font-bold text-xl pl-9 my-5 text-sky-200">Appearance</h1>
-        <hr className="border-sky-400 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
+        <h1 className="font-roboto font-bold text-xl pl-9 my-5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">Appearance</h1>
+        <hr className="border-amber-500/30 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
 
         {/* Animations */}
         <div>
@@ -222,7 +222,7 @@ const DisplayAndThemePage = () => {
               />
             </div>
           </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-300">
+          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
             Enable or disable motion effects across the app.
           </p>
         </div>
