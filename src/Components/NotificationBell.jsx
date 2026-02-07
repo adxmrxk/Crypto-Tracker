@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import ReactDOM from "react-dom";
 import { Bell, X, Check, Trash2, UserPlus, MessageSquare, ThumbsUp, AtSign, TrendingUp, AlertCircle } from "lucide-react";
 import axios from "axios";
 import { UserContext } from "../Pages/SkeletonPage";
@@ -211,9 +212,9 @@ const NotificationBell = () => {
         )}
       </button>
 
-      {/* Modal Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-[100] px-4 backdrop-blur-sm bg-black/60">
+      {/* Modal Overlay - Using Portal to render outside DOM hierarchy */}
+      {isOpen && ReactDOM.createPortal(
+        <div className="fixed inset-0 flex items-center justify-center z-[9999] px-4 backdrop-blur-sm bg-black/60">
           <div ref={dropdownRef} className="relative bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-700 overflow-hidden max-h-[85vh] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-slate-700 flex-shrink-0">
@@ -316,7 +317,8 @@ const NotificationBell = () => {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
