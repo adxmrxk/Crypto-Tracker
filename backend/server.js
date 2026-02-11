@@ -29,8 +29,10 @@ app.get("/", (req, res) => {
   res.send("Hello from the backend");
 });
 
+const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/cryptoApp";
+
 mongoose
-  .connect("mongodb://localhost:27017/cryptoApp", {
+  .connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

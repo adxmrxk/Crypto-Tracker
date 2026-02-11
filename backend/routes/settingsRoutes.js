@@ -84,24 +84,6 @@ router.patch("/api/settings/changeDisplayName/:id", async (req, res) => {
   }
 });
 
-router.patch("/api/settings/changeFontSize/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { fontSize } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { "settings.fontSize": fontSize },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
 router.patch("/api/settings/changeScreenReader/:id", async (req, res) => {
   const userId = req.params.id;
   try {
@@ -127,24 +109,6 @@ router.patch("/api/settings/changeAnimations/:id", async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { "settings.animations": animations },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.json(updatedUser);
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
-
-router.patch("/api/settings/changeContentLanguage/:id", async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const { contentLanguage } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { "settings.contentLanguage": contentLanguage },
       { new: true, runValidators: true }
     );
     if (!updatedUser) {

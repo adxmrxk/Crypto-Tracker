@@ -8,8 +8,6 @@ import LabelBottomNavigation from "../../Components/LabelBottomNavigation";
 import ChangeCountry from "../../Components/Settings/ChangeCountry";
 import ChangeCurrency from "../../Components/Settings/ChangeCurrency";
 import ChangedisplayLanguage from "../../Components/Settings/ChangeDisplayLanguage";
-import ChangeContentLanguage from "../../Components/Settings/ChangeContentLanguage";
-import ChangeFontSize from "../../Components/Settings/ChangeFontSize";
 import axios from "axios";
 
 const DisplayAndThemePage = () => {
@@ -18,8 +16,6 @@ const DisplayAndThemePage = () => {
   const [clickChangeCountry, setClickChangeCountry] = useState(false);
   const [clickChangeCurrency, setClickChangeCurrency] = useState(false);
   const [clickChangedisplayLanguage, setClickChangedisplayLanguage] = useState(false);
-  const [clickChangeContentLanguage, setClickChangeContentLanguage] = useState(false);
-  const [clickChangeFontSize, setClickChangeFontSize] = useState(false);
 
   const handleScreenReaderChange = async (checked) => {
     try {
@@ -45,20 +41,6 @@ const DisplayAndThemePage = () => {
     }
   };
 
-  const getFontSizeLabel = (fontSize) => {
-    const labels = {
-      "0.75rem": "Extra Small",
-      "0.875rem": "Small",
-      "1rem": "Default",
-      "1.125rem": "Large",
-      "1.25rem": "Extra Large",
-      "1.5rem": "2X Large",
-      "2rem": "3X Large",
-      "2.5rem": "4X Large"
-    };
-    return labels[fontSize] || "Default";
-  };
-
   return (
     <div>
       {clickChangeCountry && (
@@ -77,18 +59,6 @@ const DisplayAndThemePage = () => {
         <ChangedisplayLanguage
           clickChangedisplayLanguage={clickChangedisplayLanguage}
           setClickChangedisplayLanguage={setClickChangedisplayLanguage}
-        />
-      )}
-      {clickChangeContentLanguage && (
-        <ChangeContentLanguage
-          clickChangeContentLanguage={clickChangeContentLanguage}
-          setClickChangeContentLanguage={setClickChangeContentLanguage}
-        />
-      )}
-      {clickChangeFontSize && (
-        <ChangeFontSize
-          clickChangeFontSize={clickChangeFontSize}
-          setClickChangeFontSize={setClickChangeFontSize}
         />
       )}
 
@@ -149,46 +119,8 @@ const DisplayAndThemePage = () => {
           </p>
         </div>
 
-        {/* Content Language */}
-        <div>
-          <div
-            className="flex justify-between items-center m-5 mt-10 mb-10"
-          >
-            <h2 className="font-roboto font-normal w-fit ml-25 text-gray-100">Content Language</h2>
-            <div
-              className="flex items-center gap-[8px] mr-22 cursor-pointer group"
-              onClick={() => setClickChangeContentLanguage(!clickChangeContentLanguage)}
-            >
-              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{user?.settings?.contentLanguage}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
-            </div>
-          </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
-            Controls the language of outside content such as articles.
-          </p>
-        </div>
-
         <h1 className="font-roboto font-bold text-xl pl-9 my-5 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">Accessibility</h1>
         <hr className="border-amber-500/30 my-1 w-[80%] mx-auto mask-x-from-0.5"></hr>
-
-        {/* Font Size */}
-        <div>
-          <div
-            className="flex justify-between items-center m-5 mt-10 mb-10"
-          >
-            <h2 className="font-roboto font-normal w-fit ml-25 text-gray-100">Font Size</h2>
-            <div
-              className="flex items-center gap-[8px] mr-22 cursor-pointer group"
-              onClick={() => setClickChangeFontSize(!clickChangeFontSize)}
-            >
-              <p className="font-normal text-amber-400 group-hover:text-amber-300 transition-colors drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]">{getFontSizeLabel(user?.settings?.fontSize)}</p>
-              <ChevronRightIcon className="text-amber-400 group-hover:text-amber-300 group-hover:translate-x-1 transition-all duration-300 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
-            </div>
-          </div>
-          <p className="font-roboto text-sm w-fit ml-30 -mt-9 text-gray-400">
-            Controls the size of the font across pages.
-          </p>
-        </div>
 
         {/* Screen Reader */}
         <div>

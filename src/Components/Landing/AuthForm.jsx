@@ -3,7 +3,6 @@ import axios from 'axios';
 import { X, Loader2 } from "lucide-react";
 import getDeviceInfo from "../../utils/loginTracker";
 import CURRENCIES_FRONTEND from "../../utils/currenciesFrontEnd";
-import CONTENT_LANGUAGES_FRONT_END from "../../utils/contentLanguagesFrontEnd";
 
 const Countries = [
   "Canada",
@@ -96,8 +95,7 @@ const AuthForm = ({ handleExit, onAuthSuccess }) => {
           settings: {
             country,
             currency: CURRENCIES_FRONTEND[countryMapping],
-            displayLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
-            contentLanguage: CONTENT_LANGUAGES_FRONT_END[countryMapping],
+            displayLanguage: "English (US)",
           },
           socials: {},
           password,
