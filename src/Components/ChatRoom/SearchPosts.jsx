@@ -211,8 +211,12 @@ function SearchPosts() {
               className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-gray-100 transition-colors border-b border-slate-700 last:border-b-0"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
-                  {post.username?.slice(0, 2).toUpperCase()}
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0 overflow-hidden">
+                  {post.profilePicture ? (
+                    <img src={post.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    post.username?.slice(0, 2).toUpperCase()
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -267,8 +271,12 @@ function SearchPosts() {
               {/* Post Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                    {selectedPost.username?.slice(0, 2).toUpperCase()}
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                    {selectedPost.profilePicture ? (
+                      <img src={selectedPost.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      selectedPost.username?.slice(0, 2).toUpperCase()
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white text-left">
@@ -373,12 +381,12 @@ function SearchPosts() {
 
                 {/* Comment Input */}
                 <div className="flex items-center gap-3 pt-3 border-t border-slate-700">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0">
-                    {user?.profilePicture &&
-                    user.profilePicture.length <= 4 &&
-                    !user.profilePicture.startsWith("data:")
-                      ? user.profilePicture
-                      : user?.username?.slice(0, 2).toUpperCase()}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0 overflow-hidden">
+                    {user?.profilePicture ? (
+                      <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      user?.username?.slice(0, 2).toUpperCase()
+                    )}
                   </div>
                   <div className="flex-1 flex gap-2">
                     <input

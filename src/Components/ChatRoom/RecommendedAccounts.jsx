@@ -72,10 +72,12 @@ function RecommendedAccounts() {
                     {/* User Info */}
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="flex-shrink-0">
-                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg">
-                          {userG?.profilePicture && userG.profilePicture !== ""
-                            ? userG.profilePicture
-                            : userG?.username?.slice(0, 2).toUpperCase()}
+                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg overflow-hidden">
+                          {userG?.profilePicture ? (
+                            <img src={userG.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            userG?.username?.slice(0, 2).toUpperCase()
+                          )}
                         </div>
                       </div>
 

@@ -109,8 +109,12 @@ const CreatePostModal = ({ onClose }) => {
           <div className="p-6">
             <div className="flex gap-4">
               {/* Avatar */}
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex-shrink-0 flex items-center justify-center text-lg font-bold text-white">
-                {user?.username?.slice(0, 2).toUpperCase()}
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex-shrink-0 flex items-center justify-center text-lg font-bold text-white overflow-hidden">
+                {user?.profilePicture ? (
+                  <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  user?.username?.slice(0, 2).toUpperCase()
+                )}
               </div>
 
               {/* Form */}

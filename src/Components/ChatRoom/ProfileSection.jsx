@@ -345,8 +345,12 @@ function ProfileSection() {
                 {/* Post Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                      {user?.username?.slice(0, 2).toUpperCase()}
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                      {user?.profilePicture ? (
+                        <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        user?.username?.slice(0, 2).toUpperCase()
+                      )}
                     </div>
                     <div>
                       <h3 className="font-semibold text-white text-left">
@@ -794,8 +798,12 @@ function ProfileSection() {
                   className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-gray-100 transition-colors border-b border-slate-700 last:border-b-0"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
-                      {userProfile.username?.slice(0, 2).toUpperCase()}
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0 overflow-hidden">
+                      {userProfile.profilePicture ? (
+                        <img src={userProfile.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        userProfile.username?.slice(0, 2).toUpperCase()
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className="font-medium text-white">{userProfile.displayName}</span>
@@ -827,8 +835,12 @@ function ProfileSection() {
           <div className="px-5 pb-5 pt-2 -mt-10 relative z-10">
             <div className="flex justify-between items-end mb-3 pt-3">
               {/* Avatar */}
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xl font-bold text-white shadow-xl">
-                {user?.username?.slice(0, 2).toUpperCase()}
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xl font-bold text-white shadow-xl overflow-hidden">
+                {user?.profilePicture ? (
+                  <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  user?.username?.slice(0, 2).toUpperCase()
+                )}
               </div>
 
               {/* Edit Button */}
@@ -906,8 +918,12 @@ function ProfileSection() {
               {/* Profile Content */}
               <div className="p-4 pt-8 text-center">
                 {/* Avatar */}
-                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white shadow-lg mb-3">
-                  {selectedUserProfile.username?.slice(0, 2).toUpperCase()}
+                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white shadow-lg mb-3 overflow-hidden">
+                  {selectedUserProfile.profilePicture ? (
+                    <img src={selectedUserProfile.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    selectedUserProfile.username?.slice(0, 2).toUpperCase()
+                  )}
                 </div>
 
                 {/* Name & Username */}
@@ -1035,10 +1051,12 @@ function ProfileSection() {
                     {/* Post Header */}
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                          {user?.profilePicture && user.profilePicture.length <= 4 && !user.profilePicture.startsWith("data:")
-                            ? user.profilePicture
-                            : user?.username?.slice(0, 2).toUpperCase()}
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                          {user?.profilePicture ? (
+                            <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            user?.username?.slice(0, 2).toUpperCase()
+                          )}
                         </div>
                         <div className="">
                           <h3 className="font-semibold text-white text-sm text-left">
@@ -1142,10 +1160,12 @@ function ProfileSection() {
                   >
                     {/* Comment Header */}
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-                        {user?.profilePicture && user.profilePicture.length <= 4 && !user.profilePicture.startsWith("data:")
-                          ? user.profilePicture
-                          : user?.username?.slice(0, 2).toUpperCase()}
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white flex-shrink-0 overflow-hidden">
+                        {user?.profilePicture ? (
+                          <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                          user?.username?.slice(0, 2).toUpperCase()
+                        )}
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">

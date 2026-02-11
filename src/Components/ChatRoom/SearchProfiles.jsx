@@ -206,10 +206,12 @@ function SearchProfiles() {
               className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-gray-100 transition-colors border-b border-slate-700 last:border-b-0"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-                  {userProfile.profilePicture && userProfile.profilePicture !== ""
-                    ? userProfile.profilePicture
-                    : userProfile.username?.slice(0, 2).toUpperCase()}
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white flex-shrink-0 overflow-hidden">
+                  {userProfile.profilePicture ? (
+                    <img src={userProfile.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    userProfile.username?.slice(0, 2).toUpperCase()
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -263,10 +265,12 @@ function SearchProfiles() {
 
               {/* Avatar */}
               <div className="flex justify-center -mt-16 mb-5">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-3xl font-bold text-white border-4 border-slate-800 shadow-lg">
-                  {selectedUser.profilePicture && selectedUser.profilePicture !== ""
-                    ? <img src={selectedUser.profilePicture} alt="" className="w-full h-full rounded-full object-cover" />
-                    : selectedUser.username?.slice(0, 2).toUpperCase()}
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-3xl font-bold text-white border-4 border-slate-800 shadow-lg overflow-hidden">
+                  {selectedUser.profilePicture ? (
+                    <img src={selectedUser.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    selectedUser.username?.slice(0, 2).toUpperCase()
+                  )}
                 </div>
               </div>
 

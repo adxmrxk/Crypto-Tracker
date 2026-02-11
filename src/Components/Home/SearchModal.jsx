@@ -277,8 +277,12 @@ const SearchModal = ({ onClose }) => {
                         className="flex items-center justify-between p-3 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl cursor-pointer transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                            {userProfile.username?.slice(0, 2).toUpperCase()}
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                            {userProfile.profilePicture ? (
+                              <img src={userProfile.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                            ) : (
+                              userProfile.username?.slice(0, 2).toUpperCase()
+                            )}
                           </div>
                           <div>
                             <p className="text-white font-medium">{userProfile.displayName}</p>
@@ -319,8 +323,12 @@ const SearchModal = ({ onClose }) => {
                         className="p-3 bg-slate-700/30 hover:bg-slate-700/50 rounded-xl cursor-pointer transition-colors"
                       >
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white">
-                            {post.username?.slice(0, 2).toUpperCase()}
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold text-white overflow-hidden">
+                            {post.profilePicture ? (
+                              <img src={post.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                            ) : (
+                              post.username?.slice(0, 2).toUpperCase()
+                            )}
                           </div>
                           <div>
                             <span className="text-white font-medium text-sm">{post.displayName}</span>
@@ -359,8 +367,12 @@ const SearchModal = ({ onClose }) => {
             </button>
 
             <div className="p-4 pt-8 text-center">
-              <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white shadow-lg mb-3">
-                {selectedUser.username?.slice(0, 2).toUpperCase()}
+              <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg font-bold text-white shadow-lg mb-3 overflow-hidden">
+                {selectedUser.profilePicture ? (
+                  <img src={selectedUser.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  selectedUser.username?.slice(0, 2).toUpperCase()
+                )}
               </div>
 
               <h2 className="text-lg font-bold text-white">{selectedUser.displayName}</h2>
@@ -422,8 +434,12 @@ const SearchModal = ({ onClose }) => {
               {/* Post Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                    {selectedPost.username?.slice(0, 2).toUpperCase()}
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                    {selectedPost.profilePicture ? (
+                      <img src={selectedPost.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      selectedPost.username?.slice(0, 2).toUpperCase()
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white text-left">{selectedPost.displayName}</h3>
@@ -526,8 +542,12 @@ const SearchModal = ({ onClose }) => {
 
                 {/* Comment Input */}
                 <div className="flex items-center gap-3 pt-3 border-t border-slate-700">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0">
-                    {user?.username?.slice(0, 2).toUpperCase()}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0 overflow-hidden">
+                    {user?.profilePicture ? (
+                      <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      user?.username?.slice(0, 2).toUpperCase()
+                    )}
                   </div>
                   <div className="flex-1 flex gap-2">
                     <input

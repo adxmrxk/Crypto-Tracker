@@ -53,9 +53,9 @@ function EditProfile({ editProfile, setEditProfile }) {
         lastEdited: new Date(),
       };
 
-      // If there's a new avatar, include it (for now just storing initials/emoji)
+      // If there's a new avatar, include it
       if (avatarPreview) {
-        updateData.profilePicture = avatarPreview.slice(0, 2); // Simplified - in real app would upload to cloud storage
+        updateData.profilePicture = avatarPreview;
       }
 
       const response = await axios.patch(
@@ -146,6 +146,12 @@ function EditProfile({ editProfile, setEditProfile }) {
                     <img
                       src={avatarPreview}
                       alt="Avatar preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt="Current avatar"
                       className="w-full h-full object-cover"
                     />
                   ) : (

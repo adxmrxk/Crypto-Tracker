@@ -318,8 +318,12 @@ const MediaPost = () => {
               {/* Post Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                    {selectedPost.username?.slice(0, 2).toUpperCase()}
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                    {selectedPost.profilePicture ? (
+                      <img src={selectedPost.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      selectedPost.username?.slice(0, 2).toUpperCase()
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-white text-left">
@@ -445,12 +449,12 @@ const MediaPost = () => {
 
                 {/* Comment Input */}
                 <div className="flex items-center gap-3 pt-3 border-t border-slate-700">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0">
-                    {user?.profilePicture &&
-                    user.profilePicture.length <= 4 &&
-                    !user.profilePicture.startsWith("data:")
-                      ? user.profilePicture
-                      : user?.username?.slice(0, 2).toUpperCase()}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 flex-shrink-0 overflow-hidden">
+                    {user?.profilePicture ? (
+                      <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      user?.username?.slice(0, 2).toUpperCase()
+                    )}
                   </div>
                   <div className="flex-1 flex gap-2">
                     <input
@@ -521,8 +525,12 @@ const MediaPost = () => {
           {/* Post Header */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white">
-                {post.username?.slice(0, 2).toUpperCase()}
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-sm font-bold text-white overflow-hidden">
+                {post.profilePicture ? (
+                  <img src={post.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  post.username?.slice(0, 2).toUpperCase()
+                )}
               </div>
               <div>
                 <h3 className="font-semibold text-white text-sm text-left">
@@ -676,12 +684,12 @@ const MediaPost = () => {
             >
               {/* Add Comment */}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900">
-                  {user?.profilePicture &&
-                  user.profilePicture.length <= 4 &&
-                  !user.profilePicture.startsWith("data:")
-                    ? user.profilePicture
-                    : user?.username?.slice(0, 2).toUpperCase()}
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-xs font-bold text-slate-900 overflow-hidden">
+                  {user?.profilePicture ? (
+                    <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    user?.username?.slice(0, 2).toUpperCase()
+                  )}
                 </div>
                 <div className="flex-1 flex gap-2">
                   <input
